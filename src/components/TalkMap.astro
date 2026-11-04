@@ -1,20 +1,25 @@
 ---
 import { talkStops, mapPosition } from '../lib/talks.js';
+const isSpanish = Astro.props.locale === 'es';
+const citiesEs = { Vienna: 'Viena', Seville: 'Sevilla', Bern: 'Berna', Munich: 'Múnich' };
+const countriesEs = { Spain: 'España', Austria: 'Austria', Norway: 'Noruega', Switzerland: 'Suiza', 'South Korea': 'Corea del Sur', Canada: 'Canadá', Germany: 'Alemania' };
 const coordinate = (value, positive, negative) => `${Math.abs(value).toFixed(1)}° ${value >= 0 ? positive : negative}`;
 const stops = talkStops.map((stop) => ({
   ...stop,
+  city: isSpanish ? (citiesEs[stop.city] ?? stop.city) : stop.city,
+  country: isSpanish ? (countriesEs[stop.country] ?? stop.country) : stop.country,
   position: mapPosition(stop),
-  coordinates: `${stop.city} · ${coordinate(stop.lat, 'N', 'S')} / ${coordinate(stop.lon, 'E', 'W')}`,
+  coordinates: `${isSpanish ? (citiesEs[stop.city] ?? stop.city) : stop.city} · ${coordinate(stop.lat, 'N', 'S')} / ${coordinate(stop.lon, 'E', 'W')}`,
 }));
 const talkCount = stops.reduce((count, stop) => count + stop.talks.length, 0);
 ---
 <section class="talk-map-section" id="talks" aria-labelledby="talk-map-title">
   <div class="wrap map-heading">
-    <div><span class="section-kicker">Talks & presentations</span><h2 class="section-title" id="talk-map-title">Talks on the <em>map.</em></h2></div>
-    <p>Places where I’ve presented research and tools, from SISTEDES in Spain to testing conferences around the world. Pick a city to see the talks.</p>
+    <div><span class="section-kicker">{isSpanish ? "Charlas y presentaciones" : "Talks & presentations"}</span><h2 class="section-title" id="talk-map-title">{isSpanish ? <>Charlas en el <em>mapa.</em></> : <>Talks on the <em>map.</em></>}</h2></div>
+    <p>{isSpanish ? "Lugares donde he presentado mis investigaciones y herramientas, desde SISTEDES en España hasta conferencias de pruebas de software por todo el mundo. Elige una ciudad para ver las charlas." : "Places where I’ve presented research and tools, from SISTEDES in Spain to testing conferences around the world. Pick a city to see the talks."}</p>
   </div>
   <div class="wrap talk-map">
-    <div class="map-stage" aria-label="Map of cities where Pepe has given talks since 2022">
+    <div class="map-stage" aria-label={isSpanish ? "Mapa de ciudades donde Pepe ha dado charlas desde 2022" : "Map of cities where Pepe has given talks since 2022"}>
       <img src="/map/northern-hemisphere.svg" alt="" aria-hidden="true" width="1100" height="460" />
       {stops.map((stop, index) => <button
         type="button"
@@ -22,20 +27,20 @@ const talkCount = stops.reduce((count, stop) => count + stop.talks.length, 0);
         style={`--x:${stop.position.x.toFixed(3)}%;--y:${stop.position.y.toFixed(3)}%`}
         data-stop={stop.id}
         data-coordinates={stop.coordinates}
-        aria-label={`${stop.city}, ${stop.country}: ${stop.talks.length} ${stop.talks.length === 1 ? 'talk' : 'talks'}`}
+        aria-label={`${stop.city}, ${stop.country}: ${stop.talks.length} ${stop.talks.length === 1 ? (isSpanish ? 'charla' : 'talk') : (isSpanish ? 'charlas' : 'talks')}`}
         aria-pressed={index === 0 ? 'true' : 'false'}
         aria-controls="talk-map-details"
       ><span class="pin-dot"></span><span class="pin-label">{stop.city}</span></button>)}
-      <div class="map-count"><span class="count-star" aria-hidden="true">✳</span> {stops.length} cities · {talkCount} talks</div>
+      <div class="map-count"><span class="count-star" aria-hidden="true">✳</span> {stops.length} {isSpanish ? "ciudades" : "cities"} · {talkCount} {isSpanish ? "charlas" : "talks"}</div>
       <span class="map-coordinate" aria-live="polite" aria-atomic="true">{stops[0].coordinates}</span>
     </div>
     <div class="map-bottom">
-      <div class="stop-picker" aria-label="Choose a talk location">
+      <div class="stop-picker" aria-label={isSpanish ? "Elige una ciudad" : "Choose a talk location"}>
         {stops.map((stop, index) => <button type="button" class:list={['stop-choice', index === 0 && 'is-active']} data-stop={stop.id} data-coordinates={stop.coordinates} aria-pressed={index === 0 ? 'true' : 'false'} aria-controls="talk-map-details"><span class="choice-year">{stop.year}</span><span class="choice-city">{stop.city}</span><span class="choice-country">{stop.country} <span aria-hidden="true">↗</span></span></button>)}
       </div>
       <div class="map-details" id="talk-map-details" aria-live="polite">
         {stops.map((stop, index) => <article class="stop-detail" data-detail={stop.id} hidden={index !== 0}>
-          <div class="detail-top"><span>{String(index + 1).padStart(2, '0')} / {String(stops.length).padStart(2, '0')}</span><span>Talk stop · {stop.year}</span></div>
+          <div class="detail-top"><span>{String(index + 1).padStart(2, '0')} / {String(stops.length).padStart(2, '0')}</span><span>{isSpanish ? "Parada ·" : "Talk stop ·"} {stop.year}</span></div>
           <h3>{stop.city}<span>.</span></h3>
           <p class="detail-country">{stop.country}</p>
           <ul>{stop.talks.map((talk) => <li><span>{talk.event}</span>{talk.url ? <a href={talk.url} target="_blank" rel="noopener noreferrer">{talk.title} ↗</a> : <strong>{talk.title}</strong>}</li>)}</ul>

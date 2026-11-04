@@ -1,12 +1,24 @@
 ---
 import { publications, contributions, advisories, researchFunding, softwareReach, collaborations } from '../lib/data.js';
+import { localizedHref } from '../lib/locale.js';
+const locale = Astro.props.locale ?? 'en';
+const isSpanish = locale === 'es';
 
 const publishedWorks = publications.filter((item) => item.kind === 'paper');
 const vulnerabilityRecords = advisories.filter((item) => !item.informational);
 const institutionCount = new Set(collaborations.flatMap((item) => item.institutions)).size;
 const starCount = softwareReach.stars.reduce((total, item) => total + item.count, 0);
 const downloadCount = softwareReach.downloads.reduce((total, item) => total + item.count, 0);
-const metrics = [
+const metrics = isSpanish ? [
+  { value: publishedWorks.length, label: 'Publicaciones', detail: 'Artículos y tutorial revisados por pares', href: '/research/' },
+  { value: '66', label: 'Citas', detail: 'Google Scholar', href: 'https://scholar.google.es/citations?user=uhmSfGUAAAAJ' },
+  { value: researchFunding.amount, label: 'Financiación que he conseguido', detail: `${researchFunding.currency} · Para mi investigación`, href: '/impact/#funding' },
+  { value: vulnerabilityRecords.length, label: 'Avisos e informes de seguridad', detail: '4 CVE · 2 informes más', href: '/impact/#advisories' },
+  { value: institutionCount, label: 'Instituciones de investigación', detail: 'Instituciones con las que he trabajado', href: '/research/#collaborations' },
+  { value: starCount, label: 'Estrellas en GitHub', detail: 'En mis repositorios públicos', href: '/impact/#software-reach' },
+  { value: `${Math.floor(downloadCount / 1000)}k+`, label: 'Descargas de software', detail: 'Histórico · paquetes y versiones', href: '/impact/#software-reach' },
+  { value: contributions.length, label: 'Correcciones aceptadas', detail: 'PR de errores y seguridad en otros proyectos', href: '/impact/#fixes' },
+] : [
   { value: publishedWorks.length, label: 'Publications', detail: 'Peer-reviewed papers & tutorial', href: '/research/' },
   { value: '66', label: 'Citations', detail: 'Google Scholar', href: 'https://scholar.google.es/citations?user=uhmSfGUAAAAJ' },
   { value: researchFunding.amount, label: 'Funding I raised', detail: `${researchFunding.currency} · My research`, href: '/impact/#funding' },
@@ -18,13 +30,13 @@ const metrics = [
 ];
 ---
 <section class="metrics wrap" aria-labelledby="metrics-title">
-  <div class="metrics-heading"><h2 class="section-kicker" id="metrics-title">At a glance</h2></div>
+  <div class="metrics-heading"><h2 class="section-kicker" id="metrics-title">{isSpanish ? "De un vistazo" : "At a glance"}</h2></div>
   <div class="metrics-grid">
-    {metrics.map((metric) => <a class="metric" href={metric.href} target={metric.href.startsWith('https://') ? '_blank' : undefined} rel={metric.href.startsWith('https://') ? 'noopener noreferrer' : undefined}>
+    {metrics.map((metric) => <a class="metric" href={localizedHref(metric.href, locale)} target={metric.href.startsWith('https://') ? '_blank' : undefined} rel={metric.href.startsWith('https://') ? 'noopener noreferrer' : undefined}>
       <strong>{metric.value}</strong><span>{metric.label}</span><small>{metric.detail} <span aria-hidden="true">↗</span></small>
     </a>)}
   </div>
-  <p class="metrics-note">Repository stars, PyPI and GitHub packages, and release assets checked {softwareReach.checked}.</p>
+  <p class="metrics-note">{isSpanish ? "Estrellas de repositorios y descargas de PyPI, GitHub Packages y archivos de versiones. Datos comprobados el 4 de noviembre de 2026." : `Repository stars, PyPI and GitHub packages, and release assets checked ${softwareReach.checked}.`}</p>
 </section>
 <style>
   .metrics{padding-top:76px;padding-bottom:18px}

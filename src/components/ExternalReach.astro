@@ -1,7 +1,8 @@
 ---
 import { externalRepositoryReach } from '../lib/data.js';
 
-const { repo, inverse = false } = Astro.props;
+const { repo, inverse = false, locale = 'en' } = Astro.props;
+const isSpanish = locale === 'es';
 const stars = externalRepositoryReach.stars[repo];
 const downloads = externalRepositoryReach.downloads[repo];
 const compact = (count) => {
@@ -11,8 +12,8 @@ const compact = (count) => {
 };
 ---
 <div class:list={['external-reach', inverse && 'inverse']}>
-  {downloads && <a href={downloads.url} target="_blank" rel="noopener noreferrer" title={`${downloads.count.toLocaleString('en-US')} ${downloads.registry} download events ${downloads.period}`} aria-label={`${downloads.count.toLocaleString('en-US')} ${downloads.registry} downloads ${downloads.period}; view package statistics`}>↓ {compact(downloads.count)} {downloads.registry} downloads · {downloads.period} ↗</a>}
-  <a href={`https://github.com/${repo}`} target="_blank" rel="noopener noreferrer" aria-label={`${repo}: ${stars.toLocaleString('en-US')} GitHub stars`}>★ {stars.toLocaleString('en-US')} GitHub stars ↗</a>
+  {downloads && <a href={downloads.url} target="_blank" rel="noopener noreferrer" title={isSpanish ? `${downloads.count.toLocaleString('es-ES')} descargas en ${downloads.registry} · ${downloads.period === 'all time' ? 'histórico' : 'desde 2015'}` : `${downloads.count.toLocaleString('en-US')} ${downloads.registry} download events ${downloads.period}`} aria-label={isSpanish ? `${downloads.count.toLocaleString('es-ES')} descargas en ${downloads.registry}; ver estadísticas` : `${downloads.count.toLocaleString('en-US')} ${downloads.registry} downloads ${downloads.period}; view package statistics`}>↓ {compact(downloads.count)} {isSpanish ? `descargas en ${downloads.registry}` : `${downloads.registry} downloads`} · {isSpanish ? downloads.period === 'all time' ? 'histórico' : 'desde 2015' : downloads.period} ↗</a>}
+  <a href={`https://github.com/${repo}`} target="_blank" rel="noopener noreferrer" aria-label={isSpanish ? `${repo}: ${stars.toLocaleString('es-ES')} estrellas en GitHub` : `${repo}: ${stars.toLocaleString('en-US')} GitHub stars`}>★ {stars.toLocaleString(isSpanish ? 'es-ES' : 'en-US')} {isSpanish ? 'estrellas en GitHub' : 'GitHub stars'} ↗</a>
 </div>
 <style>
   .external-reach{display:flex;flex-wrap:wrap;align-items:center;gap:7px 18px;margin-top:12px;color:#5a7a49;font:600 11px/1.55 'DM Mono',monospace}

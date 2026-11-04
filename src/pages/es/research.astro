@@ -1,0 +1,83 @@
+---
+import Base from '../../layouts/Base.astro';
+import PublicationRow from '../../components/PublicationRow.astro';
+import { publications, collaborations } from '../../lib/data.js';
+import { collaborationCopy, translateRecords } from '../../lib/es-data.js';
+const collaborationsEs = translateRecords(collaborations, collaborationCopy, 'institution');
+const papers = publications.filter((item) => item.kind === 'paper' && item.format !== 'tutorial');
+const tutorials = publications.filter((item) => item.format === 'tutorial' || item.kind === 'guide');
+const preprints = publications.filter((item) => item.kind === 'preprint');
+---
+<Base locale="es" title="Investigación y publicaciones — Pepe Zamudio" description="Artículos, preprints, tutoriales y colaboradores de José Antonio «Pepe» Zamudio Amaya, investigador en pruebas de software y seguridad.">
+  <div class="wrap page-intro"><div class="eyebrow">Investigación</div><h1>Artículos y<br />tutoriales.</h1><p>Estudio cómo generar pruebas útiles para software complejo, sobre todo cuando sus entradas tienen estructura, restricciones o estado. Estos trabajos explican los métodos y los problemas de seguridad a los que los he aplicado.</p></div>
+  <div class="wrap rule"></div>
+  <nav class="wrap research-jump" aria-label="Secciones de investigación"><a href="#papers" >Artículos <span aria-hidden="true">↘</span></a><a href="#tutorials">Tutoriales <span aria-hidden="true">↘</span></a><a href="#preprints">Preprints <span aria-hidden="true">↘</span></a><a href="#collaborations">Colaboradores <span aria-hidden="true">↘</span></a></nav>
+  <section class="wrap areas" aria-labelledby="areas-title"><div class="areas-heading"><span class="section-kicker">Áreas de trabajo</span><h2 class="section-title" id="areas-title">Líneas de investigación.</h2></div>
+    <div class="area-grid">
+      <article class="area-card"><span class="area-number">01 / Área</span><h3>Pruebas de software</h3><ul>
+        <li><strong>Generación de entradas estructuradas</strong><p>Gramáticas y restricciones semánticas para archivos, programas y mensajes binarios.</p></li>
+        <li><strong>Pruebas de protocolos con estado</strong><p>Generación de conversaciones completas, no solo mensajes aislados.</p></li>
+        <li><strong>Pruebas centradas en características</strong><p>Conjuntos de pruebas dirigidos a características concretas y al código que ejercitan.</p></li>
+      </ul></article>
+      <article class="area-card"><span class="area-number">02 / Área</span><h3>Seguridad del software</h3><ul>
+        <li><strong>Pruebas de inyección</strong><p>Generación de peticiones de ataque XML a partir de especificaciones de servicios web.</p></li>
+        <li><strong>Fuzzing dirigido</strong><p>Exploración de casos límite en sistemas reales, incluido un módulo GNSS.</p></li>
+        <li><strong>Descubrimiento de vulnerabilidades</strong><p>Detección y comunicación de fallos en analizadores y formatos de archivo con entradas generadas.</p></li>
+      </ul></article>
+    </div>
+    <div class="methods"><span class="section-kicker">Métodos que utilizo</span><ul><li>Búsqueda evolutiva y multiobjetivo</li><li>Gramáticas y restricciones semánticas</li><li>Modelos de características y variabilidad</li><li>Optimización heurística</li></ul></div>
+  </section>
+  <section class="wrap papers" id="papers"><div class="papers-head"><span class="section-kicker">Trabajo publicado</span><h2 class="section-title">Artículos científicos<span>.</span></h2><p>Puedes leer una copia aquí o seguir el DOI hasta la publicación.</p></div><div class="paper-list">{papers.map((paper, index) => <PublicationRow paper={paper} index={index} locale="es" />)}</div></section>
+  <section class="wrap papers other-publications" id="tutorials"><div class="papers-head"><span class="section-kicker">Para aprender los métodos</span><h2 class="section-title">Tutoriales y guías<span>.</span></h2><p>El tutorial de FSE y la guía de referencia de Fandango.</p></div><div class="paper-list">{tutorials.map((paper, index) => <PublicationRow paper={paper} index={index} locale="es" />)}</div></section>
+  <section class="wrap papers other-publications" id="preprints"><div class="papers-head"><span class="section-kicker">En desarrollo</span><h2 class="section-title">Preprints<span>.</span></h2><p>Manuscritos disponibles en arXiv.</p></div><div class="paper-list">{preprints.map((paper, index) => <PublicationRow paper={paper} index={index} locale="es" />)}</div></section>
+  <section class="wrap collaborations" id="collaborations" aria-labelledby="collaborations-title"><div class="collaborations-heading"><span class="section-kicker">Personas e instituciones</span><h2 class="section-title" id="collaborations-title">Colaboradores.</h2><p>Algunas de las personas con las que he trabajado y lo que hicimos juntos.</p></div><div class="collaboration-list">{collaborationsEs.map((item) => <article class="collaboration"><div><h3>{item.institution}</h3><span>{item.place}</span></div><div><p>{item.people}</p><span class="collaboration-work">{item.work}</span></div></article>)}</div></section>
+</Base>
+<style>
+  .research-jump{display:flex;flex-wrap:wrap;gap:10px;padding-top:27px}
+  .research-jump a{display:inline-flex;align-items:center;gap:13px;padding:10px 14px;border:1px solid #d6dfd5;border-radius:999px;color:#395b49;font:700 12px 'Manrope',sans-serif;transition:background .2s}
+  .research-jump a:hover,.research-jump a:focus-visible{background:#dce9c8}
+  .areas{padding:68px 0 25px}
+  .areas-heading{margin-bottom:28px}
+  .areas-heading h2{margin:14px 0 0}
+  .area-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .area-card{background:#e9eee5;border-radius:20px;padding:29px 32px 24px}
+  .area-number{font:500 10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:#74905c}
+  .area-card h3{font:800 clamp(29px,3.1vw,39px)/1.1 'Manrope',sans-serif;letter-spacing:-.05em;margin:18px 0 22px}
+  .area-card ul{list-style:none;padding:0;margin:0;border-top:1px solid #cad7ca}
+  .area-card li{padding:15px 0;border-bottom:1px solid #cad7ca}
+  .area-card li:last-child{border-bottom:0}
+  .area-card strong{font:800 15px 'Manrope',sans-serif;letter-spacing:-.02em}
+  .area-card p{font-size:13px;line-height:1.6;color:#5d7066;margin:5px 0 0}
+  .methods{display:grid;grid-template-columns:230px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid #d1dcd2;margin-top:8px}
+  .methods .section-kicker{padding-top:9px}
+  .methods ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+  .methods li{border:1px solid #cad8cb;border-radius:999px;padding:8px 11px;color:#456148;font-size:11px;font-weight:700}
+  .papers{padding-top:48px;scroll-margin-top:32px}
+  .other-publications{padding-top:100px}
+  .papers-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:35px}
+  .papers-head h2{margin-right:auto}
+  .papers-head h2 span{color:#9fbf63}
+  .papers-head p{color:#657572;font-size:13px;max-width:270px}
+  .paper-list{border-top:1px solid #d7ded8}
+  @media(max-width:700px){
+    .areas{padding-top:50px}
+    .area-grid{grid-template-columns:1fr}
+    .area-card{padding:25px}
+    .methods{grid-template-columns:1fr;gap:13px}
+    .methods .section-kicker{padding-top:0}
+    .papers-head{align-items:start;flex-direction:column}
+  }
+</style>
+<style>
+  .collaborations{padding-top:110px;scroll-margin-top:32px}
+  .collaborations-heading{display:grid;grid-template-columns:1fr 1.15fr;gap:18px 70px;align-items:end;margin-bottom:30px}
+  .collaborations-heading .section-kicker{grid-column:1/-1}
+  .collaborations-heading p{color:#687a70;line-height:1.6;margin:0}
+  .collaboration-list{border-top:1px solid #d7ded8}
+  .collaboration{display:grid;grid-template-columns:1fr 1.15fr;gap:35px 70px;padding:26px 0;border-bottom:1px solid #d7ded8}
+  .collaboration h3{font:800 19px/1.35 'Manrope',sans-serif;letter-spacing:-.035em;margin:0 0 7px}
+  .collaboration span{font:500 10px 'DM Mono',monospace;color:#799070}
+  .collaboration p{font-size:14px;line-height:1.6;margin:0 0 9px;color:#566a60}
+  .collaboration .collaboration-work{font:700 12px/1.5 'Manrope',sans-serif;color:#426837}
+  @media(max-width:700px){.collaborations{padding-top:80px}.collaborations-heading,.collaboration{grid-template-columns:1fr;gap:10px}.collaborations-heading .section-kicker{grid-column:auto}.collaboration{padding:23px 0}}
+</style>

@@ -21,9 +21,10 @@ const marks = [
   { ...pointOnContour(6, 5.3), radius: 3.5 },
 ];
 const discovery = pointOnContour(7, -.38);
+const isSpanish = Astro.props.locale === 'es';
 ---
-<div class="hero-art" role="img" aria-label="Abstract topographic field of software behavior. Contour lines and marked points evoke exploring complex systems, with one warm-colored point drawing attention to an unexpected edge.">
-  <div class="art-top"><span>Software / under test</span><span>Research · security</span></div>
+<div class="hero-art" role="img" aria-label={isSpanish ? "Mapa topográfico abstracto del comportamiento del software. Las curvas y los puntos sugieren la exploración de sistemas complejos; un punto cálido destaca un caso inesperado." : "Abstract topographic field of software behavior. Contour lines and marked points evoke exploring complex systems, with one warm-colored point drawing attention to an unexpected edge."}>
+  <div class="art-top"><span>{isSpanish ? 'Software / bajo prueba' : 'Software / under test'}</span><span>{isSpanish ? 'Investigación · seguridad' : 'Research · security'}</span></div>
   <svg viewBox="0 0 520 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
       <radialGradient id="field-glow"><stop stop-color="#618a75" stop-opacity=".28"/><stop offset=".6" stop-color="#476e66" stop-opacity=".12"/><stop offset="1" stop-color="#1e3336" stop-opacity="0"/></radialGradient>
@@ -46,7 +47,7 @@ const discovery = pointOnContour(7, -.38);
     <circle cx={discovery.x} cy={discovery.y} r="25" fill="none" stroke="#e9b68c" stroke-width="1" opacity=".7" class="art-discovery-ring"/>
     <circle cx={discovery.x} cy={discovery.y} r="7" fill="#f2b286" stroke="#1e3336" stroke-width="3"/>
   </svg>
-  <div class="art-bottom"><span>Exploring software behavior at its edges.</span></div>
+  <div class="art-bottom"><span>{isSpanish ? 'Explorando los límites del software.' : 'Exploring software behavior at its edges.'}</span></div>
 </div>
 <style>
   .hero-art{width:100%;aspect-ratio:1/1.08;min-height:540px;background:#1e3336;border-radius:27px;position:relative;overflow:hidden;box-shadow:0 24px 58px #2a444222}

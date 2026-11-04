@@ -1,18 +1,34 @@
 ---
-const { paper, index } = Astro.props;
-const recordLabel = paper.kind === 'preprint' ? 'arXiv record' : paper.kind === 'guide' ? 'Project guide' : 'Publication record';
+const { paper, index, locale = 'en' } = Astro.props;
+const isSpanish = locale === 'es';
+const recordLabel = isSpanish
+  ? paper.kind === 'preprint' ? 'Ficha en arXiv' : paper.kind === 'guide' ? 'Guía del proyecto' : 'Ficha de la publicación'
+  : paper.kind === 'preprint' ? 'arXiv record' : paper.kind === 'guide' ? 'Project guide' : 'Publication record';
+const translatedTerms = {
+  'research paper': 'artículo de investigación', 'conference paper': 'artículo de conferencia',
+  'journal article': 'artículo de revista', 'short paper': 'artículo breve',
+  'doctoral symposium paper': 'artículo del simposio doctoral',
+  'testing tools and data showcase': 'demostración de herramientas y datos',
+  'Project documentation': 'Documentación del proyecto', 'tutorial and reference': 'tutorial y referencia',
+  'Author copy': 'Copia de autor', 'Author manuscript': 'Manuscrito de autor',
+  'Author preprint': 'Preprint de autor', 'Published copy': 'Versión publicada',
+  'Early author draft': 'Borrador inicial de autor', 'Author-supplied copy': 'Copia facilitada por el autor',
+  'earlier title; see DOI for published paper': 'título anterior; consulta el DOI para la versión publicada',
+  'subtitle differs from the publication record': 'el subtítulo difiere del registro de publicación',
+};
+const translate = (value) => isSpanish ? Object.entries(translatedTerms).reduce((text, [en, es]) => text.replace(en, es), value) : value;
 ---
 <article class="paper">
   <div class="paper-number">{String(index + 1).padStart(2, '0')} / {paper.year}</div>
   <div>
-    <div class="paper-venue">{paper.venue}</div>
+    <div class="paper-venue">{translate(paper.venue)}</div>
     <h3>{paper.title}</h3>
     <p class="paper-authors">{paper.authors}</p>
     <div class="paper-links">
-      {paper.pdf && <a class="paper-pdf" href={paper.pdf} target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label={`Read local PDF of ${paper.title}`}>Read PDF ↗</a>}
+      {paper.pdf && <a class="paper-pdf" href={paper.pdf} target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label={isSpanish ? `Leer PDF de ${paper.title}` : `Read local PDF of ${paper.title}`}>{isSpanish ? 'Leer PDF' : 'Read PDF'} ↗</a>}
       <a href={paper.url} target="_blank" rel="noopener noreferrer">{recordLabel} ↗</a>
     </div>
-    {paper.pdfNote && <p class="paper-note">{paper.pdfNote}{paper.licenseUrl && <> · <a href={paper.licenseUrl} target="_blank" rel="noopener noreferrer">License ↗</a></>}{paper.sourceUrl && <> · <a href={paper.sourceUrl} target="_blank" rel="noopener noreferrer">Preprint source ↗</a></>}</p>}
+    {paper.pdfNote && <p class="paper-note">{translate(paper.pdfNote)}{paper.licenseUrl && <> · <a href={paper.licenseUrl} target="_blank" rel="noopener noreferrer">{isSpanish ? 'Licencia' : 'License'} ↗</a></>}{paper.sourceUrl && <> · <a href={paper.sourceUrl} target="_blank" rel="noopener noreferrer">{isSpanish ? 'Fuente del preprint' : 'Preprint source'} ↗</a></>}</p>}
   </div>
 </article>
 <style>

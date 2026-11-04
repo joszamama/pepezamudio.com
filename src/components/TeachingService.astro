@@ -1,4 +1,5 @@
 ---
+const isSpanish = Astro.props.locale === 'es';
 const teaching = [
   {
     number: '5', unit: 'theses', title: 'Supervision', date: '2024–2026',
@@ -30,15 +31,39 @@ const service = [
   { year: '2025', name: 'Website chair', detail: 'SBFT 2026' },
   { year: '2024', name: 'Reviewer', detail: 'Journal of Systems and Software' },
 ];
+const teachingEs = [
+  { unit: 'tesis', title: 'Dirección de trabajos', detail: 'He asesorado trabajos en la Universidad del Sarre sobre fuzzing de TLS/X.509, pruebas de inyección, pruebas basadas en propiedades y reparación de programas. Uno de ellos dio lugar a un artículo en ISSTA 2025.' },
+  { unit: 'estudiantes', title: 'Security Testing', detail: 'Como asistente docente de esta asignatura avanzada, ayudé a preparar ejercicios, proyectos y exámenes sobre fuzzing, análisis estático y búsqueda de vulnerabilidades.' },
+  { unit: 'páginas', title: 'Fuzzing with Fandango', detail: 'Soy coautor y codocente de este tutorial y guía de referencia abiertos. Sus métodos también llegaron a más de 100 participantes de la escuela de verano RIO.' },
+];
+const trainingEs = [
+  { detail: 'Pruebas, verificación y validación de software · Universidad de Bérgamo' },
+  { detail: 'Universidad Nacional de Singapur' },
+  { name: 'Escritura científica I y II' },
+  { name: 'Competencias en ciberseguridad', detail: 'Instituto Nacional de Ciberseguridad' },
+  { name: 'Gestión de proyectos y preparación de presentaciones', detail: 'Impulsplus · Beth Susanne' },
+];
+const serviceEs = [
+  { name: 'Evaluación de artefactos', detail: 'ASE e ISSTA' },
+  { name: 'Área de herramientas y conjuntos de datos', detail: 'ASE' },
+  { name: 'Revisor', detail: 'ACM Transactions on Software Engineering and Methodology' },
+  { name: 'Responsable de la web', detail: 'SBFT 2026' },
+  { name: 'Revisor', detail: 'Journal of Systems and Software' },
+];
+const localize = (items, translations) => items.map((item, index) => ({ ...item, ...translations[index] }));
+const visibleTeaching = isSpanish ? localize(teaching, teachingEs) : teaching;
+const visibleTraining = isSpanish ? localize(training, trainingEs) : training;
+const visibleService = isSpanish ? localize(service, serviceEs) : service;
+
 ---
 <section class="wrap career" id="teaching" aria-labelledby="teaching-title">
-  <div class="career-heading"><div><span class="section-kicker">Teaching & supervision</span><h2 class="section-title" id="teaching-title">What I’ve taught.</h2></div><p>My research also lives in courses, thesis projects, and tutorials that other people can use.</p></div>
+  <div class="career-heading"><div><span class="section-kicker">{isSpanish ? "Docencia y dirección" : "Teaching & supervision"}</span><h2 class="section-title" id="teaching-title">{isSpanish ? "Lo que he enseñado." : "What I’ve taught."}</h2></div><p>{isSpanish ? "Mi investigación también llega a las aulas, a los trabajos de estudiantes y a tutoriales que cualquiera puede usar." : "My research also lives in courses, thesis projects, and tutorials that other people can use."}</p></div>
   <div class="teach-grid">
-    {teaching.map((item) => <article class="teach-card"><div class="teach-top"><strong>{item.number}<span>{item.unit}</span></strong><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.detail}</p>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">Read the guide ↗</a>}</article>)}
+    {visibleTeaching.map((item) => <article class="teach-card"><div class="teach-top"><strong>{item.number}<span>{item.unit}</span></strong><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.detail}</p>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">{isSpanish ? "Leer la guía" : "Read the guide"} ↗</a>}</article>)}
   </div>
   <div class="professional-grid">
-    <section id="training" aria-labelledby="training-title"><span class="section-kicker">Learning</span><h3 id="training-title">Training.</h3><ul>{training.map((item) => <li><span>{item.year}</span><div><strong>{item.name}</strong><p>{item.detail}</p></div></li>)}</ul></section>
-    <section id="service" aria-labelledby="service-title"><span class="section-kicker">Research community</span><h3 id="service-title">Service.</h3><ul>{service.map((item) => <li><span>{item.year}</span><div><strong>{item.name}</strong><p>{item.detail}</p></div></li>)}</ul></section>
+    <section id="training" aria-labelledby="training-title"><span class="section-kicker">{isSpanish ? "Aprendizaje" : "Learning"}</span><h3 id="training-title">{isSpanish ? "Formación." : "Training."}</h3><ul>{visibleTraining.map((item) => <li><span>{item.year}</span><div><strong>{item.name}</strong><p>{item.detail}</p></div></li>)}</ul></section>
+    <section id="service" aria-labelledby="service-title"><span class="section-kicker">{isSpanish ? "Comunidad científica" : "Research community"}</span><h3 id="service-title">{isSpanish ? "Servicio." : "Service."}</h3><ul>{visibleService.map((item) => <li><span>{item.year}</span><div><strong>{item.name}</strong><p>{item.detail}</p></div></li>)}</ul></section>
   </div>
 </section>
 <style>
