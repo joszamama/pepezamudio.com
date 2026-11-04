@@ -7,8 +7,20 @@ export function getStaticPaths() {
 const { post } = Astro.props;
 const Content = post.Content;
 const label = { research: 'Nota de investigación', projects: 'Proyecto', blog: 'Nota personal' }[post.group];
+const articleUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.title,
+  description: post.description,
+  datePublished: post.date,
+  inLanguage: 'es',
+  mainEntityOfPage: articleUrl,
+  author: { '@type': 'Person', name: 'José Antonio Zamudio Amaya', alternateName: 'Pepe Zamudio', url: 'https://pepezamudio.com/es/about/' },
+  image: 'https://pepezamudio.com/og.png',
+};
 ---
-<Base locale="es" title={`${post.title} — Pepe Zamudio`} description={post.description}>
+<Base locale="es" title={`${post.title} — Pepe Zamudio`} description={post.description} ogType="article" publishedTime={post.date} structuredData={articleSchema}>
   <article><header class="article-hero wrap"><a class="back" href="/es/blog/">← Todas las entradas</a><div class="article-eyebrow">{label} <span>/</span> <time datetime={post.date}>{new Date(`${post.date}T12:00:00`).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</time></div><h1>{post.title}</h1><p>{post.description}</p></header><div class="wrap rule"></div><div class="article-layout wrap"><aside><span class="section-kicker">Escrito por</span><strong>Pepe Zamudio</strong><span>Investigador en CISPA</span><a href="/es/about/">Sobre mí ↗</a></aside><div class="article-content"><Content /><div class="article-end"><span>Fin de la entrada</span><a href="/es/blog/">Leer más entradas ↗</a></div></div></div></article>
 </Base>
 <style>.article-hero{padding-top:62px;padding-bottom:54px}.back{display:inline-block;color:#657a70;font-size:12px;font-weight:800;margin-bottom:70px}.back:hover{text-decoration:underline}.article-eyebrow{font:500 11px 'DM Mono',monospace;color:#7f9b54;text-transform:uppercase;letter-spacing:.11em}.article-eyebrow span{color:#b6c1b7;margin:0 10px}.article-hero h1{font:800 clamp(46px,6.6vw,86px)/1.07 'Manrope',sans-serif;letter-spacing:-.065em;max-width:900px;margin:22px 0}.article-hero p{max-width:690px;color:#65746e;font-size:18px;line-height:1.65}.article-layout{display:grid;grid-template-columns:190px minmax(0,730px);gap:80px;padding-top:65px}.article-layout aside{display:flex;flex-direction:column;align-items:start;gap:8px;font-size:12px;color:#76877f}.article-layout aside .section-kicker{margin-bottom:15px}.article-layout aside strong{color:#1d2d31;font:800 15px 'Manrope',sans-serif}.article-layout aside a{font-weight:800;border-bottom:1px solid #bdc9bb;padding-bottom:3px;color:#1d2d31;margin-top:12px}.article-content{font-size:16px;line-height:1.8;color:#344640;overflow-wrap:anywhere}.article-content :global(p){margin:0 0 1.4em}.article-content :global(h2),.article-content :global(h3),.article-content :global(h4){font-family:'Manrope',sans-serif;letter-spacing:-.035em;line-height:1.25;color:#1d2d31;margin:1.8em 0 .65em}.article-content :global(h2){font-size:32px}.article-content :global(h3){font-size:24px}.article-content :global(a){color:#4a742c;text-decoration:underline;text-decoration-color:#a2b999;text-underline-offset:3px}.article-content :global(img){border-radius:12px;margin:12px 0}.article-content :global(blockquote){border-left:3px solid #a4d552;padding-left:22px;margin:30px 0;color:#62766b;font-style:italic}.article-content :global(pre){background:#1e3134;color:#e9efe6;padding:20px;border-radius:12px;overflow:auto;line-height:1.5;font-size:13px}.article-content :global(code){background:#e6ebe3;padding:2px 5px;border-radius:4px;font-size:.9em}.article-content :global(pre code){background:none;padding:0}.article-content :global(ul),.article-content :global(ol){padding-left:23px;margin-bottom:1.5em}.article-content :global(li){margin-bottom:.4em}.article-end{border-top:1px solid #d6ddd7;margin-top:60px;padding-top:24px;display:flex;justify-content:space-between;gap:20px;font:500 11px 'DM Mono',monospace;color:#73877d}.article-end a{color:#2d443c;font-weight:800}@media(max-width:800px){.article-layout{grid-template-columns:1fr;gap:32px}.article-layout aside{border-bottom:1px solid #d6ddd7;padding-bottom:20px}.back{margin-bottom:50px}}</style>

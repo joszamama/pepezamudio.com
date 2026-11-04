@@ -4,9 +4,13 @@ import { localizedHref, englishPath, spanishPath } from '../lib/locale.js';
 const {
   title = 'Pepe Zamudio — Systems security researcher',
   description = 'Publications, research software, merged fixes, and public security reports by José Antonio “Pepe” Zamudio Amaya.',
-  image = '/og.svg',
+  image = '/og.png',
   locale = Astro.currentLocale === 'es' ? 'es' : 'en',
   hasAlternate = true,
+  noindex = false,
+  ogType = 'website',
+  publishedTime,
+  structuredData,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const current = Astro.url.pathname;
@@ -16,6 +20,7 @@ const spanishUrl = new URL(spanishPath(current), Astro.site).toString();
 const englishSwitchUrl = hasAlternate ? currentEnglishPath : '/';
 const spanishSwitchUrl = hasAlternate ? spanishPath(current) : '/es/';
 const isSpanish = locale === 'es';
+const imageUrl = new URL(image, Astro.site).toString();
 const links = [
   ['Home', 'Inicio', '/'],
   ['About', 'Sobre mí', '/about/'],
@@ -32,6 +37,7 @@ const links = [
     <meta name="theme-color" content="#f5f3ed" />
     <ClientRouter />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     {hasAlternate && <><link rel="alternate" hreflang="en" href={englishUrl} /><link rel="alternate" hreflang="es" href={spanishUrl} /><link rel="alternate" hreflang="x-default" href={englishUrl} /></>}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -39,13 +45,22 @@ const links = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Pepe Zamudio" />
     <meta property="og:locale" content={isSpanish ? "es_ES" : "en_US"} />
     {hasAlternate && <meta property="og:locale:alternate" content={isSpanish ? "en_US" : "es_ES"} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(image, Astro.site).toString()} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={isSpanish ? 'Pepe Zamudio — investigación en seguridad y pruebas de software' : 'Pepe Zamudio — software testing and security research'} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
@@ -57,6 +72,14 @@ const links = [
       affiliation: { '@type': 'Organization', name: 'CISPA Helmholtz Center for Information Security' },
       sameAs: ['https://github.com/joszamama', 'https://www.linkedin.com/in/joszamama/', 'https://scholar.google.es/citations?user=uhmSfGUAAAAJ', 'https://orcid.org/0000-0002-5025-7424', 'https://www.instagram.com/guaito/'],
     })} />
+    {current === '/' && <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Pepe Zamudio',
+      alternateName: 'José Antonio Zamudio Amaya',
+      url: 'https://pepezamudio.com/',
+    })} />}
+    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
   <body>
     <a class="skip-link" href="#main">{isSpanish ? "Saltar al contenido" : "Skip to content"}</a>
