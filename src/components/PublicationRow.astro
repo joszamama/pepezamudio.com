@@ -1,0 +1,20 @@
+---
+const { paper, index } = Astro.props;
+const recordLabel = paper.kind === 'preprint' ? 'arXiv record' : paper.kind === 'guide' ? 'Project guide' : 'Publication record';
+---
+<article class="paper">
+  <div class="paper-number">{String(index + 1).padStart(2, '0')} / {paper.year}</div>
+  <div>
+    <div class="paper-venue">{paper.venue}</div>
+    <h3>{paper.title}</h3>
+    <p class="paper-authors">{paper.authors}</p>
+    <div class="paper-links">
+      {paper.pdf && <a class="paper-pdf" href={paper.pdf} target="_blank" rel="noopener noreferrer" type="application/pdf" aria-label={`Read local PDF of ${paper.title}`}>Read PDF ↗</a>}
+      <a href={paper.url} target="_blank" rel="noopener noreferrer">{recordLabel} ↗</a>
+    </div>
+    {paper.pdfNote && <p class="paper-note">{paper.pdfNote}{paper.licenseUrl && <> · <a href={paper.licenseUrl} target="_blank" rel="noopener noreferrer">License ↗</a></>}{paper.sourceUrl && <> · <a href={paper.sourceUrl} target="_blank" rel="noopener noreferrer">Preprint source ↗</a></>}</p>}
+  </div>
+</article>
+<style>
+  .paper{display:grid;grid-template-columns:145px 1fr;gap:30px;padding:34px 0;border-bottom:1px solid #d7ded8}.paper-number{color:#73847e;font:500 11px 'DM Mono',monospace;padding-top:5px}.paper-venue{color:#74984f;text-transform:uppercase;letter-spacing:.12em;font:500 11px 'DM Mono',monospace}.paper h3{font:800 clamp(20px,2.4vw,29px)/1.25 'Manrope',sans-serif;letter-spacing:-.04em;margin:10px 0}.paper p{font-size:14px;line-height:1.6;color:#687774;margin:0}.paper-links{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;margin-top:17px;font:700 13px 'Manrope',sans-serif}.paper-links a{color:#315b45;text-decoration:underline;text-decoration-color:#a4d552;text-underline-offset:4px}.paper-links .paper-pdf{display:inline-flex;align-items:center;padding:9px 13px;border-radius:100px;background:#dbe9c7;text-decoration:none}.paper-links a:hover,.paper-note a:hover{text-decoration:underline;text-underline-offset:4px}.paper .paper-note{margin-top:11px;font-size:11px;color:#73847e}.paper-note a{text-decoration:underline;text-underline-offset:3px}@media(max-width:700px){.paper{grid-template-columns:1fr;gap:13px}}
+</style>

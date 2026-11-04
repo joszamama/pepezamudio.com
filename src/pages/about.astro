@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import ImpactMetrics from '../components/ImpactMetrics.astro';
+import TalkMap from '../components/TalkMap.astro';
+import TeachingService from '../components/TeachingService.astro';
+import Philosophy from '../components/Philosophy.astro';
+const path = [
+  { date: '2018–2022', title: 'BSc in Software Engineering', place: 'University of Seville', detail: 'I studied in the English-language programme and began working as a student researcher in David Benavides’s Diverso Lab in January 2022. There I worked on software product lines and built WebSPL. I earned three Matrículas de Honor, a limited distinction for outstanding results in individual courses. My WebSPL thesis received an honors distinction, and I was selected to present the work at JISBD 2022, a leading Spanish software engineering research conference.', link: 'https://hdl.handle.net/11705/JISBD/2022/2185', linkLabel: 'WebSPL paper' },
+  { date: '2022–2023', title: 'MSc in Software Engineering', place: 'University of Seville', detail: 'I kept working in Benavides’s group and took a second student researcher role at Universidad Pablo de Olavide, studying mathematical heuristics and optimization. I also collaborated with Jordi Cabot, then at LIST and affiliated with the University of Luxembourg, on XatkitSPL. My master’s thesis received the top honors distinction, and I was selected to present our XatkitSPL work at JISBD 2023.', link: 'https://hdl.handle.net/11705/JISBD/2023/9205', linkLabel: 'XatkitSPL paper' },
+  {
+    date: 'Oct 2023–present', title: 'PhD in Computer Science', place: 'Saarland University · CISPA',
+    detail: 'I joined Andreas Zeller at CISPA to study how to generate tests for complex inputs. I started Fandango and worked on distribution-aware, constraint-guided generation, XML injection tests, and personalized fuzzing. I also continued a graph-optimization collaboration with Universidad Pablo de Olavide.',
+    highlights: [
+      { date: 'Sep 2024', datetime: '2024-09', headline: 'Gave grammar-based tests a controllable input distribution.', text: 'A JSON proof of concept steered age and budget values toward chosen distributions while respecting value constraints. It demonstrated the idea on 1,000 inputs; bug-finding gains were left for future work.', source: 'ISSTA 2024 doctoral symposium', url: 'https://doi.org/10.1145/3650212.3685553' },
+      { date: 'Feb 2025', datetime: '2025-02', headline: 'Extended dominating-set optimization to weighted graphs.', text: 'Our MATCOM paper formulates the k-weighted problem and evaluates heuristic solvers. In its unweighted special case, one iterated-greedy method reached comparable solutions in about half the comparison method’s computation time.', source: 'MATCOM journal article', url: 'https://doi.org/10.1016/j.matcom.2024.09.010' },
+      { date: 'Jun 2025', datetime: '2025-06', headline: 'Turned web-service contracts into XML injection tests.', text: 'XAVIER generates attack inputs from WSDL-derived grammars. In an early-draft comparison on eight public WSDLs, it covered specified functionality comparably to SoapUI Pro.', source: 'ISSTA 2025 XAVIER paper', url: 'https://doi.org/10.1145/3713081.3731736' },
+      { date: 'Jun 2025', datetime: '2025-06', headline: 'Tested a real GNSS module with tailored edge cases.', text: 'Our case study described binary UBX messages with a grammar and domain-specific constraints, including legal values and deliberate NaN or infinity cases. The module acknowledged the legal messages and rejected the invalid ones in this run; no vulnerability was reported.', source: 'ISSTA 2025 GNSS short paper', url: 'https://doi.org/10.1145/3713081.3731722' },
+      { date: 'Jun 2025', datetime: '2025-06', headline: 'Made complex, valid test inputs faster to generate.', text: 'Across five benchmark formats, Fandango produced inputs 29–1,355× faster than the symbolic solver ISLa while 99.27–100% of outputs were accepted by parsers.', source: 'ISSTA 2025 Fandango paper', url: 'https://doi.org/10.1145/3728915' },
+    ],
+    visit: {
+      date: 'Sep–Dec 2025', title: 'Visiting researcher at Max Planck', place: 'Max Planck Institute for Security and Privacy · Bochum, Germany',
+      detail: 'I worked with Marcel Böhme on statistical models of coverage-guided fuzzing. I studied how the distribution of input features relates to coverage saturation and where grammar-based generation reaches its limits. That work later informed my research on feature-focused test generation.',
+    },
+    laterDetail: 'Back at CISPA, I continued the PhD with Andreas Zeller. The work since then has extended language-based testing to stateful protocol conversations, highly constrained inputs, and feature-focused test suites.',
+    laterHighlights: [
+      { date: 'Feb 2026', datetime: '2026-02', headline: 'Generated complete, stateful protocol conversations.', text: 'Interaction grammars model messages and their changing state for protocols including SMTP, DNS, and FTP. In one FTP case study, Fandango reached 80.3% statement coverage in about 14 minutes; AFLNET reached a median 69.6% after a day.', source: 'Protocol testing preprint · revised version', url: 'https://arxiv.org/abs/2509.20308' },
+      { date: 'Jul 2026', datetime: '2026-07', headline: 'Brought language-based testing into hands-on teaching.', text: 'The methods in our FSE tutorial had already been taught at the RIO Summer School to more than 100 participants, including grammars, constraints, and stateful protocol testing.', source: 'FSE 2026 tutorial', url: 'https://doi.org/10.1145/3803437.3804899' },
+      { date: 'Jul 2026', datetime: '2026-07', headline: 'Made highly constrained compiler tests feasible.', text: 'Fandango-RS compiles grammars into Rust and uses multi-objective search. In the revised preprint’s constrained C-subset study, it generated 877 valid programs in about a minute where the earlier approach produced none. Its reported 3–4-order speedup concerns core operations.', source: 'Fandango-RS preprint · v3', url: 'https://arxiv.org/abs/2511.05987v3' },
+      { date: 'Oct 2026', datetime: '2026-10', headline: 'Focused test suites on features without losing measured coverage.', text: 'Compás turns a format specification into feature-specific test sets. Across ten formats, one or two focused sets retained the full suite’s aggregate line coverage; on average, every focused input reached its intended code region versus 26% under unfocused generation.', source: 'ASE 2026 Compás paper', url: 'https://doi.org/10.1145/3832783.3837479' },
+    ],
+  },
+];
+---
+<Base title="About & CV — Pepe Zamudio" description="About José Antonio “Pepe” Zamudio Amaya, a Ph.D. candidate at CISPA working on systems security and fuzz testing.">
+  <div class="wrap page-intro"><div class="eyebrow">About</div><h1>From Seville to Saarbrücken<span>.</span></h1><p>Education, research roles, and the work that came out of them.</p></div>
+  <div class="wrap rule"></div>
+  <section class="wrap bio"><div class="bio-main"><h2>Researcher in software testing and security.</h2><p>I began as a student researcher in Seville, building software product line tools at the University of Seville and working on optimization problems at Universidad Pablo de Olavide. In October 2023, I moved to Saarbrücken for my PhD with Andreas Zeller at <a href="https://cispa.de/" target="_blank" rel="noopener noreferrer">CISPA</a>.</p><p>Since then, I have worked on generating tests for complex inputs and protocol interactions. At the Max Planck Institute for Security and Privacy, I studied how input features affect fuzzing coverage; that work informed later feature-focused testing.</p></div><aside class="bio-side"><div class="bio-card"><span class="section-kicker">Quick facts</span><dl><div><dt>Based in</dt><dd>Saarbrücken, Germany</dd></div><div><dt>Current role</dt><dd>Ph.D. candidate, CISPA</dd></div><div><dt>Research</dt><dd>Fuzzing · Testing · Security</dd></div><div><dt>From</dt><dd>Seville, Spain</dd></div></dl><a class="pill-button light" href="/cv-july-2026.pdf" target="_blank" rel="noopener noreferrer">Download CV (July 2026) ↓</a></div></aside></section>
+  <ImpactMetrics />
+  <section class="wrap timeline" aria-labelledby="path-title"><div class="timeline-heading"><span class="section-kicker">My path so far</span><h2 class="section-title" id="path-title">Where I’ve been.</h2><p class="timeline-note">Research highlight dates mark publication or the latest preprint revision.</p></div><ol class="timeline-list">{path.map((item) => <li><span class="timeline-date">{item.date}</span><h3>{item.title}</h3><strong>{item.place}</strong><p>{item.detail}</p>{item.link && <a href={item.link} target="_blank" rel="noopener noreferrer">Read the {item.linkLabel} ↗</a>}{item.highlights && <ul class="timeline-impact" aria-label={`${item.title} research results`}>{item.highlights.map((highlight) => <li><a href={highlight.url} target="_blank" rel="noopener noreferrer"><div><time class="highlight-date" datetime={highlight.datetime}>{highlight.date}</time><h4>{highlight.headline}</h4></div><span>{highlight.text}<small>{highlight.source} ↗</small></span></a></li>)}</ul>}{item.visit && <aside class="timeline-branch" aria-label="Research visit during the PhD"><span class="branch-dot" aria-hidden="true"></span><span class="timeline-date">{item.visit.date}</span><h4>{item.visit.title}</h4><strong>{item.visit.place}</strong><p>{item.visit.detail}</p></aside>}{item.laterDetail && <div class="timeline-resume"><span class="timeline-date">Jan 2026–present · CISPA</span><p>{item.laterDetail}</p><ul class="timeline-impact" aria-label="Later PhD research results">{item.laterHighlights.map((highlight) => <li><a href={highlight.url} target="_blank" rel="noopener noreferrer"><div><time class="highlight-date" datetime={highlight.datetime}>{highlight.date}</time><h4>{highlight.headline}</h4></div><span>{highlight.text}<small>{highlight.source} ↗</small></span></a></li>)}</ul></div>}</li>)}</ol></section>
+  <TeachingService />
+  <TalkMap />
+  <Philosophy />
+</Base>
+<style>.page-intro h1 span{color:#a1c066}.bio{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.7fr);gap:90px;padding-top:75px}.bio-main h2{font:800 clamp(30px,3.6vw,46px)/1.22 'Manrope',sans-serif;letter-spacing:-.05em;margin:0 0 35px}.bio-main p{font-size:17px;line-height:1.8;color:#596a65;margin:0 0 23px}.bio-main a{text-decoration:underline;text-decoration-color:#b4c8ad;text-underline-offset:4px}.bio-card{background:#263f40;color:#fff;border-radius:22px;padding:28px;position:sticky;top:25px}.bio-card .section-kicker{color:#b9da86}.bio-card dl{margin:18px 0}.bio-card dl div{border-top:1px solid #4b6560;padding:13px 0}.bio-card dt{font:500 10px 'DM Mono',monospace;color:#a9beb3;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px}.bio-card dd{margin:0;font-size:15px;font-weight:700}.bio-card .pill-button{width:100%;font-size:11px;padding:14px}.timeline{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;padding-top:110px}.timeline-list{border-top:1px solid #d7ded8}.timeline-list>div{border-bottom:1px solid #d7ded8;padding:23px 0}.timeline-list span{font:500 11px 'DM Mono',monospace;color:#779358}.timeline-list h3{font:800 22px 'Manrope',sans-serif;letter-spacing:-.04em;margin:8px 0}.timeline-list p{line-height:1.6;color:#64736d;margin:0}@media(max-width:850px){.bio{grid-template-columns:1fr;gap:30px}.bio-card{position:static}.timeline{grid-template-columns:1fr;gap:25px}}</style>
+<style>
+  :global(.site-footer){margin-top:0}
+  .timeline{display:block;padding-top:105px}
+  .timeline-heading{margin-bottom:45px}
+  .timeline-heading h2{margin:14px 0 0}
+  .timeline-note{font:500 11px/1.6 'DM Mono',monospace;color:#71827a;margin:17px 0 0;max-width:730px}
+  .timeline-list{list-style:none;border-top:0;border-left:2px solid #cbd9c5;margin:0 0 0 10px;padding:0 0 0 42px}
+  .timeline-list>li{position:relative;padding:0 0 48px}
+  .timeline-list>li:last-child{padding-bottom:0}
+  .timeline-list>li:before{content:'';position:absolute;left:-52px;top:4px;width:16px;height:16px;background:#a6cd72;border:3px solid #f6f5ef;border-radius:50%;box-shadow:0 0 0 2px #a6cd72}
+  .timeline-date{font:500 11px 'DM Mono',monospace;color:#779358}
+  .timeline-list h3{font:800 clamp(26px,3vw,36px)/1.15 'Manrope',sans-serif;letter-spacing:-.045em;margin:10px 0 7px}
+  .timeline-list strong{display:block;color:#3d5148;font-size:13px;margin:0 0 10px}
+  .timeline-list p{font-size:15px;line-height:1.7;color:#64736d;margin:0 0 10px}
+  .timeline-list a{font-size:12px;font-weight:800;color:#426837;border-bottom:1px solid #abc0a0;padding-bottom:3px}
+  .timeline-branch{position:relative;margin:38px 0 36px 36px;padding:24px 26px 22px;background:#e9eee5;border-left:2px solid #90b774;border-radius:0 16px 16px 0}
+  .timeline-branch:before,.timeline-branch:after{content:'';position:absolute;left:-80px;width:80px;height:2px;background:#90b774}
+  .timeline-branch:before{top:0}.timeline-branch:after{bottom:0}
+  .timeline-branch .branch-dot{position:absolute;left:-9px;top:28px;width:16px;height:16px;border:3px solid #e9eee5;border-radius:50%;background:#90b774;box-shadow:0 0 0 2px #90b774}
+  .timeline-branch h4{font:800 clamp(24px,2.7vw,32px)/1.2 'Manrope',sans-serif;letter-spacing:-.04em;margin:8px 0}
+  .timeline-branch p{max-width:880px;margin-bottom:0}
+  .timeline-resume{margin-top:28px}.timeline-resume>p{margin:10px 0 0}
+  .timeline-impact{list-style:none;border-top:1px solid #d7ded8;margin:24px 0 0;padding:0}
+  .timeline-impact li{border-bottom:1px solid #d7ded8}
+  .timeline-impact a,.timeline-impact .highlight-content{display:grid;grid-template-columns:minmax(210px,310px) 1fr;gap:30px;padding:20px 0;border:0;color:inherit}
+  .timeline-impact a:hover h4,.timeline-impact a:focus-visible h4{color:#426837}
+  .timeline-impact .highlight-date{display:block;font:500 10px 'DM Mono',monospace;color:#779358;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+  .timeline-impact h4{font:800 clamp(18px,1.9vw,23px)/1.32 'Manrope',sans-serif;letter-spacing:-.035em;color:#53753c;margin:0}
+  .timeline-impact span{font:500 13px/1.6 'Manrope',sans-serif;color:#4d6157}
+  .timeline-impact small{display:block;font:500 10px 'DM Mono',monospace;color:#779358;margin-top:6px}
+  @media(max-width:700px){.timeline{padding-top:80px}.timeline-heading{margin-bottom:35px}.timeline-list{padding-left:25px}.timeline-list>li:before{left:-35px}.timeline-branch{margin-left:20px;padding:20px 18px}.timeline-branch:before,.timeline-branch:after{left:-48px;width:48px}}
+  @media(max-width:640px){.timeline-impact a,.timeline-impact .highlight-content{grid-template-columns:1fr;gap:9px}.timeline-impact h4{font-size:20px}.connect>div{flex-wrap:wrap}}
+</style>

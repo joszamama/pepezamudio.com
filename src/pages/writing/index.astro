@@ -1,0 +1,5 @@
+---
+const canonical = new URL('/blog/', Astro.site).toString();
+---
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><title>Blog — Pepe Zamudio</title><link rel="canonical" href={canonical} /><meta name="robots" content="noindex" /><meta http-equiv="refresh" content="0;url=../blog/" /></head><body><p>This page moved to <a href="../blog/">Blog</a>.</p><script is:inline>location.replace(new URL('../blog/' + location.search + location.hash, location.href));</script></body></html>

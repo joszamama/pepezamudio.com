@@ -1,0 +1,74 @@
+---
+import { talkStops, mapPosition } from '../lib/talks.js';
+const coordinate = (value, positive, negative) => `${Math.abs(value).toFixed(1)}° ${value >= 0 ? positive : negative}`;
+const stops = talkStops.map((stop) => ({
+  ...stop,
+  position: mapPosition(stop),
+  coordinates: `${stop.city} · ${coordinate(stop.lat, 'N', 'S')} / ${coordinate(stop.lon, 'E', 'W')}`,
+}));
+const talkCount = stops.reduce((count, stop) => count + stop.talks.length, 0);
+---
+<section class="talk-map-section" id="talks" aria-labelledby="talk-map-title">
+  <div class="wrap map-heading">
+    <div><span class="section-kicker">Talks & presentations</span><h2 class="section-title" id="talk-map-title">Talks on the <em>map.</em></h2></div>
+    <p>Places where I’ve presented research and tools, from SISTEDES in Spain to testing conferences around the world. Pick a city to see the talks.</p>
+  </div>
+  <div class="wrap talk-map">
+    <div class="map-stage" aria-label="Map of cities where Pepe has given talks since 2022">
+      <img src="/map/northern-hemisphere.svg" alt="" aria-hidden="true" width="1100" height="460" />
+      {stops.map((stop, index) => <button
+        type="button"
+        class:list={['map-pin', index === 0 && 'is-active']}
+        style={`--x:${stop.position.x.toFixed(3)}%;--y:${stop.position.y.toFixed(3)}%`}
+        data-stop={stop.id}
+        data-coordinates={stop.coordinates}
+        aria-label={`${stop.city}, ${stop.country}: ${stop.talks.length} ${stop.talks.length === 1 ? 'talk' : 'talks'}`}
+        aria-pressed={index === 0 ? 'true' : 'false'}
+        aria-controls="talk-map-details"
+      ><span class="pin-dot"></span><span class="pin-label">{stop.city}</span></button>)}
+      <div class="map-count"><span class="count-star" aria-hidden="true">✳</span> {stops.length} cities · {talkCount} talks</div>
+      <span class="map-coordinate" aria-live="polite" aria-atomic="true">{stops[0].coordinates}</span>
+    </div>
+    <div class="map-bottom">
+      <div class="stop-picker" aria-label="Choose a talk location">
+        {stops.map((stop, index) => <button type="button" class:list={['stop-choice', index === 0 && 'is-active']} data-stop={stop.id} data-coordinates={stop.coordinates} aria-pressed={index === 0 ? 'true' : 'false'} aria-controls="talk-map-details"><span class="choice-year">{stop.year}</span><span class="choice-city">{stop.city}</span><span class="choice-country">{stop.country} <span aria-hidden="true">↗</span></span></button>)}
+      </div>
+      <div class="map-details" id="talk-map-details" aria-live="polite">
+        {stops.map((stop, index) => <article class="stop-detail" data-detail={stop.id} hidden={index !== 0}>
+          <div class="detail-top"><span>{String(index + 1).padStart(2, '0')} / {String(stops.length).padStart(2, '0')}</span><span>Talk stop · {stop.year}</span></div>
+          <h3>{stop.city}<span>.</span></h3>
+          <p class="detail-country">{stop.country}</p>
+          <ul>{stop.talks.map((talk) => <li><span>{talk.event}</span>{talk.url ? <a href={talk.url} target="_blank" rel="noopener noreferrer">{talk.title} ↗</a> : <strong>{talk.title}</strong>}</li>)}</ul>
+        </article>)}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const talkMap = document.querySelector('.talk-map');
+    if (talkMap) {
+      const controls = talkMap.querySelectorAll('button[data-stop]');
+      const details = talkMap.querySelectorAll('[data-detail]');
+      const coordinates = talkMap.querySelector('.map-coordinate');
+      controls.forEach((button) => button.addEventListener('click', () => {
+        const selected = button.dataset.stop;
+        controls.forEach((control) => {
+          const active = control.dataset.stop === selected;
+          control.classList.toggle('is-active', active);
+          control.setAttribute('aria-pressed', String(active));
+        });
+        details.forEach((detail) => { detail.hidden = detail.dataset.detail !== selected; });
+        if (coordinates) coordinates.textContent = button.dataset.coordinates ?? '';
+      }));
+    }
+  });
+</script>
+<style>
+  .talk-map-section{background:#e9eee5;margin-top:120px;padding:100px 0 85px}.map-heading{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:34px}.map-heading h2 em{font-style:normal;color:#8faf52}.map-heading p{max-width:390px;margin:0 0 4px;color:#5c6e6a;font-size:16px;line-height:1.65}.talk-map{border-radius:24px;background:#f6f5ef;overflow:hidden;box-shadow:0 20px 45px #1d343315}.map-stage{position:relative;aspect-ratio:1100/460;background:#20373c;overflow:hidden;isolation:isolate}.map-stage:after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 48% 38%,transparent 36%,#14282b66 100%);z-index:1}.map-stage img{display:block;width:100%;height:100%;object-fit:fill}.map-pin{position:absolute;z-index:3;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer}.map-pin:focus-visible{outline:2px solid #fff;outline-offset:5px}.pin-dot{display:block;width:12px;height:12px;border-radius:50%;background:#e6f5a9;border:2px solid #263f40;box-shadow:0 0 0 5px #e6f5a93d,0 0 0 10px #e6f5a912;transition:transform .2s,background .2s}.map-pin:hover .pin-dot,.map-pin.is-active .pin-dot{background:#ffb887;transform:scale(1.25)}.pin-label{display:none;position:absolute;left:22px;top:-22px;white-space:nowrap;padding:6px 9px;border-radius:7px;background:#f6f5ef;color:#244044;font:800 11px 'Manrope',sans-serif;box-shadow:0 5px 20px #12262b55}.map-pin:hover .pin-label,.map-pin:focus-visible .pin-label,.map-pin.is-active .pin-label{display:block}.map-count,.map-coordinate{position:absolute;z-index:2;bottom:24px;color:#dce9dc;font:500 11px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em}.map-count{left:28px;display:flex;align-items:center;gap:9px}.count-star{font-size:19px;color:#d8f48b;line-height:1}.map-coordinate{right:28px;color:#a7c2b9}.map-bottom{display:grid;grid-template-columns:1.15fr .85fr;border-top:1px solid #cfdbd2}.stop-picker{display:grid;grid-template-columns:repeat(4,1fr);align-content:start;border-right:1px solid #d9e1d8}.stop-choice{appearance:none;text-align:left;background:transparent;border:0;border-right:1px solid #d9e1d8;border-bottom:1px solid #d9e1d8;min-height:112px;padding:18px;cursor:pointer;color:#223c3e;transition:background .2s}.stop-choice:nth-child(4n){border-right:0}.stop-choice:nth-child(n+9){border-bottom:0}.stop-choice:hover,.stop-choice.is-active{background:#dce9c8}.stop-choice:focus-visible{outline:2px solid #315d4d;outline-offset:-4px}.choice-year{display:block;font:500 10px 'DM Mono',monospace;color:#6f8c73}.choice-city{display:block;font:800 21px 'Manrope',sans-serif;letter-spacing:-.04em;margin:8px 0 3px}.choice-country{display:block;font-size:11px;color:#657b70}.choice-country span{float:right;font-size:15px}.map-details{min-height:225px;padding:23px 28px}.stop-detail[hidden]{display:none}.detail-top{display:flex;justify-content:space-between;gap:8px;color:#6b8476;font:500 10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em}.stop-detail h3{font:800 35px 'Manrope',sans-serif;letter-spacing:-.055em;margin:12px 0 0}.stop-detail h3 span{color:#96b85c}.detail-country{font:500 11px 'DM Mono',monospace;text-transform:uppercase;color:#718977;margin:0 0 15px}.stop-detail ul{padding:0;margin:0;list-style:none}.stop-detail li{display:grid;grid-template-columns:95px 1fr;gap:12px;padding:8px 0;border-top:1px solid #dce3db;font-size:12px;line-height:1.45}.stop-detail li span{font:500 10px 'DM Mono',monospace;color:#6c8c63}.stop-detail li a,.stop-detail li strong{font-weight:700}.stop-detail li a:hover{text-decoration:underline;text-underline-offset:3px}@media(max-width:850px){.map-heading{align-items:start;flex-direction:column;gap:16px}.map-heading p{max-width:650px}.map-bottom{grid-template-columns:1fr}.stop-picker{border-right:0}.stop-choice:nth-child(n+9){border-bottom:0}.map-details{min-height:210px}}@media(max-width:620px){.talk-map-section{margin-top:80px;padding:75px 0 60px}.map-stage{aspect-ratio:1.55}.map-stage img{width:100%;height:100%}.map-pin{width:22px;height:22px}.pin-dot{width:9px;height:9px;box-shadow:0 0 0 3px #e6f5a93d}.pin-label{font-size:9px;left:13px;top:-20px}.map-count{left:16px;bottom:14px;font-size:9px}.map-coordinate{right:12px;top:12px;bottom:auto;font-size:8px;max-width:calc(100% - 24px);text-align:right}.stop-picker{grid-template-columns:repeat(2,1fr)}.stop-choice{min-height:96px;padding:13px;border-bottom:1px solid #d9e1d8}.stop-choice:nth-child(3n){border-right:1px solid #d9e1d8}.stop-choice:nth-child(2n){border-right:0}.stop-choice:nth-child(n+5){border-bottom:1px solid #d9e1d8}.stop-choice:nth-child(n+9){border-bottom:0}.choice-city{font-size:18px}.map-details{padding:23px 18px}.stop-detail li{grid-template-columns:80px 1fr;gap:8px}}
+  /* Keep marker centers at their projected coordinates; move labels only. */
+  .map-pin[data-stop="madrid"] .pin-label,.map-pin[data-stop="bern"] .pin-label{top:-38px}
+  .map-pin[data-stop="ciudad-real"] .pin-label,.map-pin[data-stop="munich"] .pin-label{top:20px}
+  .map-pin[data-stop="daejeon"] .pin-label,.map-pin[data-stop="santiago"] .pin-label{left:auto;right:22px}
+  @media(max-width:620px){.map-pin[data-stop="daejeon"] .pin-label,.map-pin[data-stop="santiago"] .pin-label{right:13px}}
+</style>

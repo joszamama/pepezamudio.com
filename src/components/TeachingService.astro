@@ -1,0 +1,66 @@
+---
+const teaching = [
+  {
+    number: '5', unit: 'theses', title: 'Supervision', date: '2024–2026',
+    detail: 'I advised Saarland University theses on TLS/X.509 fuzzing, injection testing, property-based testing, and program repair. One project led to an ISSTA 2025 paper.',
+  },
+  {
+    number: '207', unit: 'students', title: 'Security Testing', date: '2023–2024',
+    detail: 'As a teaching assistant for the advanced course, I helped design exercises, projects, and exams on fuzzing, static analysis, and vulnerability discovery.',
+  },
+  {
+    number: '353', unit: 'pages', title: 'Fuzzing with Fandango', date: '2025–2026',
+    detail: 'I co-authored and co-taught the open tutorial and reference guide. Its methods also reached more than 100 participants at the RIO Summer School.',
+    url: 'https://fandango-fuzzer.github.io/_static/fandango.pdf',
+  },
+];
+
+const training = [
+  { year: '2024', name: 'TAROT Summer School', detail: 'Software testing, verification, and validation · University of Bergamo' },
+  { year: '2024', name: 'Fuzzing and Software Security Summer School', detail: 'National University of Singapore' },
+  { year: '2024', name: 'Scientific Writing I & II', detail: 'CISPA' },
+  { year: '2024', name: 'Cybersecurity Skills', detail: 'National Institute of Cybersecurity' },
+  { year: '2024', name: 'Project management and pitch coaching', detail: 'Impulsplus · Beth Susanne' },
+];
+
+const service = [
+  { year: '2026', name: 'Artifact evaluation', detail: 'ASE and ISSTA' },
+  { year: '2026', name: 'Tools and Datasets Track', detail: 'ASE' },
+  { year: '2026', name: 'Reviewer', detail: 'ACM Transactions on Software Engineering and Methodology' },
+  { year: '2025', name: 'Website chair', detail: 'SBFT 2026' },
+  { year: '2024', name: 'Reviewer', detail: 'Journal of Systems and Software' },
+];
+---
+<section class="wrap career" id="teaching" aria-labelledby="teaching-title">
+  <div class="career-heading"><div><span class="section-kicker">Teaching & supervision</span><h2 class="section-title" id="teaching-title">What I’ve taught.</h2></div><p>My research also lives in courses, thesis projects, and tutorials that other people can use.</p></div>
+  <div class="teach-grid">
+    {teaching.map((item) => <article class="teach-card"><div class="teach-top"><strong>{item.number}<span>{item.unit}</span></strong><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.detail}</p>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">Read the guide ↗</a>}</article>)}
+  </div>
+  <div class="professional-grid">
+    <section id="training" aria-labelledby="training-title"><span class="section-kicker">Learning</span><h3 id="training-title">Training.</h3><ul>{training.map((item) => <li><span>{item.year}</span><div><strong>{item.name}</strong><p>{item.detail}</p></div></li>)}</ul></section>
+    <section id="service" aria-labelledby="service-title"><span class="section-kicker">Research community</span><h3 id="service-title">Service.</h3><ul>{service.map((item) => <li><span>{item.year}</span><div><strong>{item.name}</strong><p>{item.detail}</p></div></li>)}</ul></section>
+  </div>
+</section>
+<style>
+  .career{padding-top:115px}
+  .career-heading{display:flex;justify-content:space-between;align-items:end;gap:45px;margin-bottom:34px}
+  .career-heading p{max-width:340px;margin:0 0 5px;color:#61716a;font-size:16px;line-height:1.65}
+  .teach-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .teach-card{min-height:325px;padding:27px 28px;background:#e9eee5;border-radius:20px;display:flex;flex-direction:column}
+  .teach-top{display:flex;align-items:start;justify-content:space-between;gap:10px}
+  .teach-top strong{font:800 clamp(50px,5vw,70px)/1 'Manrope',sans-serif;letter-spacing:-.07em;color:#253b3c}
+  .teach-top strong span{display:block;margin-top:9px;font:500 10px 'DM Mono',monospace;letter-spacing:.09em;text-transform:uppercase;color:#6b8b64}
+  .teach-top time{font:500 10px 'DM Mono',monospace;color:#678260;white-space:nowrap;margin-top:7px}
+  .teach-card h3{font:800 21px/1.2 'Manrope',sans-serif;letter-spacing:-.04em;margin:30px 0 8px}
+  .teach-card p{color:#61716a;font-size:13px;line-height:1.65;margin:0 0 14px}
+  .teach-card a{align-self:start;margin-top:auto;font-size:12px;font-weight:800;border-bottom:1px solid #9fb39f;padding-bottom:4px}
+  .professional-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:70px;margin-top:92px}
+  .professional-grid h3{font:800 clamp(30px,3.3vw,42px)/1.15 'Manrope',sans-serif;letter-spacing:-.05em;margin:12px 0 24px}
+  .professional-grid ul{margin:0;padding:0;list-style:none;border-top:1px solid #d3ddd4}
+  .professional-grid li{display:grid;grid-template-columns:58px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid #d3ddd4}
+  .professional-grid li>span{font:500 11px 'DM Mono',monospace;color:#779358;padding-top:3px}
+  .professional-grid strong{font-size:14px;font-weight:800}
+  .professional-grid p{font-size:12px;line-height:1.55;color:#687971;margin:5px 0 0}
+  @media(max-width:850px){.career-heading{align-items:start;flex-direction:column;gap:16px}.career-heading p{max-width:650px}.teach-grid{grid-template-columns:1fr 1fr}.professional-grid{gap:35px}}
+  @media(max-width:620px){.career{padding-top:80px}.teach-grid,.professional-grid{grid-template-columns:1fr}.teach-card{min-height:0}.professional-grid{margin-top:75px;gap:55px}}
+</style>

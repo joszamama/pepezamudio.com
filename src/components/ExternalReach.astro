@@ -1,0 +1,21 @@
+---
+import { externalRepositoryReach } from '../lib/data.js';
+
+const { repo, inverse = false } = Astro.props;
+const stars = externalRepositoryReach.stars[repo];
+const downloads = externalRepositoryReach.downloads[repo];
+const compact = (count) => {
+  const divisor = count >= 1e9 ? 1e9 : count >= 1e6 ? 1e6 : 1e3;
+  const suffix = count >= 1e9 ? 'B' : count >= 1e6 ? 'M' : 'k';
+  return `${(Math.floor(count / divisor * 100) / 100).toFixed(2).replace(/\.?0+$/, '')}${suffix}+`;
+};
+---
+<div class:list={['external-reach', inverse && 'inverse']}>
+  {downloads && <a href={downloads.url} target="_blank" rel="noopener noreferrer" title={`${downloads.count.toLocaleString('en-US')} ${downloads.registry} download events ${downloads.period}`} aria-label={`${downloads.count.toLocaleString('en-US')} ${downloads.registry} downloads ${downloads.period}; view package statistics`}>↓ {compact(downloads.count)} {downloads.registry} downloads · {downloads.period} ↗</a>}
+  <a href={`https://github.com/${repo}`} target="_blank" rel="noopener noreferrer" aria-label={`${repo}: ${stars.toLocaleString('en-US')} GitHub stars`}>★ {stars.toLocaleString('en-US')} GitHub stars ↗</a>
+</div>
+<style>
+  .external-reach{display:flex;flex-wrap:wrap;align-items:center;gap:7px 18px;margin-top:12px;color:#5a7a49;font:600 11px/1.55 'DM Mono',monospace}
+  .external-reach.inverse{margin-top:14px;padding-top:12px;border-top:1px solid #496362;color:#c2e388}
+  .external-reach a:hover,.external-reach a:focus-visible{text-decoration:underline;text-underline-offset:3px}
+</style>

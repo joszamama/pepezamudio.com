@@ -1,0 +1,45 @@
+---
+import { publications, contributions, advisories, researchFunding, softwareReach, collaborations } from '../lib/data.js';
+
+const publishedWorks = publications.filter((item) => item.kind === 'paper');
+const vulnerabilityRecords = advisories.filter((item) => !item.informational);
+const institutionCount = new Set(collaborations.flatMap((item) => item.institutions)).size;
+const starCount = softwareReach.stars.reduce((total, item) => total + item.count, 0);
+const downloadCount = softwareReach.downloads.reduce((total, item) => total + item.count, 0);
+const metrics = [
+  { value: publishedWorks.length, label: 'Publications', detail: 'Peer-reviewed papers & tutorial', href: '/research/' },
+  { value: '66', label: 'Citations', detail: 'Google Scholar', href: 'https://scholar.google.es/citations?user=uhmSfGUAAAAJ' },
+  { value: researchFunding.amount, label: 'Funding I raised', detail: `${researchFunding.currency} · My research`, href: '/impact/#funding' },
+  { value: vulnerabilityRecords.length, label: 'Security advisories & reports', detail: '4 CVEs · 2 other reports', href: '/impact/#advisories' },
+  { value: institutionCount, label: 'Research institutions', detail: 'Institutions I’ve worked with', href: '/research/#collaborations' },
+  { value: starCount, label: 'GitHub stars', detail: 'Across my public repositories', href: '/impact/#software-reach' },
+  { value: `${Math.floor(downloadCount / 1000)}k+`, label: 'Software downloads', detail: 'All time · packages & releases', href: '/impact/#software-reach' },
+  { value: contributions.length, label: 'Merged external fixes', detail: 'Bug and security PRs', href: '/impact/#fixes' },
+];
+---
+<section class="metrics wrap" aria-labelledby="metrics-title">
+  <div class="metrics-heading"><h2 class="section-kicker" id="metrics-title">At a glance</h2></div>
+  <div class="metrics-grid">
+    {metrics.map((metric) => <a class="metric" href={metric.href} target={metric.href.startsWith('https://') ? '_blank' : undefined} rel={metric.href.startsWith('https://') ? 'noopener noreferrer' : undefined}>
+      <strong>{metric.value}</strong><span>{metric.label}</span><small>{metric.detail} <span aria-hidden="true">↗</span></small>
+    </a>)}
+  </div>
+  <p class="metrics-note">Repository stars, PyPI and GitHub packages, and release assets checked {softwareReach.checked}.</p>
+</section>
+<style>
+  .metrics{padding-top:76px;padding-bottom:18px}
+  .metrics-heading{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin-bottom:22px}
+  .metrics-heading h2{margin:0}
+  .metrics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #d5ded5;border-bottom:1px solid #d5ded5}
+  .metric{padding:24px 21px 26px;min-height:156px;display:flex;flex-direction:column;align-items:flex-start;border-right:1px solid #d5ded5;border-bottom:1px solid #d5ded5}
+  .metric:nth-child(4n+1){padding-left:0}
+  .metric:nth-child(4n){border-right:0}
+  .metric:nth-child(n+5){border-bottom:0}
+  .metric strong{font:800 clamp(40px,4vw,56px)/1 'Manrope',sans-serif;letter-spacing:-.065em;color:#253b3c}
+  .metric>span{font-size:13px;font-weight:800;line-height:1.35;margin-top:13px;max-width:230px}
+  .metric small{font:500 10px/1.45 'DM Mono',monospace;color:#73877c;margin-top:auto;padding-top:12px}
+  .metric:hover strong,.metric:hover small{color:#779a48}
+  .metrics-note{margin:13px 0 0;color:#7b8a82;font:500 10px/1.5 'DM Mono',monospace}
+  @media(max-width:850px){.metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric:nth-child(4n+1){padding-left:21px}.metric:nth-child(odd){padding-left:0}.metric:nth-child(4n){border-right:1px solid #d5ded5}.metric:nth-child(even){border-right:0}.metric:nth-child(n+5){border-bottom:1px solid #d5ded5}.metric:nth-child(n+7){border-bottom:0}}
+  @media(max-width:520px){.metrics{padding-top:55px}.metrics-heading{align-items:flex-start;flex-direction:column;gap:7px}.metric{min-height:146px;padding:21px 12px}.metric:nth-child(4n+1){padding-left:12px}.metric:nth-child(odd){padding-left:0}.metric strong{font-size:39px}.metric>span{font-size:12px;margin-top:11px}.metric small{font-size:9px}}
+</style>

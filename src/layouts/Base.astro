@@ -1,0 +1,103 @@
+---
+import { ClientRouter } from 'astro:transitions';
+const {
+  title = 'Pepe Zamudio — Systems security researcher',
+  description = 'Publications, research software, merged fixes, and public security reports by José Antonio “Pepe” Zamudio Amaya.',
+  image = '/og.svg',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const current = Astro.url.pathname;
+const links = [
+  ['Home', '/'],
+  ['About', '/about/'],
+  ['Research', '/research/'],
+  ['Impact', '/impact/'],
+  ['Blog', '/blog/'],
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f3ed" />
+    <ClientRouter />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Pepe Zamudio — Blog" href="/rss.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site).toString()} />
+    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'José Antonio Zamudio Amaya',
+      alternateName: 'Pepe Zamudio',
+      url: 'https://pepezamudio.com',
+      jobTitle: 'Ph.D. candidate and systems security researcher',
+      affiliation: { '@type': 'Organization', name: 'CISPA Helmholtz Center for Information Security' },
+      sameAs: ['https://github.com/joszamama', 'https://www.linkedin.com/in/joszamama/', 'https://scholar.google.es/citations?user=uhmSfGUAAAAJ', 'https://orcid.org/0000-0002-5025-7424', 'https://www.instagram.com/guaito/'],
+    })} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="site-shell">
+      <header class="site-header wrap">
+        <a href="/" class="brand" aria-label="Pepe Zamudio, home"><img class="brand-mark" src="/favicon.svg" alt="" width="39" height="39" /><span class="brand-name">pepe zamudio<span class="brand-dot">.</span></span></a>
+        <nav class="main-nav" aria-label="Main navigation">
+          {links.map(([label, href]) => <a class:list={{ active: current === href || (href === '/blog/' && current.startsWith('/blog/')) }} href={href}>{label}</a>)}
+        </nav>
+        <a class="header-contact" href="https://www.linkedin.com/in/joszamama/" target="_blank" rel="noopener noreferrer">Contact <span aria-hidden="true">↗</span></a>
+      </header>
+      <main id="main"><slot /></main>
+      <footer class="site-footer">
+        <div class="wrap footer-grid">
+          <div><a href="/" class="footer-brand">Pepe Zamudio<span>.</span></a><p>Software testing and security research at CISPA.</p></div>
+          <div class="footer-links"><span>Explore</span><a href="/">Home</a><a href="/about/">About</a><a href="/research/">Research</a><a href="/impact/">Impact</a><a href="/blog/">Blog</a></div>
+          <div class="footer-links"><span>Elsewhere</span><a href="https://github.com/joszamama" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://scholar.google.es/citations?user=uhmSfGUAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar ↗</a><a href="https://www.linkedin.com/in/joszamama/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://orcid.org/0000-0002-5025-7424" target="_blank" rel="noopener noreferrer">ORCID ↗</a><a href="https://www.instagram.com/guaito/" target="_blank" rel="noopener noreferrer">Instagram @guaito ↗</a></div>
+        </div>
+        <div class="wrap footer-bottom"><span>© {new Date().getFullYear()} Pepe Zamudio</span><span>José Antonio Zamudio Amaya · Saarbrücken, Germany</span></div>
+      </footer>
+    </div>
+    <script>
+      let revealObserver;
+      const setupReveals = () => {
+        if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        revealObserver = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('reveal-visible');
+            revealObserver.unobserve(entry.target);
+          }
+        }, { threshold: 0.06, rootMargin: '0px 0px -6% 0px' });
+        for (const section of document.querySelectorAll('main > section')) {
+          if (section.classList.contains('contact-band')) continue;
+          if (section.getBoundingClientRect().top <= window.innerHeight * 0.85) continue;
+          section.classList.add('reveal-pending');
+          revealObserver.observe(section);
+        }
+      };
+      document.addEventListener('astro:before-swap', () => revealObserver?.disconnect());
+      document.addEventListener('astro:page-load', setupReveals);
+    </script>
+  </body>
+</html>
+<style is:global>
+  :root{font-family:'DM Sans',sans-serif;color:#1c292e;background:#f5f3ed;font-synthesis:none;scroll-behavior:smooth}*{box-sizing:border-box}body{margin:0;min-width:320px}a{color:inherit;text-decoration:none}button,input{font:inherit}img{max-width:100%;height:auto}::selection{background:#d7f286;color:#1c292e}.wrap{width:min(1192px,calc(100% - 64px));margin-inline:auto}.site-shell{overflow:hidden}.skip-link{position:absolute;top:-60px;left:20px;z-index:100;padding:10px 16px;background:#1c292e;color:white}.skip-link:focus{top:10px}.site-header{height:94px;display:flex;align-items:center;justify-content:space-between;gap:24px;border-bottom:1px solid #d9dedb}.brand{display:inline-flex;align-items:center;gap:12px;white-space:nowrap}.brand-mark{display:block;width:39px;height:39px;flex:none}.brand-dot,.footer-brand span{color:#a4d552}.brand-name{font:800 19px/1 'Manrope',sans-serif;letter-spacing:-.8px}.main-nav{display:flex;align-items:center;gap:31px}.main-nav a{font-size:13px;font-weight:700;color:#677479;transition:color .2s}.main-nav a:hover,.main-nav a.active{color:#1c292e}.main-nav a.active{position:relative}.main-nav a.active:after{content:'';position:absolute;bottom:-13px;left:0;right:0;height:2px;background:#a0c948}.header-contact{border:1px solid #cfd8d2;border-radius:999px;padding:10px 17px;font-size:12px;font-weight:800;white-space:nowrap;transition:background .2s,transform .2s}.header-contact:hover{background:#e5ebdc;transform:translateY(-2px)}.header-contact span{margin-left:8px}.eyebrow{display:flex;align-items:center;gap:11px;color:#496566;text-transform:uppercase;letter-spacing:.16em;font:500 11px/1.5 'DM Mono',monospace}.eyebrow:before{content:'';display:block;width:22px;height:1px;background:#83a43f}.section-kicker{color:#617574;text-transform:uppercase;letter-spacing:.16em;font:500 11px/1.4 'DM Mono',monospace}.display{font-family:'Manrope',sans-serif;letter-spacing:-.065em;line-height:1.04}.section-title{font:800 clamp(36px,5vw,58px)/1.09 'Manrope',sans-serif;letter-spacing:-.055em;margin:16px 0 0}.lead{font-size:17px;line-height:1.75;color:#617074}.arrow-link{display:inline-flex;align-items:center;gap:12px;font-size:13px;font-weight:800;border-bottom:1px solid #95aaa0;padding-bottom:8px;transition:gap .2s}.arrow-link:hover{gap:18px}.arrow-link span{font-size:18px;line-height:1}.tag{display:inline-block;padding:7px 11px;border:1px solid #d3dcd6;border-radius:999px;color:#5b6c6e;font:500 10px/1.2 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em}.site-footer{background:#1d2d31;color:#f5f3ed;margin-top:100px;padding-top:65px}.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;padding-bottom:78px}.footer-grid p{max-width:350px;line-height:1.7;color:#aab8b5;font-size:14px}.footer-links{display:flex;flex-direction:column;gap:14px;font-size:13px}.footer-links span{font:500 10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.15em;color:#a4d552;margin-bottom:8px}.footer-links a{color:#d7dfda}.footer-links a:hover{color:#a4d552}.footer-bottom{display:flex;justify-content:space-between;gap:20px;border-top:1px solid #405054;padding-block:24px;color:#9badaa;font:400 11px/1.4 'DM Mono',monospace}.page-intro{padding:90px 0 65px}.page-intro h1{font:800 clamp(52px,8vw,100px)/.99 'Manrope',sans-serif;letter-spacing:-.075em;margin:26px 0 28px;max-width:900px}.page-intro p{font-size:18px;line-height:1.75;color:#5d6d6d;max-width:750px}.rule{height:1px;background:#d7ded8}.pill-button{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:#1e3134;color:#fff;padding:16px 22px;border-radius:999px;font-size:13px;font-weight:800;transition:transform .2s,background .2s}.pill-button:hover{transform:translateY(-3px);background:#365a5d}.pill-button.light{background:#d7f286;color:#1d2d31}.pill-button.light:hover{background:#e6ffa2}@media(max-width:800px){.wrap{width:min(100% - 36px,1192px)}.site-header{height:auto;min-height:76px;flex-wrap:wrap;padding-block:17px}.main-nav{order:3;width:100%;justify-content:space-between;gap:12px;padding-top:9px}.header-contact{display:none}.main-nav a{font-size:12px}.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-grid>div:first-child{grid-column:1/-1}.page-intro{padding:62px 0 45px}.site-footer{margin-top:75px}}@media(max-width:520px){.footer-bottom{flex-direction:column}.brand-name{font-size:17px}}
+</style>
+<style is:global>
+  a,button{transition:color .2s ease,background-color .2s ease,border-color .2s ease,opacity .2s ease}
+  @media(prefers-reduced-motion:no-preference){
+    .reveal-pending{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+    .reveal-pending.reveal-visible{opacity:1;transform:none}
+  }
+  @media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}.reveal-pending{opacity:1!important;transform:none!important;transition:none!important}}
+  @media print{.reveal-pending{opacity:1!important;transform:none!important}}
+</style>
