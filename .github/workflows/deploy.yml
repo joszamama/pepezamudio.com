@@ -22,6 +22,7 @@ jobs:
           build-cmd: npm run build:pages
         env:
           PAGES_BASE_PATH: /
+          PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN: ${{ vars.CLOUDFLARE_WEB_ANALYTICS_TOKEN }}
 
   deploy:
     needs: build

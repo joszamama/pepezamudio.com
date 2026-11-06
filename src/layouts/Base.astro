@@ -21,6 +21,7 @@ const englishSwitchUrl = hasAlternate ? currentEnglishPath : '/';
 const spanishSwitchUrl = hasAlternate ? spanishPath(current) : '/es/';
 const isSpanish = locale === 'es';
 const imageUrl = new URL(image, Astro.site).toString();
+const analyticsToken = import.meta.env.PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN;
 const links = [
   ['Home', 'Inicio', '/'],
   ['About', 'Sobre mí', '/about/'],
@@ -123,6 +124,7 @@ const links = [
       document.addEventListener('astro:before-swap', () => revealObserver?.disconnect());
       document.addEventListener('astro:page-load', setupReveals);
     </script>
+    {analyticsToken && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: analyticsToken })}></script>}
   </body>
 </html>
 <style is:global>
