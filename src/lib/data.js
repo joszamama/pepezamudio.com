@@ -22,10 +22,10 @@ export const projects = [
 ];
 
 export const contributions = [
-  { date: '2026', repo: 'tensorflow/tensorflow', title: 'Fix int16 overflow in GatherNd', detail: 'Merged PR #129560 · rejects index counts that overflow the kernel type', url: 'https://github.com/tensorflow/tensorflow/pull/129560' },
-  { date: '2026', repo: 'EsotericSoftware/kryo', title: 'Guard deserialization against unbounded allocation', detail: 'Merged PR #1284 · validates declared sizes before allocating', url: 'https://github.com/EsotericSoftware/kryo/pull/1284' },
-  { date: '2026', repo: 'J-F-Liu/lopdf', title: 'Bound PDF array and dictionary nesting', detail: 'Merged PR #503 · fixes the parser stack overflow in RUSTSEC-2026-0187', url: 'https://github.com/J-F-Liu/lopdf/pull/503' },
-  { date: '2026', repo: 'py-pdf/pypdf', title: 'Fix xref recovery on malformed PDFs', detail: 'Merged PR #3841 · prevents an UnboundLocalError during recovery', url: 'https://github.com/py-pdf/pypdf/pull/3841' },
+  { date: '2026', repo: 'tensorflow/tensorflow', category: 'bug', title: 'Fix int16 overflow in GatherNd', detail: 'Merged PR #129560 · rejects index counts that overflow the kernel type', url: 'https://github.com/tensorflow/tensorflow/pull/129560' },
+  { date: '2026', repo: 'EsotericSoftware/kryo', category: 'security', title: 'Guard deserialization against unbounded allocation', detail: 'Merged PR #1284 · validates declared sizes before allocating', url: 'https://github.com/EsotericSoftware/kryo/pull/1284' },
+  { date: '2026', repo: 'J-F-Liu/lopdf', category: 'security', title: 'Bound PDF array and dictionary nesting', detail: 'Merged PR #503 · fixes the parser stack overflow in RUSTSEC-2026-0187', url: 'https://github.com/J-F-Liu/lopdf/pull/503' },
+  { date: '2026', repo: 'py-pdf/pypdf', category: 'bug', title: 'Fix xref recovery on malformed PDFs', detail: 'Merged PR #3841 · prevents an UnboundLocalError during recovery', url: 'https://github.com/py-pdf/pypdf/pull/3841' },
 ];
 
 export const advisories = [

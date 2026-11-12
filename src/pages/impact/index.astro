@@ -17,7 +17,7 @@ const downloadCount = softwareReach.downloads.reduce((total, item) => total + it
     </div>
     <p class="reach-date">Snapshot checked {softwareReach.checked}.</p>
   </section>
-  <section class="wrap contributions" id="fixes"><div class="section-heading"><div><span class="section-kicker">External repositories</span><h2 class="section-title">Bug & security fixes.</h2></div></div><div class="record-list">{contributions.map((item) => <article class="record"><span class="record-side">{item.date}<br />{item.repo}</span><div><h3><a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></h3><p>{item.detail}</p><ExternalReach repo={item.repo} /></div><a class="record-arrow" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`View ${item.title} pull request`}>↗</a></article>)}</div></section>
+  <section class="wrap contributions" id="fixes"><div class="section-heading"><div><span class="section-kicker">External repositories</span><h2 class="section-title">Bug & security fixes.</h2></div></div><div class="record-list">{contributions.map((item) => <article class="record"><span class="record-side">{item.date}<br />{item.repo}</span><div><span class={`record-category record-category-${item.category}`}>{item.category === "security" ? "Security" : "Bug"}</span><h3><a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></h3><p>{item.detail}</p><ExternalReach repo={item.repo} /></div><a class="record-arrow" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`View ${item.title} pull request`}>↗</a></article>)}</div></section>
   <section class="wrap advisories" id="advisories"><div class="section-heading"><div><span class="section-kicker">Published records only</span><h2 class="section-title">Security advisories.</h2></div></div><div class="advisory-grid">{advisories.map((item) => <article class="advisory"><div><span>{item.id}</span><a href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Read ${item.id}`}>↗</a></div><h3><a href={item.url} target="_blank" rel="noopener noreferrer">{item.product}</a></h3><p>{item.title}</p><small>{item.role}</small><ExternalReach repo={item.repo} inverse /></article>)}</div><p class="external-reach-note">Project-level package downloads and GitHub stars checked {externalRepositoryReach.checked}. Download events include repeat and automated installs; neither metric counts affected installations. Public lifetime downloads are unavailable for the Java and Go projects. npm’s adm-zip history starts in 2015.</p></section>
   <section class="wrap funding" id="funding" aria-labelledby="funding-title">
     <div><span class="section-kicker">Research support</span><h2 class="section-title" id="funding-title">Funding raised.</h2></div>
@@ -62,6 +62,9 @@ const downloadCount = softwareReach.downloads.reduce((total, item) => total + it
 
 <style>
   .record h3 a:hover,.record h3 a:focus-visible,.advisory h3 a:hover,.advisory h3 a:focus-visible{text-decoration:underline;text-underline-offset:4px}
+  .record-category{display:inline-block;margin-bottom:9px;padding:4px 9px;border-radius:999px;font:600 10px/1.2 'DM Mono',monospace;letter-spacing:.07em;text-transform:uppercase}
+  .record-category-bug{background:#e7ede2;color:#496b44}
+  .record-category-security{background:#e8e9db;color:#636b25}
   .record-arrow{justify-self:end}
   .external-reach-note{margin:18px 0 0;color:#708078;font:500 11px/1.6 'DM Mono',monospace}
 </style>
