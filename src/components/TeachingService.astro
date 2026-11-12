@@ -27,9 +27,8 @@ const training = [
 const service = [
   { year: '2026', name: 'IEEE Transactions on Software Engineering (TSE)', detail: 'Reviewer' },
   { year: '2026', name: 'ACM Transactions on Software Engineering and Methodology (TOSEM)', detail: 'Reviewer' },
-  { year: '2026', name: 'IEEE/ACM International Conference on Automated Software Engineering (ASE)', detail: 'Artifact evaluation' },
+  { year: '2026', name: 'IEEE/ACM International Conference on Automated Software Engineering (ASE)', detail: 'Artifact evaluation · Tools and Datasets Track' },
   { year: '2026', name: 'ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA)', detail: 'Artifact evaluation' },
-  { year: '2026', name: 'IEEE/ACM International Conference on Automated Software Engineering (ASE)', detail: 'Tools and Datasets Track' },
   { year: '2025', name: 'International Workshop on Search-Based and Fuzz Testing (SBFT 2026)', detail: 'Website chair' },
   { year: '2024', name: 'Journal of Systems and Software', detail: 'Reviewer' },
 ];
@@ -48,9 +47,8 @@ const trainingEs = [
 const serviceEs = [
   { detail: 'Revisor' },
   { detail: 'Revisor' },
+  { detail: 'Evaluación de artefactos · área de herramientas y conjuntos de datos' },
   { detail: 'Evaluación de artefactos' },
-  { detail: 'Evaluación de artefactos' },
-  { detail: 'Área de herramientas y conjuntos de datos' },
   { detail: 'Responsable de la web' },
   { detail: 'Revisor' },
 ];
@@ -58,6 +56,10 @@ const localize = (items, translations) => items.map((item, index) => ({ ...item,
 const visibleTeaching = isSpanish ? localize(teaching, teachingEs) : teaching;
 const visibleTraining = isSpanish ? localize(training, trainingEs) : training;
 const visibleService = isSpanish ? localize(service, serviceEs) : service;
+const byYear = (items) => [...new Set(items.map((item) => item.year))]
+  .map((year) => ({ year, items: items.filter((item) => item.year === year) }));
+const trainingByYear = byYear(visibleTraining);
+const serviceByYear = byYear(visibleService);
 
 ---
 <section class="wrap career" id="teaching" aria-labelledby="teaching-title">
@@ -66,8 +68,8 @@ const visibleService = isSpanish ? localize(service, serviceEs) : service;
     {visibleTeaching.map((item) => <article class="teach-card"><div class="teach-top"><strong>{item.number}<span>{item.unit}</span></strong><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.detail}</p>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">{isSpanish ? "Leer la guía" : "Read the guide"} ↗</a>}</article>)}
   </div>
   <div class="professional-grid">
-    <section class="professional-section" id="training" aria-labelledby="training-title"><div class="professional-heading"><span class="section-kicker">{isSpanish ? "Aprendizaje" : "Learning"}</span><h3 id="training-title">{isSpanish ? "Formación." : "Training."}</h3></div><ul>{visibleTraining.map((item) => <li><span>{item.year}</span><div><strong>{item.name}</strong><p>{item.detail}</p></div></li>)}</ul></section>
-    <section class="professional-section" id="service" aria-labelledby="service-title"><div class="professional-heading"><span class="section-kicker">{isSpanish ? "Comunidad científica" : "Research community"}</span><h3 id="service-title">{isSpanish ? "Servicio." : "Service."}</h3></div><ul>{visibleService.map((item) => <li><span>{item.year}</span><div><strong>{item.name}</strong><p>{item.detail}</p></div></li>)}</ul></section>
+    <section class="professional-section" id="training" aria-labelledby="training-title"><div class="professional-heading"><span class="section-kicker">{isSpanish ? "Aprendizaje" : "Learning"}</span><h3 id="training-title">{isSpanish ? "Formación." : "Training."}</h3></div><div class="year-groups">{trainingByYear.map((group) => <div class="year-group"><span class="year-label">{group.year}</span><ul>{group.items.map((item) => <li><strong>{item.name}</strong><span class="professional-detail">{item.detail}</span></li>)}</ul></div>)}</div></section>
+    <section class="professional-section" id="service" aria-labelledby="service-title"><div class="professional-heading"><span class="section-kicker">{isSpanish ? "Comunidad científica" : "Research community"}</span><h3 id="service-title">{isSpanish ? "Servicio." : "Service."}</h3></div><div class="year-groups">{serviceByYear.map((group) => <div class="year-group"><span class="year-label">{group.year}</span><ul>{group.items.map((item) => <li><strong>{item.name}</strong><span class="professional-detail">{item.detail}</span></li>)}</ul></div>)}</div></section>
   </div>
 </section>
 <style>
@@ -83,14 +85,17 @@ const visibleService = isSpanish ? localize(service, serviceEs) : service;
   .teach-card h3{font:800 21px/1.2 'Manrope',sans-serif;letter-spacing:-.04em;margin:30px 0 8px}
   .teach-card p{color:#61716a;font-size:13px;line-height:1.65;margin:0 0 14px}
   .teach-card a{align-self:start;margin-top:auto;font-size:12px;font-weight:800;border-bottom:1px solid #9fb39f;padding-bottom:4px}
-  .professional-grid{display:grid;gap:72px;margin-top:92px}
+  .professional-grid{display:grid;gap:58px;margin-top:92px}
   .professional-section{display:grid;grid-template-columns:minmax(220px,.78fr) minmax(0,1.5fr);gap:70px}
   .professional-grid h3{font:800 clamp(30px,3.3vw,42px)/1.15 'Manrope',sans-serif;letter-spacing:-.05em;margin:12px 0 0}
-  .professional-grid ul{margin:0;padding:0;list-style:none;border-top:1px solid #d3ddd4}
-  .professional-grid li{display:grid;grid-template-columns:58px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid #d3ddd4}
-  .professional-grid li>span{font:500 11px 'DM Mono',monospace;color:#779358;padding-top:3px}
-  .professional-grid strong{font-size:14px;font-weight:800}
-  .professional-grid p{font-size:12px;line-height:1.55;color:#687971;margin:5px 0 0}
+  .year-groups{border-top:1px solid #d3ddd4}
+  .year-group{display:grid;grid-template-columns:58px minmax(0,1fr);gap:16px;padding:17px 0;border-bottom:1px solid #d3ddd4}
+  .year-label{font:500 11px 'DM Mono',monospace;color:#779358;padding-top:2px}
+  .year-group ul{margin:0;padding:0;list-style:none}
+  .year-group li{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:11px;row-gap:2px;line-height:1.45}
+  .year-group li+li{margin-top:10px}
+  .year-group strong{font-size:13px;font-weight:800}
+  .professional-detail{font-size:12px;color:#687971}
   @media(max-width:850px){.career-heading{align-items:start;flex-direction:column;gap:16px}.career-heading p{max-width:650px}.teach-grid{grid-template-columns:1fr 1fr}.professional-section{grid-template-columns:minmax(180px,.7fr) minmax(0,1.3fr);gap:35px}}
   @media(max-width:620px){.career{padding-top:80px}.teach-grid,.professional-section{grid-template-columns:1fr}.teach-card{min-height:0}.professional-grid{margin-top:75px;gap:55px}.professional-section{gap:22px}}
 </style>
