@@ -66,6 +66,7 @@ export const externalRepositoryReach = {
 };
 
 export const honors = [
+  { year: '2026', title: 'Google PhD Fellowship', distinction: 'Software Engineering and Programming Languages', institution: 'Google Research', detail: 'Awarded for my research on testing complex software.', source: 'https://research.google/programs-and-events/phd-fellowship/recipients/' },
   { year: '2023', title: 'Master’s Thesis Honors Distinction', distinction: 'Best', institution: 'University of Seville', detail: 'Read the XatkitSPL paper in the SISTEDES library.', source: 'https://hdl.handle.net/11705/JISBD/2023/9205' },
   { year: '2022', title: 'Bachelor’s Thesis Honors Distinction', distinction: 'Top 5%', institution: 'University of Seville', detail: 'Read the WebSPL paper in the SISTEDES library.', source: 'https://hdl.handle.net/11705/JISBD/2022/2185' },
 ];

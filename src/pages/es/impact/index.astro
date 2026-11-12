@@ -31,7 +31,6 @@ const downloadCount = softwareReach.downloads.reduce((total, item) => total + it
   <section class="wrap awards" id="awards" aria-labelledby="awards-title">
     <div class="section-heading"><div><span class="section-kicker">Reconocimientos</span><h2 class="section-title" id="awards-title">Premios y distinciones.</h2></div></div>
     <div class="record-list">
-      <div class="record award-pending"><span class="record-side">2026<br />Anuncio pendiente</span><div><span class="award-redaction" aria-hidden="true"></span><p>Publicaré los detalles después del 12 de noviembre de 2026.</p></div></div>
       {honorsEs.map((honor) => <a class="record" href={honor.source} target="_blank" rel="noopener noreferrer"><span class="record-side">{honor.year}<br />{honor.institution}</span><div><h3>{honor.title} <span class="award-distinction">({honor.distinction})</span></h3><p>{honor.detail}</p></div><span class="record-arrow">↗</span></a>)}
     </div>
   </section>
@@ -59,8 +58,6 @@ const downloadCount = softwareReach.downloads.reduce((total, item) => total + it
   .funding-card p{font-size:15px;line-height:1.65;color:#d2dfd7;max-width:540px;margin:20px 0 0}
   .awards{padding-top:110px;padding-bottom:20px}
   .award-distinction{color:#72953e}
-  .award-redaction{display:block;height:17px;width:min(290px,80%);border-radius:3px;background:#253b3c;margin:4px 0 10px}
-  .award-pending:hover{padding-left:0}
   @media(max-width:900px){.funding{grid-template-columns:1fr;gap:24px}}
   @media(max-width:700px){.software-reach{padding-top:80px}.reach-grid{grid-template-columns:1fr}.reach-card{min-height:0}.funding{padding-top:80px}.funding-card{padding:27px;min-height:200px}.awards{padding-top:80px}}
 </style>

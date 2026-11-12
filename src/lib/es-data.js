@@ -23,6 +23,7 @@ export const advisoryCopy = {
 };
 
 export const honorCopy = {
+  '2026': { title: 'Google PhD Fellowship', distinction: 'Ingeniería del software y lenguajes de programación', institution: 'Google Research', detail: 'Concedida por mi investigación sobre pruebas de software complejo.' },
   '2023': { title: 'Distinción de honor al Trabajo Fin de Máster', distinction: 'Mejor trabajo', institution: 'Universidad de Sevilla', detail: 'El artículo sobre XatkitSPL está disponible en la biblioteca de SISTEDES.' },
   '2022': { title: 'Distinción de honor al Trabajo Fin de Grado', distinction: 'Entre el 5 % mejor', institution: 'Universidad de Sevilla', detail: 'El artículo sobre WebSPL está disponible en la biblioteca de SISTEDES.' },
 };
