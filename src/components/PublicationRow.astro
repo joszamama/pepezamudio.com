@@ -19,8 +19,8 @@ const translatedTerms = {
 };
 const translate = (value) => isSpanish ? Object.entries(translatedTerms).reduce((text, [en, es]) => text.replace(en, es), value) : value;
 ---
-<article class="paper">
-  <div class="paper-number">{String(index + 1).padStart(2, '0')} / {paper.year}</div>
+<article class="paper" data-methods={paper.methods?.join(' ')} data-year={paper.year}>
+  <div class="paper-number" data-paper-number>{String(index + 1).padStart(2, '0')} / {paper.year}</div>
   <div>
     <div class="paper-venue">{translate(paper.venue)}</div>
     <h3>{paper.title}</h3>

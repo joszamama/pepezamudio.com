@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PublicationRow from '../components/PublicationRow.astro';
+import ResearchMethods from '../components/ResearchMethods.astro';
 import { publications, collaborations } from '../lib/data.js';
 const papers = publications.filter((item) => item.kind === 'paper' && item.format !== 'tutorial');
 const tutorials = publications.filter((item) => item.format === 'tutorial' || item.kind === 'guide');
@@ -23,11 +24,11 @@ const preprints = publications.filter((item) => item.kind === 'preprint');
         <li><strong>Vulnerability discovery</strong><p>Finding and reporting parser and file-format bugs with generated inputs.</p></li>
       </ul></article>
     </div>
-    <div class="methods"><span class="section-kicker">Methods across this work</span><ul><li>Evolutionary and multi-objective search</li><li>Grammars and semantic constraints</li><li>Feature models and variability</li><li>Heuristic optimization</li></ul></div>
+    <ResearchMethods />
   </section>
-  <section class="wrap papers" id="papers"><div class="papers-head"><span class="section-kicker">Published work</span><h2 class="section-title">Research papers<span>.</span></h2><p>Read a copy here, or follow the DOI to the publication record.</p></div><div class="paper-list">{papers.map((paper, index) => <PublicationRow paper={paper} index={index} />)}</div></section>
-  <section class="wrap papers other-publications" id="tutorials"><div class="papers-head"><span class="section-kicker">Learn the methods</span><h2 class="section-title">Tutorials & guides<span>.</span></h2><p>The FSE tutorial and the Fandango reference guide.</p></div><div class="paper-list">{tutorials.map((paper, index) => <PublicationRow paper={paper} index={index} />)}</div></section>
-  <section class="wrap papers other-publications" id="preprints"><div class="papers-head"><span class="section-kicker">Work in progress</span><h2 class="section-title">Preprints<span>.</span></h2><p>Manuscripts available on arXiv.</p></div><div class="paper-list">{preprints.map((paper, index) => <PublicationRow paper={paper} index={index} />)}</div></section>
+  <section class="wrap papers research-results-section" id="papers"><div class="papers-head"><span class="section-kicker">Published work</span><h2 class="section-title">Research papers<span>.</span></h2><p>Read a copy here, or follow the DOI to the publication record.</p></div><div class="paper-list">{papers.map((paper, index) => <PublicationRow paper={paper} index={index} />)}</div></section>
+  <section class="wrap papers other-publications research-results-section" id="tutorials"><div class="papers-head"><span class="section-kicker">Learn the methods</span><h2 class="section-title">Tutorials & guides<span>.</span></h2><p>The FSE tutorial and the Fandango reference guide.</p></div><div class="paper-list">{tutorials.map((paper, index) => <PublicationRow paper={paper} index={index} />)}</div></section>
+  <section class="wrap papers other-publications research-results-section" id="preprints"><div class="papers-head"><span class="section-kicker">Work in progress</span><h2 class="section-title">Preprints<span>.</span></h2><p>Manuscripts available on arXiv.</p></div><div class="paper-list">{preprints.map((paper, index) => <PublicationRow paper={paper} index={index} />)}</div></section>
   <section class="wrap collaborations" id="collaborations" aria-labelledby="collaborations-title"><div class="collaborations-heading"><span class="section-kicker">People & places</span><h2 class="section-title" id="collaborations-title">Research collaborators.</h2><p>Selected people I have worked with, and the work we shared.</p></div><div class="collaboration-list">{collaborations.map((item) => <article class="collaboration"><div><h3>{item.institution}</h3><span>{item.place}</span></div><div><p>{item.people}</p><span class="collaboration-work">{item.work}</span></div></article>)}</div></section>
 </Base>
 <style>
@@ -46,10 +47,6 @@ const preprints = publications.filter((item) => item.kind === 'preprint');
   .area-card li:last-child{border-bottom:0}
   .area-card strong{font:800 15px 'Manrope',sans-serif;letter-spacing:-.02em}
   .area-card p{font-size:13px;line-height:1.6;color:#5d7066;margin:5px 0 0}
-  .methods{display:grid;grid-template-columns:230px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid #d1dcd2;margin-top:8px}
-  .methods .section-kicker{padding-top:9px}
-  .methods ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-  .methods li{border:1px solid #cad8cb;border-radius:999px;padding:8px 11px;color:#456148;font-size:11px;font-weight:700}
   .papers{padding-top:48px;scroll-margin-top:32px}
   .other-publications{padding-top:100px}
   .papers-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:35px}
@@ -61,8 +58,6 @@ const preprints = publications.filter((item) => item.kind === 'preprint');
     .areas{padding-top:50px}
     .area-grid{grid-template-columns:1fr}
     .area-card{padding:25px}
-    .methods{grid-template-columns:1fr;gap:13px}
-    .methods .section-kicker{padding-top:0}
     .papers-head{align-items:start;flex-direction:column}
   }
 </style>

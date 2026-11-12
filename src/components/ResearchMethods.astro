@@ -1,0 +1,96 @@
+---
+import { publications } from '../lib/data.js';
+const { locale = 'en' } = Astro.props;
+const isSpanish = locale === 'es';
+const methods = [
+  { id: 'search', en: 'Evolutionary and multi-objective search', es: 'Búsqueda evolutiva y multiobjetivo' },
+  { id: 'grammars', en: 'Grammars and semantic constraints', es: 'Gramáticas y restricciones semánticas' },
+  { id: 'variability', en: 'Feature models and variability', es: 'Modelos de características y variabilidad' },
+  { id: 'optimization', en: 'Heuristic optimization', es: 'Optimización heurística' },
+];
+---
+<div class="methods" data-research-filter data-locale={locale}>
+  <div class="methods-intro"><span class="section-kicker">{isSpanish ? 'Métodos que utilizo' : 'Methods across this work'}</span><p>{isSpanish ? 'Elige un método para filtrar los trabajos.' : 'Choose a method to filter the work below.'}</p></div>
+  <div class="method-controls" role="group" aria-label={isSpanish ? 'Filtrar trabajos por método' : 'Filter works by method'}>
+    <ul>{methods.map((method) => <li><button type="button" data-method={method.id} aria-pressed="false">{isSpanish ? method.es : method.en}</button></li>)}</ul>
+    <div class="filter-feedback"><p class="filter-status" role="status" aria-live="polite">{isSpanish ? `Se muestran los ${publications.length} trabajos.` : `Showing all ${publications.length} works.`}</p><button class="filter-reset" type="button" hidden>{isSpanish ? 'Mostrar todos' : 'Show all'} <span aria-hidden="true">↗</span></button></div>
+  </div>
+</div>
+<script>
+  const applyResearchFilter = () => {
+    const filter = document.querySelector('[data-research-filter]');
+    if (!filter) return;
+    const buttons = [...filter.querySelectorAll('[data-method]')];
+    const requested = new URL(window.location.href).searchParams.get('method');
+    const selected = buttons.some((button) => button.dataset.method === requested) ? requested : null;
+    const sections = [...document.querySelectorAll('.research-results-section')];
+    let shown = 0;
+    let total = 0;
+
+    for (const section of sections) {
+      let sectionShown = 0;
+      for (const paper of section.querySelectorAll('.paper')) {
+        const matches = !selected || paper.dataset.methods?.split(' ').includes(selected);
+        paper.hidden = !matches;
+        total++;
+        if (matches) {
+          sectionShown++;
+          shown++;
+          const number = paper.querySelector('[data-paper-number]');
+          if (number) number.textContent = `${String(sectionShown).padStart(2, '0')} / ${paper.dataset.year}`;
+        }
+      }
+      section.hidden = sectionShown === 0;
+      if (sectionShown) section.classList.add('reveal-visible');
+      document.querySelector(`.research-jump a[href="#${section.id}"]`)?.toggleAttribute('hidden', sectionShown === 0);
+    }
+
+    for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.method === selected));
+    filter.querySelector('.filter-reset').hidden = !selected;
+    const isSpanish = filter.dataset.locale === 'es';
+    filter.querySelector('.filter-status').textContent = selected
+      ? isSpanish ? `Se muestran ${shown} de ${total} trabajos.` : `Showing ${shown} of ${total} works.`
+      : isSpanish ? `Se muestran los ${total} trabajos.` : `Showing all ${total} works.`;
+    for (const link of document.querySelectorAll('.language-switch a')) {
+      const url = new URL(link.href);
+      if (selected) url.searchParams.set('method', selected);
+      else url.searchParams.delete('method');
+      link.href = `${url.pathname}${url.search}${url.hash}`;
+    }
+  };
+
+  const setResearchMethod = (method) => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('method') === method || !method) url.searchParams.delete('method');
+    else url.searchParams.set('method', method);
+    history.pushState({}, '', url);
+    applyResearchFilter();
+  };
+
+  document.addEventListener('astro:page-load', () => {
+    const filter = document.querySelector('[data-research-filter]');
+    if (!filter) return;
+    for (const button of filter.querySelectorAll('[data-method]')) button.onclick = () => setResearchMethod(button.dataset.method);
+    filter.querySelector('.filter-reset').onclick = () => setResearchMethod(null);
+    applyResearchFilter();
+  });
+  window.addEventListener('popstate', applyResearchFilter);
+</script>
+<style>
+  .methods{display:grid;grid-template-columns:230px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid #d1dcd2;margin-top:8px}
+  .methods .section-kicker{display:block;padding-top:9px}
+  .methods-intro p{font-size:12px;line-height:1.5;color:#687a70;margin:10px 0 0;max-width:180px}
+  .method-controls ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+  .method-controls button{cursor:pointer}
+  .method-controls li button{border:1px solid #cad8cb;border-radius:999px;padding:8px 11px;background:transparent;color:#456148;font-size:11px;font-weight:700;text-align:left}
+  .method-controls li button:hover,.method-controls li button:focus-visible{background:#e2ebd7;border-color:#86a477}
+  .method-controls li button[aria-pressed="true"]{background:#23413b;border-color:#23413b;color:#fff}
+  .filter-feedback{display:flex;align-items:center;gap:18px;margin-top:13px}
+  .filter-status{color:#687a70;font-size:11px;margin:0}
+  .filter-reset{padding:0;border:0;background:transparent;color:#315b45;font-size:11px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+  .filter-reset[hidden]{display:none}
+  @media(max-width:700px){.methods{grid-template-columns:1fr;gap:13px}.methods .section-kicker{padding-top:0}.methods-intro p{max-width:none}}
+</style>
+<style is:global>
+  .paper[hidden],.research-results-section[hidden],.research-jump a[hidden]{display:none!important}
+</style>
