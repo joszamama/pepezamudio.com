@@ -6,6 +6,11 @@ export const projectCopy = {
 };
 
 export const contributionCopy = {
+  'https://github.com/flamapy/bdd_metamodel/pull/38': { title: 'Corregí el recuento de grupos de cardinalidad en BDD', detail: 'PR #38 integrado · codifica los límites de grupos con un solo hijo y otros casos no estándar' },
+  'https://github.com/Universal-Variability-Language/uvl-parser/pull/81': { title: 'Controlé los atributos muy anidados en Python', detail: 'PR #81 integrado · devuelve un error de sintaxis en lugar de un RecursionError sin capturar' },
+  'https://github.com/Universal-Variability-Language/uvl-parser/pull/82': { title: 'Permití espacios al final de archivos UVL', detail: 'PR #82 integrado · Java y JavaScript ahora coinciden con Python al final del archivo' },
+  'https://github.com/Universal-Variability-Language/uvl-parser/pull/83': { title: 'Corregí las características tras comentarios de bloque', detail: 'PR #83 integrado · conserva la indentación en Python cuando hay código tras el comentario' },
+  'https://github.com/Universal-Variability-Language/uvl-parser/pull/84': { title: 'Corregí los hijos de grupos tras líneas de comentarios', detail: 'PR #84 integrado · corrige la indentación en JavaScript tras una línea de comentario' },
   'tensorflow/tensorflow': { title: 'Corregí un desbordamiento de int16 en GatherNd', detail: 'PR #129560 integrado · rechaza cantidades de índices que desbordan el tipo usado por el núcleo' },
   'EsotericSoftware/kryo': { title: 'Limité la memoria asignada durante la deserialización', detail: 'PR #1284 integrado · valida los tamaños declarados antes de reservar memoria' },
   'J-F-Liu/lopdf': { title: 'Limité el anidamiento de objetos PDF', detail: 'PR #503 integrado · corrige el desbordamiento de pila descrito en RUSTSEC-2026-0187' },
