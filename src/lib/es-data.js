@@ -6,6 +6,12 @@ export const projectCopy = {
 };
 
 export const contributionCopy = {
+  'https://github.com/flamapy/z3_metamodel/pull/6': { title: 'Usé división real en las restricciones aritméticas de Z3', detail: 'PR #6 integrado · los operandos enteros ya no se truncan: 13/8 es 1,625, no 1' },
+  'https://github.com/flamapy/z3_metamodel/pull/7': { title: 'Añadí floor y ceil al backend de Z3', detail: 'PR #7 integrado · los modelos válidos que los usan se analizan en lugar de rechazarse' },
+  'https://github.com/flamapy/z3_metamodel/pull/10': { title: 'Traté los literales con punto como constantes', detail: 'PR #10 integrado · \'a.b\' se compara como texto, no como atributo de una característica' },
+  'https://github.com/flamapy/z3_metamodel/pull/12': { title: 'Añadí una suite de conformidad basada en un oráculo', detail: 'PR #12 integrado · 15 modelos verificados a mano protegen el backend de Z3 frente a regresiones' },
+  'https://github.com/flamapy/flamapy/pull/4': { title: 'Avisé cuando un backend descarta restricciones numéricas', detail: 'PR #4 integrado · sat y bdd ya no dan recuentos como exactos tras ignorar la aritmética sin avisar' },
+  'https://github.com/flamapy/fm_metamodel/pull/109': { title: 'Rechacé limpiamente modelos UVL sin característica raíz', detail: 'PR #109 integrado · una FlamaException sustituye al fallo por AttributeError' },
   'https://github.com/flamapy/bdd_metamodel/pull/38': { title: 'Corregí el recuento de grupos de cardinalidad en BDD', detail: 'PR #38 integrado · codifica los límites de grupos con un solo hijo y otros casos no estándar' },
   'https://github.com/Universal-Variability-Language/uvl-parser/pull/81': { title: 'Controlé los atributos muy anidados en Python', detail: 'PR #81 integrado · devuelve un error de sintaxis en lugar de un RecursionError sin capturar' },
   'https://github.com/Universal-Variability-Language/uvl-parser/pull/82': { title: 'Permití espacios al final de archivos UVL', detail: 'PR #82 integrado · Java y JavaScript ahora coinciden con Python al final del archivo' },
