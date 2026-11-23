@@ -10,6 +10,8 @@ const institutionCount = new Set(collaborations.flatMap((item) => item.instituti
 const starCount = softwareReach.stars.reduce((total, item) => total + item.count, 0);
 const downloadCount = softwareReach.downloads.reduce((total, item) => total + item.count, 0);
 const filedCount = filedReports.items.length;
+const maintainerFixCount = contributions.filter((item) => item.maintainerFix).length;
+const ownFixCount = contributions.length - maintainerFixCount;
 const cveCount = vulnerabilityRecords.filter((item) => item.id.startsWith('CVE-')).length;
 const otherAdvisoryCount = vulnerabilityRecords.length - cveCount;
 const metrics = isSpanish ? [
@@ -20,7 +22,7 @@ const metrics = isSpanish ? [
   { value: institutionCount, label: 'Instituciones de investigación', detail: 'Instituciones con las que he trabajado', href: '/research/#collaborations' },
   { value: starCount, label: 'Estrellas en GitHub', detail: 'En mis repositorios públicos', href: '/impact/#software-reach' },
   { value: `${Math.floor(downloadCount / 1000)}k+`, label: 'Descargas de software', detail: 'Histórico · paquetes y versiones', href: '/impact/#software-reach' },
-  { value: contributions.length, label: 'Correcciones aceptadas', detail: `PR de errores y seguridad · ${filedCount} más en revisión`, href: '/impact/#fixes' },
+  { value: contributions.length, label: 'Correcciones aceptadas', detail: `${ownFixCount} PR míos · ${maintainerFixCount} de mantenedores · ${filedCount} en revisión`, href: '/impact/#fixes' },
 ] : [
   { value: publishedWorks.length, label: 'Publications', detail: 'Peer-reviewed papers & tutorial', href: '/research/' },
   { value: '73', label: 'Citations', detail: 'Google Scholar', href: 'https://scholar.google.es/citations?user=uhmSfGUAAAAJ' },
@@ -29,7 +31,7 @@ const metrics = isSpanish ? [
   { value: institutionCount, label: 'Research institutions', detail: 'Institutions I’ve worked with', href: '/research/#collaborations' },
   { value: starCount, label: 'GitHub stars', detail: 'Across my public repositories', href: '/impact/#software-reach' },
   { value: `${Math.floor(downloadCount / 1000)}k+`, label: 'Software downloads', detail: 'All time · packages & releases', href: '/impact/#software-reach' },
-  { value: contributions.length, label: 'Merged external fixes', detail: `Bug & security PRs · ${filedCount} more under review`, href: '/impact/#fixes' },
+  { value: contributions.length, label: 'Merged external fixes', detail: `${ownFixCount} of my PRs · ${maintainerFixCount} by maintainers · ${filedCount} under review`, href: '/impact/#fixes' },
 ];
 ---
 <section class="metrics wrap" aria-labelledby="metrics-title">

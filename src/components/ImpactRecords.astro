@@ -81,6 +81,8 @@ const counts = {
 };
 const starTotal = groups.reduce((total, group) => total + group.stars, 0);
 const thousands = Math.round(starTotal / 1000);
+const maintainerFixCount = contributions.filter((item) => item.maintainerFix).length;
+if (maintainerFixCount) t.stats[0] = isSpanish ? `correcciones integradas, ${maintainerFixCount} de los mantenedores` : `merged fixes, ${maintainerFixCount} by maintainers`;
 const statValues = [number(counts.merged), number(counts.review), number(counts.advisory), number(groups.length), isSpanish ? `${number(thousands)} mil` : `${number(thousands)}k`];
 const statusFilters = ['merged', 'review', 'security'];
 const languageFilters = [['c', 'C'], ['cpp', 'C++'], ['go', 'Go'], ['java', 'Java'], ['javascript', t.filters.javascript], ['python', 'Python'], ['rust', 'Rust']]
