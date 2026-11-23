@@ -2,6 +2,7 @@
 export const projectCopy = {
   Fandango: { kind: 'Fuzzing basado en lenguajes', description: 'Genera pruebas a partir de gramáticas, restricciones escritas en Python y búsqueda evolutiva.', label: 'Herramienta de código abierto' },
   'Compás': { kind: 'Pruebas centradas en características', description: 'Un prototipo que acota una gramática a las características que se quieren poner a prueba.', label: 'Herramienta de código abierto' },
+  Parsarium: { kind: 'Banco de pruebas de analizadores', description: 'Un banco de pruebas abierto con 1.163 analizadores reales de 16 formatos y ocho lenguajes, cada uno con un entorno Docker fijado y listo para ejecutar, comparar y hacer fuzzing.', label: 'Banco de pruebas abierto' },
   Fanbase: { kind: 'Especificaciones reutilizables', description: 'Una colección pública de especificaciones de formatos para Fandango, con una herramienta para encontrarlas e instalarlas.', label: 'Herramienta de código abierto' },
 };
 
@@ -30,6 +31,7 @@ export const advisoryCopy = {
   'CVE-2026-59991': { title: 'Reserva de memoria sin límites con geometría PSD manipulada', role: 'Aviso público · investigador acreditado' },
   'RUSTSEC-2026-0187': { title: 'Desbordamiento de pila por objetos PDF muy anidados', role: 'Vulnerabilidad de RustSec · informe y corrección' },
   'GO-2026-5781': { title: 'Desbordamiento de pila por objetos PDF muy anidados', role: 'Base de datos de vulnerabilidades de Go · investigador acreditado' },
+  'GHSA-h4mv-866w-8x2c': { title: 'Nombres de entradas tar leídos de forma distinta a otros lectores (PAX path y linkpath)', role: 'Aviso de seguridad de GitHub · informante' },
   'RUSTSEC-2026-0192': { title: 'Aviso sobre un paquete sin mantenimiento', role: 'Nota informativa de RustSec · aviso presentado' },
 };
 

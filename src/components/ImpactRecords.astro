@@ -1,0 +1,256 @@
+---
+import { contributions, advisories, filedReports, impactProjects, externalRepositoryReach } from '../lib/data.js';
+import { contributionCopy, advisoryCopy, filedReportCopy } from '../lib/es-data.js';
+const locale = Astro.props.locale ?? 'en';
+const isSpanish = locale === 'es';
+const numberLocale = isSpanish ? 'es-ES' : 'en-US';
+const number = (value) => value.toLocaleString(numberLocale);
+const compact = (value) => {
+  if (!isSpanish) return new Intl.NumberFormat(numberLocale, { notation: 'compact', maximumFractionDigits: value >= 1e9 ? 2 : 1 }).format(value);
+  const scaled = (divisor, digits) => (value / divisor).toLocaleString(numberLocale, { maximumFractionDigits: digits });
+  if (value >= 1e9) return `${scaled(1e9, 2)} mil millones de`;
+  if (value >= 1e6) return `${scaled(1e6, 1)} millones de`;
+  return number(value);
+};
+const visibleCount = 12;
+
+const t = isSpanish ? {
+  kicker: 'Otros proyectos', title: 'Correcciones, informes y avisos.',
+  intro: 'Fallos y vulnerabilidades que encontré en proyectos que mantienen otras personas: correcciones ya integradas, avisos de seguridad publicados e informes que esperan la revisión de los mantenedores.',
+  stats: ['correcciones integradas', 'informes en revisión', 'avisos de seguridad publicados', 'proyectos', 'estrellas en GitHub entre todos'],
+  filterKicker: 'Filtrar la lista', filterHint: 'Elige un estado, un lenguaje o ambos.', statusGroup: 'Estado', languageGroup: 'Lenguaje',
+  statusAria: 'Filtrar por estado', languageAria: 'Filtrar por lenguaje', reset: 'Mostrar todo',
+  showing: (shown, total) => `Se muestran ${shown} de ${total} entradas.`, showingAll: (total) => `Se muestran las ${total} entradas.`,
+  statuses: { merged: 'Integrada', review: 'En revisión', advisory: 'Aviso', notice: 'Nota informativa' },
+  kinds: { bug: 'Fallo', security: 'Seguridad' },
+  filters: { merged: 'Correcciones integradas', review: 'En revisión', security: 'Seguridad', javascript: 'JavaScript y TypeScript' },
+  mergedPr: 'PR integrado', bugReport: 'Informe del fallo', report: 'Informe', original: 'Issue original', fixPr: 'PR con la corrección', patch: 'Parche en el informe', advisory: 'Leer el aviso',
+  mirror: 'espejo', downloads: (item) => `↓ ${compact(item.count)} descargas en ${item.registry}${item.period === 'since 2015' ? ' desde 2015' : ''}`,
+  more: (count) => `Ver ${count} proyectos más`,
+  note: `Datos comprobados el ${filedReports.checkedEs}. Las correcciones integradas y los avisos publicados son definitivos; el resto son informes y pull requests públicos que esperan revisión. Otros ${filedReports.privateReports} informes se enviaron en privado a los mantenedores (avisos de seguridad de GitHub y correo) y aparecerán cuando estén corregidos y publicados. Otros ${filedReports.issueComments} comentarios aportan la causa o la corrección a issues abiertos por otras personas. Estrellas y descargas describen proyectos completos (FFmpeg y file: sus espejos oficiales en GitHub), no instalaciones afectadas; las descargas incluyen instalaciones repetidas y automatizadas, y el historial de adm-zip en npm empieza en 2015.`,
+} : {
+  kicker: 'External projects', title: 'Fixes, reports & advisories.',
+  intro: 'Bugs and vulnerabilities I found in projects that others maintain: merged fixes, published security advisories, and reports still waiting for maintainer review.',
+  stats: ['merged fixes', 'reports under review', 'published security advisories', 'projects', 'GitHub stars across them'],
+  filterKicker: 'Filter the list', filterHint: 'Choose a status, a language, or both.', statusGroup: 'Status', languageGroup: 'Language',
+  statusAria: 'Filter by status', languageAria: 'Filter by language', reset: 'Show all',
+  showing: (shown, total) => `Showing ${shown} of ${total} entries.`, showingAll: (total) => `Showing all ${total} entries.`,
+  statuses: { merged: 'Merged', review: 'Under review', advisory: 'Advisory', notice: 'Informational' },
+  kinds: { bug: 'Bug', security: 'Security' },
+  filters: { merged: 'Merged fixes', review: 'Under review', security: 'Security', javascript: 'JavaScript & TypeScript' },
+  mergedPr: 'Merged PR', bugReport: 'Bug report', report: 'Report', original: 'Original issue', fixPr: 'Fix PR', patch: 'Patch in report', advisory: 'Read advisory',
+  mirror: 'mirror', downloads: (item) => `↓ ${compact(item.count)} ${item.registry} downloads${item.period === 'since 2015' ? ' since 2015' : ''}`,
+  more: (count) => `Show ${count} more projects`,
+  note: `Status checked ${filedReports.checked}. Merged fixes and published advisories are final; the other entries are public reports and pull requests waiting for review. A further ${filedReports.privateReports} reports went privately to maintainers (GitHub security advisories and e-mail); they will be listed here once fixed and published. Another ${filedReports.issueComments} comments add the root cause or a fix to issues that others opened. Stars and downloads describe whole projects (FFmpeg and file: their official GitHub mirrors), not affected installations; download events include repeat and automated installs, and npm’s adm-zip history starts in 2015.`,
+};
+
+const projectKey = (repo) => Object.entries(impactProjects).find(([, project]) => project.repos.includes(repo))?.[0];
+const languageKey = (language) => ({ C: 'c', 'C++': 'cpp', Go: 'go', Java: 'java', JavaScript: 'javascript', TypeScript: 'javascript', Python: 'python', Rust: 'rust' })[language];
+
+const records = [
+  ...contributions.map((item) => {
+    const copy = isSpanish ? contributionCopy[item.url] ?? contributionCopy[item.repo] ?? {} : {};
+    return { project: projectKey(item.repo), status: 'merged', security: item.category === 'security', title: copy.title ?? item.title, detail: copy.detail ?? item.detail, links: [{ label: t.mergedPr, url: item.url }, item.issueUrl && { label: t.bugReport, url: item.issueUrl }].filter(Boolean) };
+  }),
+  ...advisories.map((item) => {
+    const copy = isSpanish ? advisoryCopy[item.id] ?? {} : {};
+    return { project: projectKey(item.repo), status: item.informational ? 'notice' : 'advisory', security: !item.informational, id: item.id, title: copy.title ?? item.title, detail: copy.role ?? item.role, links: [{ label: t.advisory, url: item.url }] };
+  }),
+  ...filedReports.items.map((item) => ({
+    project: item.project, status: 'review', security: false,
+    title: isSpanish ? filedReportCopy[item.issueUrl ?? item.prUrl] ?? item.title : item.title,
+    links: [item.issueUrl && { label: item.existingIssue ? t.original : t.report, url: item.issueUrl }, item.prUrl && { label: t.fixPr, url: item.prUrl }, item.patchInReport && { label: t.patch }].filter(Boolean),
+  })),
+];
+const statusOrder = { merged: 0, advisory: 1, notice: 2, review: 3 };
+const groups = Object.entries(impactProjects).map(([key, project]) => {
+  const items = records.filter((record) => record.project === key).sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
+  const starRepos = project.repos.filter((repo) => typeof externalRepositoryReach.stars[repo] === 'number');
+  const stars = starRepos.reduce((total, repo) => total + externalRepositoryReach.stars[repo], 0);
+  const downloadRepo = project.repos.find((repo) => externalRepositoryReach.downloads[repo]);
+  return { key, ...project, items, stars, hasStars: starRepos.length > 0, downloads: downloadRepo && externalRepositoryReach.downloads[downloadRepo], languageKeys: [...new Set(project.languages.map(languageKey))] };
+}).filter((group) => group.items.length).sort((a, b) => b.stars - a.stars);
+
+const unmapped = records.filter((record) => !impactProjects[record.project]);
+if (unmapped.length) throw new Error(`Impact records without a project: ${unmapped.map((record) => record.title).join('; ')}`);
+
+const counts = {
+  merged: records.filter((record) => record.status === 'merged').length,
+  review: records.filter((record) => record.status === 'review').length,
+  advisory: records.filter((record) => record.status === 'advisory').length,
+};
+const starTotal = groups.reduce((total, group) => total + group.stars, 0);
+const thousands = Math.round(starTotal / 1000);
+const statValues = [number(counts.merged), number(counts.review), number(counts.advisory), number(groups.length), isSpanish ? `${number(thousands)} mil` : `${number(thousands)}k`];
+const statusFilters = ['merged', 'review', 'security'];
+const languageFilters = [['c', 'C'], ['cpp', 'C++'], ['go', 'Go'], ['java', 'Java'], ['javascript', t.filters.javascript], ['python', 'Python'], ['rust', 'Rust']]
+  .filter(([key]) => groups.some((group) => group.languageKeys.includes(key)));
+const shown = groups.slice(0, visibleCount);
+const rest = groups.slice(visibleCount);
+---
+<section class="wrap impact-records" id="fixes" aria-labelledby="records-title" data-impact-filter data-locale={locale}>
+  <span class="records-anchor" id="filed"></span><span class="records-anchor" id="advisories"></span>
+  <div class="records-heading"><span class="section-kicker">{t.kicker}</span><h2 class="section-title" id="records-title">{t.title}</h2><p>{t.intro}</p></div>
+  <div class="records-stats">{statValues.map((value, index) => <div><strong>{value}</strong><span>{t.stats[index]}</span></div>)}</div>
+  <div class="records-filter">
+    <div class="records-filter-intro"><span class="section-kicker">{t.filterKicker}</span><p>{t.filterHint}</p></div>
+    <div class="records-filter-controls">
+      <div class="records-filter-row" role="group" aria-label={t.statusAria}><span>{t.statusGroup}</span><ul>{statusFilters.map((key) => <li><button type="button" data-filter-status={key} aria-pressed="false">{t.filters[key]}</button></li>)}</ul></div>
+      <div class="records-filter-row" role="group" aria-label={t.languageAria}><span>{t.languageGroup}</span><ul>{languageFilters.map(([key, label]) => <li><button type="button" data-filter-lang={key} aria-pressed="false">{label}</button></li>)}</ul></div>
+      <div class="records-feedback"><p class="records-status" role="status" aria-live="polite">{t.showingAll(records.length)}</p><button class="records-reset" type="button" hidden>{t.reset} <span aria-hidden="true">↗</span></button></div>
+    </div>
+  </div>
+  {[shown, rest].map((list, listIndex) => {
+    const content = <div class="records-list">{list.map((group) => <article class="records-project" data-langs={group.languageKeys.join(' ')}>
+      <div class="records-side">
+        <a href={group.url} target="_blank" rel="noopener noreferrer">{group.name} ↗</a>
+        <span>{group.languages.join(' · ')}{group.hasStars && ` · ★ ${number(group.stars)}`}{group.mirror && ` (${t.mirror})`}</span>
+        {group.downloads && <a class="records-downloads" href={group.downloads.url} target="_blank" rel="noopener noreferrer">{t.downloads(group.downloads)}</a>}
+      </div>
+      <ul>{group.items.map((item) => <li data-status={item.status} data-security={String(item.security)}>
+        <div class="records-main">
+          <div class="records-labels"><span class={`records-label records-label-${item.status}`}>{t.statuses[item.status]}</span>{item.status !== 'notice' && <span class={`records-label records-label-${item.security ? 'security' : 'bug'}`}>{item.security ? t.kinds.security : t.kinds.bug}</span>}{item.id && <span class="records-label records-label-id">{item.id}</span>}</div>
+          <span class="records-title">{item.title}</span>
+          {item.detail && <span class="records-detail">{item.detail}</span>}
+        </div>
+        <span class="records-links">{item.links.map((link) => link.url ? <a href={link.url} target="_blank" rel="noopener noreferrer">{link.label} ↗</a> : <span>{link.label}</span>)}</span>
+      </li>)}</ul>
+    </article>)}</div>;
+    return listIndex === 0 ? content : list.length > 0 && <details class="records-more"><summary>{t.more(list.length)}</summary>{content}</details>;
+  })}
+  <p class="records-note">{t.note}</p>
+</section>
+<script>
+  const filterKinds = ['status', 'lang'];
+
+  const applyImpactFilter = () => {
+    const root = document.querySelector('[data-impact-filter]');
+    if (!root) return;
+    const params = new URL(window.location.href).searchParams;
+    const valid = (kind) => {
+      const value = params.get(kind);
+      return [...root.querySelectorAll(`[data-filter-${kind}]`)].some((button) => button.getAttribute(`data-filter-${kind}`) === value) ? value : null;
+    };
+    const status = valid('status');
+    const lang = valid('lang');
+    let shown = 0;
+    let total = 0;
+
+    for (const group of root.querySelectorAll('.records-project')) {
+      const languageMatches = !lang || group.dataset.langs?.split(' ').includes(lang);
+      let groupShown = 0;
+      for (const item of group.querySelectorAll('li[data-status]')) {
+        total++;
+        const statusMatches = !status || (status === 'security' ? item.dataset.security === 'true' : item.dataset.status === status);
+        const matches = languageMatches && statusMatches;
+        item.hidden = !matches;
+        if (matches) {
+          groupShown++;
+          shown++;
+        }
+      }
+      group.hidden = groupShown === 0;
+    }
+
+    const filtering = Boolean(status || lang);
+    const more = root.querySelector('.records-more');
+    if (more) {
+      if (filtering) more.open = true;
+      more.classList.toggle('records-filtering', filtering);
+      more.hidden = ![...more.querySelectorAll('.records-project')].some((group) => !group.hidden);
+    }
+    for (const button of root.querySelectorAll('[data-filter-status]')) button.setAttribute('aria-pressed', String(button.dataset.filterStatus === status));
+    for (const button of root.querySelectorAll('[data-filter-lang]')) button.setAttribute('aria-pressed', String(button.dataset.filterLang === lang));
+    root.querySelector('.records-reset').hidden = !filtering;
+    const isSpanish = root.dataset.locale === 'es';
+    root.querySelector('.records-status').textContent = filtering
+      ? isSpanish ? `Se muestran ${shown} de ${total} entradas.` : `Showing ${shown} of ${total} entries.`
+      : isSpanish ? `Se muestran las ${total} entradas.` : `Showing all ${total} entries.`;
+    for (const link of document.querySelectorAll('.language-switch a')) {
+      const url = new URL(link.href);
+      for (const kind of filterKinds) {
+        const value = kind === 'status' ? status : lang;
+        if (value) url.searchParams.set(kind, value);
+        else url.searchParams.delete(kind);
+      }
+      link.href = `${url.pathname}${url.search}${url.hash}`;
+    }
+  };
+
+  const setImpactFilter = (kind, value) => {
+    const url = new URL(window.location.href);
+    if (!value) for (const name of filterKinds) url.searchParams.delete(name);
+    else if (url.searchParams.get(kind) === value) url.searchParams.delete(kind);
+    else url.searchParams.set(kind, value);
+    history.pushState({}, '', url);
+    applyImpactFilter();
+  };
+
+  document.addEventListener('astro:page-load', () => {
+    const root = document.querySelector('[data-impact-filter]');
+    if (!root) return;
+    for (const button of root.querySelectorAll('[data-filter-status]')) button.onclick = () => setImpactFilter('status', button.dataset.filterStatus);
+    for (const button of root.querySelectorAll('[data-filter-lang]')) button.onclick = () => setImpactFilter('lang', button.dataset.filterLang);
+    root.querySelector('.records-reset').onclick = () => setImpactFilter(null, null);
+    applyImpactFilter();
+  });
+  window.addEventListener('popstate', applyImpactFilter);
+</script>
+<style>
+  .impact-records{position:relative;padding-top:110px}
+  .records-anchor{position:absolute;top:80px}
+  .records-heading{margin-bottom:30px}
+  .records-heading p{max-width:720px;margin:18px 0 0;color:#62716e;line-height:1.7}
+  .records-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:26px}
+  .records-stats div{background:#e9eee5;border-radius:20px;padding:22px 20px 24px;display:flex;flex-direction:column;gap:10px}
+  .records-stats strong{font:800 clamp(36px,3.8vw,52px)/1 'Manrope',sans-serif;letter-spacing:-.06em;color:#253b3c}
+  .records-stats span{color:#5d6f69;font:500 11px/1.5 'DM Mono',monospace}
+  .records-filter{display:grid;grid-template-columns:230px 1fr;gap:24px;padding:24px 0;border-top:1px solid #d1dcd2}
+  .records-filter .section-kicker{display:block;padding-top:9px}
+  .records-filter-intro p{font-size:12px;line-height:1.5;color:#687a70;margin:10px 0 0;max-width:180px}
+  .records-filter-controls{display:flex;flex-direction:column;gap:12px}
+  .records-filter-row{display:grid;grid-template-columns:76px 1fr;align-items:start;gap:10px}
+  .records-filter-row>span{padding-top:9px;color:#758a74;font:500 10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
+  .records-filter-row ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+  .records-filter-row button{cursor:pointer;border:1px solid #cad8cb;border-radius:999px;padding:8px 11px;background:transparent;color:#456148;font-size:11px;font-weight:700;text-align:left}
+  .records-filter-row button:hover,.records-filter-row button:focus-visible{background:#e2ebd7;border-color:#86a477}
+  .records-filter-row button[aria-pressed="true"]{background:#23413b;border-color:#23413b;color:#fff}
+  .records-feedback{display:flex;align-items:center;gap:18px;margin-top:2px}
+  .records-status{color:#687a70;font-size:11px;margin:0}
+  .records-reset{cursor:pointer;padding:0;border:0;background:transparent;color:#315b45;font-size:11px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+  .records-reset[hidden]{display:none}
+  .records-list{border-top:1px solid #d3ddd4}
+  .records-project{display:grid;grid-template-columns:220px 1fr;gap:25px;border-bottom:1px solid #d3ddd4;padding:20px 0}
+  .records-project[hidden],.records-project li[hidden],.records-more[hidden]{display:none}
+  .records-side{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  .records-side>a:first-child{font:800 17px/1.3 'Manrope',sans-serif;letter-spacing:-.03em;color:#253b3c}
+  .records-side>a:first-child:hover,.records-side>a:first-child:focus-visible{text-decoration:underline;text-decoration-color:#a4d552;text-underline-offset:4px}
+  .records-side>span,.records-downloads{font:500 11px/1.6 'DM Mono',monospace;color:#758a74}
+  .records-downloads:hover,.records-downloads:focus-visible{color:#426837;text-decoration:underline;text-underline-offset:3px}
+  .records-project ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+  .records-project li{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:6px 18px}
+  .records-main{display:flex;flex-direction:column;gap:5px;flex:1 1 340px}
+  .records-labels{display:flex;flex-wrap:wrap;gap:6px}
+  .records-label{display:inline-block;padding:3px 8px;border-radius:999px;font:600 9.5px/1.3 'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+  .records-label-merged{background:#dce9cf;color:#3d5f2f}
+  .records-label-review{background:#f0ebd9;color:#7a6524}
+  .records-label-advisory{background:#243b3e;color:#c2e388}
+  .records-label-notice{background:#e4e8e6;color:#5d6f69}
+  .records-label-bug{background:#e7ede2;color:#496b44}
+  .records-label-security{background:#e8e9db;color:#636b25}
+  .records-label-id{background:transparent;border:1px solid #cad8cb;color:#5d6f69;text-transform:none;letter-spacing:.02em}
+  .records-title{font-size:14.5px;line-height:1.45;color:#2f4442;font-weight:600}
+  .records-detail{font-size:12.5px;line-height:1.5;color:#6f8076}
+  .records-links{display:flex;flex-wrap:wrap;gap:6px 14px;font:600 11px 'DM Mono',monospace;white-space:nowrap}
+  .records-links a{color:#426837}
+  .records-links a:hover,.records-links a:focus-visible{text-decoration:underline;text-underline-offset:3px}
+  .records-links span{color:#758a74}
+  .records-more summary{cursor:pointer;padding:18px 0;font:600 12px 'DM Mono',monospace;color:#426837;border-bottom:1px solid #d3ddd4}
+  .records-more summary:hover,.records-more summary:focus-visible{text-decoration:underline;text-underline-offset:3px}
+  .records-more[open] summary{border-bottom:0}
+  .records-more.records-filtering summary{display:none}
+  .records-more.records-filtering .records-list{border-top:0}
+  .records-note{margin:18px 0 0;color:#708078;font:500 11px/1.6 'DM Mono',monospace}
+  @media(max-width:1000px){.records-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:700px){.records-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.records-filter{grid-template-columns:1fr;gap:13px}.records-filter .section-kicker{padding-top:0}.records-filter-intro p{max-width:none}.records-filter-row{grid-template-columns:1fr;gap:6px}.records-filter-row>span{padding-top:0}.records-project{grid-template-columns:1fr;gap:10px}.records-links{white-space:normal}}
+</style>
