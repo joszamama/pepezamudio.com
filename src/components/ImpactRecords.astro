@@ -24,7 +24,7 @@ const t = isSpanish ? {
   statuses: { merged: 'Integrada', review: 'En revisión', advisory: 'Aviso', notice: 'Nota informativa' },
   kinds: { bug: 'Fallo', security: 'Seguridad' },
   filters: { merged: 'Correcciones integradas', review: 'En revisión', security: 'Seguridad', javascript: 'JavaScript y TypeScript' },
-  mergedPr: 'PR integrado', bugReport: 'Informe del fallo', report: 'Informe', original: 'Issue original', fixPr: 'PR con la corrección', patch: 'Parche en el informe', advisory: 'Leer el aviso',
+  mergedPr: 'PR integrado', maintainerFix: 'Corrección del mantenedor', bugReport: 'Informe del fallo', report: 'Informe', original: 'Issue original', fixPr: 'PR con la corrección', patch: 'Parche en el informe', advisory: 'Leer el aviso',
   mirror: 'espejo', downloads: (item) => `↓ ${compact(item.count)} descargas en ${item.registry}${item.period === 'since 2015' ? ' desde 2015' : ''}`,
   more: (count) => `Ver ${count} proyectos más`,
   note: `Datos comprobados el ${filedReports.checkedEs}. Las correcciones integradas y los avisos publicados son definitivos; el resto son informes y pull requests públicos que esperan revisión. Otros ${filedReports.privateReports} informes se enviaron en privado a los mantenedores (avisos de seguridad de GitHub y correo) y aparecerán cuando estén corregidos y publicados. Otros ${filedReports.issueComments} comentarios aportan la causa o la corrección a issues abiertos por otras personas. Estrellas y descargas describen proyectos completos (FFmpeg y file: sus espejos oficiales en GitHub), no instalaciones afectadas; las descargas incluyen instalaciones repetidas y automatizadas, y el historial de adm-zip en npm empieza en 2015.`,
@@ -38,7 +38,7 @@ const t = isSpanish ? {
   statuses: { merged: 'Merged', review: 'Under review', advisory: 'Advisory', notice: 'Informational' },
   kinds: { bug: 'Bug', security: 'Security' },
   filters: { merged: 'Merged fixes', review: 'Under review', security: 'Security', javascript: 'JavaScript & TypeScript' },
-  mergedPr: 'Merged PR', bugReport: 'Bug report', report: 'Report', original: 'Original issue', fixPr: 'Fix PR', patch: 'Patch in report', advisory: 'Read advisory',
+  mergedPr: 'Merged PR', maintainerFix: 'Maintainer fix', bugReport: 'Bug report', report: 'Report', original: 'Original issue', fixPr: 'Fix PR', patch: 'Patch in report', advisory: 'Read advisory',
   mirror: 'mirror', downloads: (item) => `↓ ${compact(item.count)} ${item.registry} downloads${item.period === 'since 2015' ? ' since 2015' : ''}`,
   more: (count) => `Show ${count} more projects`,
   note: `Status checked ${filedReports.checked}. Merged fixes and published advisories are final; the other entries are public reports and pull requests waiting for review. A further ${filedReports.privateReports} reports went privately to maintainers (GitHub security advisories and e-mail); they will be listed here once fixed and published. Another ${filedReports.issueComments} comments add the root cause or a fix to issues that others opened. Stars and downloads describe whole projects (FFmpeg and file: their official GitHub mirrors), not affected installations; download events include repeat and automated installs, and npm’s adm-zip history starts in 2015.`,
@@ -49,8 +49,8 @@ const languageKey = (language) => ({ C: 'c', 'C++': 'cpp', Go: 'go', Java: 'java
 
 const records = [
   ...contributions.map((item) => {
-    const copy = isSpanish ? contributionCopy[item.url] ?? contributionCopy[item.repo] ?? {} : {};
-    return { project: projectKey(item.repo), status: 'merged', security: item.category === 'security', title: copy.title ?? item.title, detail: copy.detail ?? item.detail, links: [{ label: t.mergedPr, url: item.url }, item.issueUrl && { label: t.bugReport, url: item.issueUrl }].filter(Boolean) };
+    const copy = isSpanish ? contributionCopy[item.url] ?? contributionCopy[item.issueUrl] ?? contributionCopy[item.repo] ?? {} : {};
+    return { project: projectKey(item.repo), status: 'merged', security: item.category === 'security', title: copy.title ?? item.title, detail: copy.detail ?? item.detail, links: [{ label: item.maintainerFix ? t.maintainerFix : t.mergedPr, url: item.url }, item.issueUrl && { label: t.bugReport, url: item.issueUrl }].filter(Boolean) };
   }),
   ...advisories.map((item) => {
     const copy = isSpanish ? advisoryCopy[item.id] ?? {} : {};

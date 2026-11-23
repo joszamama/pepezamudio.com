@@ -4,7 +4,7 @@ Checked 23 November 2026 (previous snapshot: 4 November 2026). These counts appe
 
 ## GitHub stars
 
-Stars for the projects with open reports were read from the GitHub API on the same day and are stored in `externalRepositoryReach.stars` in `src/lib/data.js` (55 repositories in all). FFmpeg and file are developed elsewhere; their counts come from the official GitHub mirrors (`FFmpeg/FFmpeg`, `file/file`) and are labeled as mirrors on the page. bfj is hosted on GitLab and shows no star count. FlamaPy's count is the sum of its four repositories listed below.
+Stars for the projects with open reports were read from the GitHub API on the same day and are stored in `externalRepositoryReach.stars` in `src/lib/data.js` (59 repositories in all). FFmpeg and file are developed elsewhere; their counts come from the official GitHub mirrors (`FFmpeg/FFmpeg`, `file/file`) and are labeled as mirrors on the page. bfj is hosted on GitLab and shows no star count. FlamaPy's count is the sum of its four repositories listed below.
 
 Projects with merged fixes or published advisories:
 
@@ -27,6 +27,15 @@ Projects with merged fixes or published advisories:
 | [Universal-Variability-Language/uvl-parser](https://github.com/Universal-Variability-Language/uvl-parser) | 20 |
 | [dignifiedquire/async-tar](https://github.com/dignifiedquire/async-tar) | 83 |
 
+UVL projects with open reports only:
+
+| Repository | GitHub stars |
+| --- | ---: |
+| [Universal-Variability-Language/uvl-lsp](https://github.com/Universal-Variability-Language/uvl-lsp) | 12 |
+| [Universal-Variability-Language/java-fm-metamodel](https://github.com/Universal-Variability-Language/java-fm-metamodel) | 3 |
+| [FeatureIDE/FeatureIDE](https://github.com/FeatureIDE/FeatureIDE) | 149 |
+| [diverso-lab/uvlhub](https://github.com/diverso-lab/uvlhub) | 15 |
+
 The `rsc/pdf` repository is archived; its star count is still a repository snapshot. The `ttf-parser` entry is an informational unmaintained notice, not a vulnerability report.
 
 ## Package downloads
@@ -48,4 +57,4 @@ No public lifetime package totals were available for Kryo and TwelveMonkeys on M
 
 ## Open reports
 
-The 53 open entries are public issues and pull requests that were open on 23 November 2026 (checked through the GitHub API, and by hand on code.ffmpeg.org, bugs.astron.com, GitLab and Launchpad). Private reports are counted on the page but not named.
+The 75 open entries are public issues and pull requests that were open on 23 November 2026 (checked through the GitHub API, and by hand on code.ffmpeg.org, bugs.astron.com, GitLab and Launchpad). Private reports are counted on the page but not named.
