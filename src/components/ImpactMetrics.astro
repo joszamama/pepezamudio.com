@@ -1,5 +1,5 @@
 ---
-import { publications, contributions, advisories, researchFunding, softwareReach, collaborations } from '../lib/data.js';
+import { publications, contributions, advisories, researchFunding, softwareReach, collaborations, filedReports } from '../lib/data.js';
 import { localizedHref } from '../lib/locale.js';
 const locale = Astro.props.locale ?? 'en';
 const isSpanish = locale === 'es';
@@ -9,6 +9,7 @@ const vulnerabilityRecords = advisories.filter((item) => !item.informational);
 const institutionCount = new Set(collaborations.flatMap((item) => item.institutions)).size;
 const starCount = softwareReach.stars.reduce((total, item) => total + item.count, 0);
 const downloadCount = softwareReach.downloads.reduce((total, item) => total + item.count, 0);
+const filedCount = filedReports.projects.reduce((total, project) => total + project.items.length, 0);
 const metrics = isSpanish ? [
   { value: publishedWorks.length, label: 'Publicaciones', detail: 'Artículos y tutorial revisados por pares', href: '/research/' },
   { value: '66', label: 'Citas', detail: 'Google Scholar', href: 'https://scholar.google.es/citations?user=uhmSfGUAAAAJ' },
@@ -17,7 +18,7 @@ const metrics = isSpanish ? [
   { value: institutionCount, label: 'Instituciones de investigación', detail: 'Instituciones con las que he trabajado', href: '/research/#collaborations' },
   { value: starCount, label: 'Estrellas en GitHub', detail: 'En mis repositorios públicos', href: '/impact/#software-reach' },
   { value: `${Math.floor(downloadCount / 1000)}k+`, label: 'Descargas de software', detail: 'Histórico · paquetes y versiones', href: '/impact/#software-reach' },
-  { value: contributions.length, label: 'Correcciones aceptadas', detail: 'PR de errores y seguridad en otros proyectos', href: '/impact/#fixes' },
+  { value: contributions.length, label: 'Correcciones aceptadas', detail: `PR de errores y seguridad · ${filedCount} más en revisión`, href: '/impact/#fixes' },
 ] : [
   { value: publishedWorks.length, label: 'Publications', detail: 'Peer-reviewed papers & tutorial', href: '/research/' },
   { value: '66', label: 'Citations', detail: 'Google Scholar', href: 'https://scholar.google.es/citations?user=uhmSfGUAAAAJ' },
@@ -26,7 +27,7 @@ const metrics = isSpanish ? [
   { value: institutionCount, label: 'Research institutions', detail: 'Institutions I’ve worked with', href: '/research/#collaborations' },
   { value: starCount, label: 'GitHub stars', detail: 'Across my public repositories', href: '/impact/#software-reach' },
   { value: `${Math.floor(downloadCount / 1000)}k+`, label: 'Software downloads', detail: 'All time · packages & releases', href: '/impact/#software-reach' },
-  { value: contributions.length, label: 'Merged external fixes', detail: 'Bug and security PRs', href: '/impact/#fixes' },
+  { value: contributions.length, label: 'Merged external fixes', detail: `Bug & security PRs · ${filedCount} more under review`, href: '/impact/#fixes' },
 ];
 ---
 <section class="metrics wrap" aria-labelledby="metrics-title">

@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import ExternalReach from '../../../components/ExternalReach.astro';
+import FiledReports from '../../../components/FiledReports.astro';
 import { projects, contributions, advisories, honors, researchFunding, softwareReach, externalRepositoryReach } from '../../../lib/data.js';
 import { projectCopy, contributionCopy, advisoryCopy, honorCopy, translateRecords } from '../../../lib/es-data.js';
 const projectsEs = translateRecords(projects, projectCopy, 'title');
@@ -10,8 +11,8 @@ const honorsEs = translateRecords(honors, honorCopy, 'year');
 const starCount = softwareReach.stars.reduce((total, item) => total + item.count, 0);
 const downloadCount = softwareReach.downloads.reduce((total, item) => total + item.count, 0);
 ---
-<Base locale="es" title="Impacto — Pepe Zamudio" description="Software de investigación, correcciones de fallos y seguridad, y avisos públicos de José Antonio «Pepe» Zamudio Amaya.">
-  <div class="wrap page-intro"><div class="eyebrow">Impacto</div><h1>Herramientas, arreglos<br />y avisos.</h1><p>Software de mi investigación doctoral, correcciones en otros proyectos, avisos públicos de seguridad, reconocimientos y financiación conseguida.</p></div>
+<Base locale="es" title="Impacto — Pepe Zamudio" description="Software de investigación, correcciones de fallos y seguridad, informes de fallos abiertos y avisos públicos de José Antonio «Pepe» Zamudio Amaya.">
+  <div class="wrap page-intro"><div class="eyebrow">Impacto</div><h1>Herramientas, arreglos<br />y avisos.</h1><p>Software de mi investigación doctoral, correcciones integradas e informes abiertos en otros proyectos, avisos públicos de seguridad, reconocimientos y financiación conseguida.</p></div>
   <div class="wrap rule"></div>
   <section class="wrap work-list" id="projects">{projectsEs.map((project) => <article class="work-item"><div class="work-number">{project.number}<span> / {project.label}</span></div><div class="work-main"><span class="work-kind">{project.kind}</span><h2><a href={project.url} target="_blank" rel="noopener noreferrer">{project.title} <span>↗</span></a></h2><p>{project.description}</p><div class="work-links"><a href={project.url} target="_blank" rel="noopener noreferrer">Ver repositorio ↗</a>{project.story && <a href={project.story} target="_blank" rel="noopener noreferrer">Leer artículo ↗</a>}</div></div></article>)}</section>
   <section class="wrap software-reach" id="software-reach" aria-labelledby="reach-title">
@@ -23,6 +24,7 @@ const downloadCount = softwareReach.downloads.reduce((total, item) => total + it
     <p class="reach-date">Datos comprobados el 4 de noviembre de 2026.</p>
   </section>
   <section class="wrap contributions" id="fixes"><div class="section-heading"><div><span class="section-kicker">Otros repositorios</span><h2 class="section-title">Correcciones de fallos y seguridad.</h2></div></div><div class="record-list">{contributionsEs.map((item) => <article class="record"><span class="record-side">{item.date}<br />{item.repo}</span><div><span class={`record-category record-category-${item.category}`}>{item.category === "security" ? "Seguridad" : "Fallo"}</span><h3><a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></h3><p>{item.detail}</p>{item.issueUrl && <a class="record-report" href={item.issueUrl} target="_blank" rel="noopener noreferrer">Leer el informe del fallo ↗</a>}<ExternalReach repo={item.repo} locale="es" /></div><a class="record-arrow" href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Ver el pull request de ${item.title}`}>↗</a></article>)}</div></section>
+  <FiledReports locale="es" />
   <section class="wrap advisories" id="advisories"><div class="section-heading"><div><span class="section-kicker">Solo registros públicos</span><h2 class="section-title">Avisos de seguridad.</h2></div></div><div class="advisory-grid">{advisoriesEs.map((item) => <article class="advisory"><div><span>{item.id}</span><a href={item.url} target="_blank" rel="noopener noreferrer" aria-label={`Leer ${item.id}`}>↗</a></div><h3><a href={item.url} target="_blank" rel="noopener noreferrer">{item.product}</a></h3><p>{item.title}</p><small>{item.role}</small><ExternalReach repo={item.repo} inverse locale="es" /></article>)}</div><p class="external-reach-note">Descargas de paquetes y estrellas de GitHub por proyecto, comprobadas el 4 de noviembre de 2026. Las descargas incluyen instalaciones repetidas y automatizadas; ninguna de las dos cifras mide instalaciones afectadas. No hay datos públicos de descargas históricas para los proyectos de Java y Go. El historial de adm-zip en npm comienza en 2015.</p></section>
   <section class="wrap funding" id="funding" aria-labelledby="funding-title">
     <div><span class="section-kicker">Apoyo a la investigación</span><h2 class="section-title" id="funding-title">Financiación conseguida.</h2></div>

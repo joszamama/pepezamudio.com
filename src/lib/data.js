@@ -49,6 +49,150 @@ export const advisories = [
   { id: 'RUSTSEC-2026-0192', product: 'ttf-parser', repo: 'harfbuzz/ttf-parser', title: 'Unmaintained package notice', role: 'RustSec informational notice · submitted advisory', url: 'https://rustsec.org/advisories/RUSTSEC-2026-0192.html', informational: true },
 ];
 
+// Public issues and pull requests filed upstream and not merged yet. Status checked on the date below;
+// move an entry to `contributions` once its fix is merged. Stars are GitHub project totals, not affected installs.
+export const filedReports = {
+  checked: '23 November 2026',
+  checkedEs: '23 de noviembre de 2026',
+  privateReports: 26,
+  issueComments: 10,
+  projects: [
+    { name: 'Go (x/image)', repo: 'golang/go', url: 'https://github.com/golang/go', language: 'Go', stars: 140022, items: [
+      { title: 'x/image/bmp rejects 24- and 32-bit images that carry a colour table', issueUrl: 'https://github.com/golang/go/issues/83312' },
+    ] },
+    { name: 'OpenCV', repo: 'opencv/opencv', url: 'https://github.com/opencv/opencv', language: 'C++', stars: 91694, items: [
+      { title: '16-bit BI_BITFIELDS BMPs with V4 or V5 headers are not decoded', issueUrl: 'https://github.com/opencv/opencv/issues/31107', prUrl: 'https://github.com/opencv/opencv/pull/31108' },
+    ] },
+    { name: 'FFmpeg', repo: 'FFmpeg/FFmpeg', url: 'https://code.ffmpeg.org/FFmpeg/FFmpeg', language: 'C', stars: 67995, mirror: true, items: [
+      { title: 'WAVE_FORMAT_EXTENSIBLE PCM is decoded with the wrong sample size', issueUrl: 'https://code.ffmpeg.org/FFmpeg/FFmpeg/issues/26304', prUrl: 'https://code.ffmpeg.org/FFmpeg/FFmpeg/pulls/26305' },
+    ] },
+    { name: 'jsonparser', repo: 'buger/jsonparser', url: 'https://github.com/buger/jsonparser', language: 'Go', stars: 5667, items: [
+      { title: 'Numbers outside the float64 range are reported as malformed', issueUrl: 'https://github.com/buger/jsonparser/issues/296', prUrl: 'https://github.com/buger/jsonparser/pull/297' },
+    ] },
+    { name: 'Symphonia', repo: 'pdeljanov/Symphonia', url: 'https://github.com/pdeljanov/Symphonia', language: 'Rust', stars: 3492, items: [
+      { title: 'A-law and μ-law in WAVE_FORMAT_EXTENSIBLE cannot be decoded', issueUrl: 'https://github.com/pdeljanov/Symphonia/issues/627', prUrl: 'https://github.com/pdeljanov/Symphonia/pull/628' },
+      { title: 'Wrong GUID for the μ-law subformat', prUrl: 'https://github.com/pdeljanov/Symphonia/pull/629' },
+    ] },
+    { name: 'fast-xml-parser', repo: 'NaturalIntelligence/fast-xml-parser', url: 'https://github.com/NaturalIntelligence/fast-xml-parser', language: 'JavaScript', stars: 3143, items: [
+      { title: 'A processing instruction in the DOCTYPE internal subset throws', issueUrl: 'https://github.com/NaturalIntelligence/fast-xml-parser/issues/929', prUrl: 'https://github.com/NaturalIntelligence/fast-xml-parser/pull/930' },
+    ] },
+    { name: 'lxml', repo: 'lxml/lxml', url: 'https://github.com/lxml/lxml', language: 'Python', stars: 3077, items: [
+      { title: 'Since 6.1.3, internal parameter entities fail as “not defined”', issueUrl: 'https://bugs.launchpad.net/lxml/+bug/2175636' },
+    ] },
+    { name: 'html5ever (Servo)', repo: 'servo/html5ever', url: 'https://github.com/servo/html5ever', language: 'Rust', stars: 2667, items: [
+      { title: 'xml5ever drops a carriage return after a named character reference', issueUrl: 'https://github.com/servo/html5ever/issues/816', prUrl: 'https://github.com/servo/html5ever/pull/817' },
+    ] },
+    { name: 'filetype', repo: 'h2non/filetype', url: 'https://github.com/h2non/filetype', language: 'Go', stars: 2302, items: [
+      { title: 'Tar archives whose first file name starts with “MZ” are detected as exe or tar at random', issueUrl: 'https://github.com/h2non/filetype/issues/64', existingIssue: true, prUrl: 'https://github.com/h2non/filetype/pull/171' },
+    ] },
+    { name: 'mimetype', repo: 'gabriel-vasile/mimetype', url: 'https://github.com/gabriel-vasile/mimetype', language: 'Go', stars: 2030, items: [
+      { title: 'UTF-16 XML with a byte order mark is detected as text/plain', issueUrl: 'https://github.com/gabriel-vasile/mimetype/issues/865', prUrl: 'https://github.com/gabriel-vasile/mimetype/pull/866' },
+    ] },
+    { name: 'go-codec (ugorji/go)', repo: 'ugorji/go', url: 'https://github.com/ugorji/go', language: 'Go', stars: 1968, items: [
+      { title: 'Error messages start with NUL bytes, and NumBytesRead is off by one', issueUrl: 'https://github.com/ugorji/go/issues/451', prUrl: 'https://github.com/ugorji/go/pull/452' },
+      { title: 'CBOR integer epoch times are rounded through float64', issueUrl: 'https://github.com/ugorji/go/issues/455', prUrl: 'https://github.com/ugorji/go/pull/456' },
+      { title: 'CBOR bignums decode to float64 and lose digits', issueUrl: 'https://github.com/ugorji/go/issues/454' },
+      { title: 'Unassigned CBOR simple values fail to decode', issueUrl: 'https://github.com/ugorji/go/issues/453' },
+    ] },
+    { name: 'file (libmagic)', repo: 'file/file', url: 'https://github.com/file/file', language: 'C', stars: 1695, mirror: true, items: [
+      { title: 'search/N tries one offset too many, so a JSON string is reported as troff', issueUrl: 'https://bugs.astron.com/view.php?id=825', patchInReport: true },
+      { title: 'Text starting with “<?php” and no space, such as some XML, is reported as PHP', issueUrl: 'https://bugs.astron.com/view.php?id=826', patchInReport: true },
+    ] },
+    { name: 'quick-xml', repo: 'tafia/quick-xml', url: 'https://github.com/tafia/quick-xml', language: 'Rust', stars: 1583, items: [
+      { title: 'Documents declared as ISO-8859-1 are decoded as windows-1252 (documentation fix)', issueUrl: 'https://github.com/tafia/quick-xml/issues/1061', prUrl: 'https://github.com/tafia/quick-xml/pull/1062' },
+    ] },
+    { name: 'sax', repo: 'isaacs/sax-js', url: 'https://github.com/isaacs/sax-js', language: 'JavaScript', stars: 1157, items: [
+      { title: 'Strict mode skips end-of-line and attribute-value normalization', issueUrl: 'https://github.com/isaacs/sax-js/issues/304', existingIssue: true, prUrl: 'https://github.com/isaacs/sax-js/pull/309' },
+    ] },
+    { name: 'json-joy', repo: 'streamich/json-joy', url: 'https://github.com/streamich/json-joy', language: 'TypeScript', stars: 1100, items: [
+      { title: 'The CBOR decoder throws on an indefinite-length text string used as a map key', issueUrl: 'https://github.com/streamich/json-joy/issues/1060', prUrl: 'https://github.com/streamich/json-joy/pull/1061' },
+    ] },
+    { name: 'hound', repo: 'ruuda/hound', url: 'https://github.com/ruuda/hound', language: 'Rust', stars: 643, items: [
+      { title: '32-bit PCM is rejected when the fmt chunk is 18 bytes', issueUrl: 'https://github.com/ruuda/hound/issues/103' },
+    ] },
+    { name: 'roxmltree', repo: 'RazrFalcon/roxmltree', url: 'https://github.com/RazrFalcon/roxmltree', language: 'Rust', stars: 546, items: [
+      { title: 'A carriage return before a reference is not normalised to a line feed', issueUrl: 'https://github.com/RazrFalcon/roxmltree/issues/173', prUrl: 'https://github.com/RazrFalcon/roxmltree/pull/174' },
+    ] },
+    { name: 'python-rapidjson', repo: 'python-rapidjson/python-rapidjson', url: 'https://github.com/python-rapidjson/python-rapidjson', language: 'Python', stars: 532, items: [
+      { title: 'Zero with a large exponent (0e309) is rejected as too big', issueUrl: 'https://github.com/python-rapidjson/python-rapidjson/issues/263' },
+    ] },
+    { name: 'zune-image', repo: 'etemesi254/zune-image', url: 'https://github.com/etemesi254/zune-image', language: 'Rust', stars: 508, items: [
+      { title: 'RLE4 BMPs with an end of line on the last row fail to decode', issueUrl: 'https://github.com/etemesi254/zune-image/issues/544', prUrl: 'https://github.com/etemesi254/zune-image/pull/545' },
+      { title: 'Small BI_RGB BMPs with a 40-byte header fail with “Not enough bytes”', issueUrl: 'https://github.com/etemesi254/zune-image/issues/546', prUrl: 'https://github.com/etemesi254/zune-image/pull/547' },
+    ] },
+    { name: 'png.js', repo: 'foliojs/png.js', url: 'https://github.com/foliojs/png.js', language: 'JavaScript', stars: 502, items: [
+      { title: 'Narrow interlaced PNGs fail to decode', issueUrl: 'https://github.com/foliojs/png.js/issues/114', prUrl: 'https://github.com/foliojs/png.js/pull/115' },
+    ] },
+    { name: 'xmldom', repo: 'xmldom/xmldom', url: 'https://github.com/xmldom/xmldom', language: 'JavaScript', stars: 475, items: [
+      { title: 'U+0085, U+2028 and U+2029 in XML 1.0 text are replaced with a line feed', issueUrl: 'https://github.com/xmldom/xmldom/issues/1094' },
+    ] },
+    { name: 'fast-png', repo: 'image-js/fast-png', url: 'https://github.com/image-js/fast-png', language: 'TypeScript', stars: 458, items: [
+      { title: 'Adam7 interlaced PNGs with 1, 2 or 4 bits per sample fail to decode', issueUrl: 'https://github.com/image-js/fast-png/issues/83', existingIssue: true, prUrl: 'https://github.com/image-js/fast-png/pull/84' },
+      { title: 'tRNS of truecolour images with fewer than 3 pixels is rejected', issueUrl: 'https://github.com/image-js/fast-png/issues/85', prUrl: 'https://github.com/image-js/fast-png/pull/86' },
+    ] },
+    { name: 'infer', repo: 'bojand/infer', url: 'https://github.com/bojand/infer', language: 'Rust', stars: 416, items: [
+      { title: 'Any data starting with “BC” is detected as LLVM bitcode', issueUrl: 'https://github.com/bojand/infer/issues/135', prUrl: 'https://github.com/bojand/infer/pull/136' },
+    ] },
+    { name: 'cbor-x', repo: 'kriszyp/cbor-x', url: 'https://github.com/kriszyp/cbor-x', language: 'JavaScript', stars: 404, items: [
+      { title: 'Bigfloats decode inexactly, and large decimal fractions become Infinity', issueUrl: 'https://github.com/kriszyp/cbor-x/issues/169', prUrl: 'https://github.com/kriszyp/cbor-x/pull/170' },
+      { title: 'Indefinite-length byte and text strings are rejected', issueUrl: 'https://github.com/kriszyp/cbor-x/issues/171' },
+    ] },
+    { name: 'jsonparse', repo: 'creationix/jsonparse', url: 'https://github.com/creationix/jsonparse', language: 'JavaScript', stars: 369, items: [
+      { title: 'A top-level number at the end of the input is never emitted', issueUrl: 'https://github.com/creationix/jsonparse/issues/50', prUrl: 'https://github.com/creationix/jsonparse/pull/51' },
+    ] },
+    { name: 'wavefile', repo: 'rochars/wavefile', url: 'https://github.com/rochars/wavefile', language: 'JavaScript', stars: 252, items: [
+      { title: 'The pad byte after an odd-sized data chunk is read as a sample', issueUrl: 'https://github.com/rochars/wavefile/issues/47', prUrl: 'https://github.com/rochars/wavefile/pull/48' },
+    ] },
+    { name: 'hjson-py', repo: 'hjson/hjson-py', url: 'https://github.com/hjson/hjson-py', language: 'Python', stars: 222, items: [
+      { title: 'Numbers beyond the float range raise OverflowError', issueUrl: 'https://github.com/hjson/hjson-py/issues/47', prUrl: 'https://github.com/hjson/hjson-py/pull/48' },
+    ] },
+    { name: 'nanotar', repo: 'unjs/nanotar', url: 'https://github.com/unjs/nanotar', language: 'TypeScript', stars: 199, items: [
+      { title: 'Links with long targets are listed under the target’s path', issueUrl: 'https://github.com/unjs/nanotar/issues/83', prUrl: 'https://github.com/unjs/nanotar/pull/84' },
+    ] },
+    { name: 'go-wav', repo: 'youpy/go-wav', url: 'https://github.com/youpy/go-wav', language: 'Go', stars: 188, items: [
+      { title: 'The pad byte after an odd-sized data chunk is read as a sample', issueUrl: 'https://github.com/youpy/go-wav/issues/16' },
+    ] },
+    { name: 'file-format', repo: 'mmalecot/file-format', url: 'https://github.com/mmalecot/file-format', language: 'Rust', stars: 144, items: [
+      { title: 'Text starting with LF CR CR LF is detected as pcapng', issueUrl: 'https://github.com/mmalecot/file-format/issues/96', prUrl: 'https://github.com/mmalecot/file-format/pull/97' },
+      { title: 'UTF-16 XML is detected as arbitrary binary data', issueUrl: 'https://github.com/mmalecot/file-format/issues/98', prUrl: 'https://github.com/mmalecot/file-format/pull/99' },
+    ] },
+    { name: 'xml-rs', repo: 'kornelski/xml-rs', url: 'https://github.com/kornelski/xml-rs', language: 'Rust', stars: 118, items: [
+      { title: 'A DOCTYPE with “[” right after the name is rejected', issueUrl: 'https://github.com/kornelski/xml-rs/issues/100', prUrl: 'https://github.com/kornelski/xml-rs/pull/101' },
+    ] },
+    { name: 'cbor4ii', repo: 'quininer/cbor4ii', url: 'https://github.com/quininer/cbor4ii', language: 'Rust', stars: 90, items: [
+      { title: 'Unassigned simple values are rejected', issueUrl: 'https://github.com/quininer/cbor4ii/issues/63', prUrl: 'https://github.com/quininer/cbor4ii/pull/64' },
+    ] },
+    { name: 'wav (cryptix)', repo: 'cryptix/wav', url: 'https://github.com/cryptix/wav', language: 'Go', stars: 75, items: [
+      { title: 'ReadRawSample returns one sample more than the file holds', issueUrl: 'https://github.com/cryptix/wav/issues/25', prUrl: 'https://github.com/cryptix/wav/pull/26' },
+      { title: '18-byte fmt chunks fail with “unexpected EOF”', issueUrl: 'https://github.com/cryptix/wav/issues/17', existingIssue: true, prUrl: 'https://github.com/cryptix/wav/pull/27' },
+      { title: 'WAVE_FORMAT_EXTENSIBLE PCM files are rejected', issueUrl: 'https://github.com/cryptix/wav/issues/28', prUrl: 'https://github.com/cryptix/wav/pull/29' },
+    ] },
+    { name: 'tga.js', repo: 'vthibault/tga.js', url: 'https://github.com/vthibault/tga.js', language: 'JavaScript', stars: 48, items: [
+      { title: 'Colour-mapped images with 15-, 16- or 32-bit entries are rejected', issueUrl: 'https://github.com/vthibault/tga.js/issues/5', prUrl: 'https://github.com/vthibault/tga.js/pull/6' },
+    ] },
+    { name: 'tree_magic', repo: 'mbrubeck/tree_magic', url: 'https://github.com/mbrubeck/tree_magic', language: 'Rust', stars: 48, items: [
+      { title: 'Masked magic rules never match (BMP V4/V5, JPEG 2000, PSD)', issueUrl: 'https://github.com/mbrubeck/tree_magic/issues/31', prUrl: 'https://github.com/mbrubeck/tree_magic/pull/32' },
+      { title: 'The detected type changes from one process to the next', issueUrl: 'https://github.com/mbrubeck/tree_magic/issues/33', prUrl: 'https://github.com/mbrubeck/tree_magic/pull/34' },
+      { title: 'XML and SVG with a UTF-8 byte order mark are detected as text/plain', issueUrl: 'https://github.com/mbrubeck/tree_magic/issues/35', prUrl: 'https://github.com/mbrubeck/tree_magic/pull/36' },
+    ] },
+    { name: 'refmt', repo: 'polydawn/refmt', url: 'https://github.com/polydawn/refmt', language: 'Go', stars: 48, items: [
+      { title: 'Unassigned CBOR simple values are rejected', issueUrl: 'https://github.com/polydawn/refmt/issues/70', prUrl: 'https://github.com/polydawn/refmt/pull/71' },
+    ] },
+    { name: 'cbor_py', repo: 'brianolson/cbor_py', url: 'https://github.com/brianolson/cbor_py', language: 'Python', stars: 47, items: [
+      { title: 'Unassigned simple values raise ValueError', issueUrl: 'https://github.com/brianolson/cbor_py/issues/24', prUrl: 'https://github.com/brianolson/cbor_py/pull/25' },
+    ] },
+    { name: 'image-in-browser', repo: 'yegor-pelykh/image-in-browser', url: 'https://github.com/yegor-pelykh/image-in-browser', language: 'TypeScript', stars: 31, items: [
+      { title: 'Greyscale TGA files decode to undefined', issueUrl: 'https://github.com/yegor-pelykh/image-in-browser/issues/10', prUrl: 'https://github.com/yegor-pelykh/image-in-browser/pull/11' },
+    ] },
+    { name: 'tiny-cbor', repo: 'LeviSchuck/tiny-cbor', url: 'https://github.com/LeviSchuck/tiny-cbor', language: 'TypeScript', stars: 10, items: [
+      { title: 'Non-minimal argument encodings are rejected or decoded as BigInt', issueUrl: 'https://github.com/LeviSchuck/tiny-cbor/issues/36' },
+    ] },
+    { name: 'bfj', repo: 'philbooth/bfj', url: 'https://gitlab.com/philbooth/bfj', language: 'JavaScript', stars: null, items: [
+      { title: 'Objects with an empty-string key cannot be parsed', issueUrl: 'https://gitlab.com/philbooth/bfj/-/issues/76' },
+    ] },
+  ],
+};
+
 // Public package-registry and GitHub API snapshots for external projects.
 // Counts describe whole projects, not affected versions or installations.
 export const externalRepositoryReach = {
