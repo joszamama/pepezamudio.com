@@ -26,7 +26,6 @@ const links = [
   ['Home', 'Inicio', '/'],
   ['About', 'Sobre mí', '/about/'],
   ['Research', 'Investigación', '/research/'],
-  ['Slides', 'Diapositivas', '/slides/'],
   ['Impact', 'Impacto', '/impact/'],
   ['Blog', 'Blog', '/blog/'],
 ];
@@ -98,7 +97,7 @@ const links = [
       <footer class="site-footer">
         <div class="wrap footer-grid">
           <div><a href={localizedHref("/", locale)} class="footer-brand">Pepe Zamudio<span>.</span></a><p>{isSpanish ? "Investigación en pruebas de software y seguridad en CISPA." : "Software testing and security research at CISPA."}</p></div>
-          <div class="footer-links"><span>{isSpanish ? "Explora" : "Explore"}</span>{links.map(([en, es, href]) => <a href={localizedHref(href, locale)}>{isSpanish ? es : en}</a>)}</div>
+          <div class="footer-links"><span>{isSpanish ? "Explora" : "Explore"}</span>{links.map(([en, es, href]) => <a href={localizedHref(href, locale)}>{isSpanish ? es : en}</a>)}<a href={localizedHref("/slides/", locale)}>{isSpanish ? "Diapositivas" : "Slides"}</a></div>
           <div class="footer-links"><span>{isSpanish ? "En otros sitios" : "Elsewhere"}</span><a href="https://github.com/joszamama" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://scholar.google.es/citations?user=uhmSfGUAAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar ↗</a><a href="https://www.linkedin.com/in/joszamama/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://orcid.org/0000-0002-5025-7424" target="_blank" rel="noopener noreferrer">ORCID ↗</a><a href="https://www.instagram.com/guaito/" target="_blank" rel="noopener noreferrer">Instagram @guaito ↗</a></div>
         </div>
         <div class="wrap footer-bottom"><span>© {new Date().getFullYear()} Pepe Zamudio</span><span>José Antonio Zamudio Amaya · {isSpanish ? "Saarbrücken, Alemania" : "Saarbrücken, Germany"}</span></div>

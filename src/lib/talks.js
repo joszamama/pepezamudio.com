@@ -27,7 +27,10 @@ export const talkStops = [
   },
   {
     id: 'seville', city: 'Seville', country: 'Spain', year: '2025', lat: 37.39, lon: -5.99,
-    talks: [{ event: 'INNOSOFT 2025', title: 'Research abroad and Ph.D. life' }],
+    talks: [
+      { event: 'INNOSOFT 2025', title: 'Research abroad and Ph.D. life' },
+      { event: 'Taller ETSII', title: 'Hackea tu software', slides: '/slides/hackea-tu-software/' },
+    ],
   },
   {
     id: 'bern', city: 'Bern', country: 'Switzerland', year: '2026', lat: 46.95, lon: 7.45,
@@ -46,7 +49,7 @@ export const talkStops = [
   },
   {
     id: 'munich', city: 'Munich', country: 'Germany', year: '2026', lat: 48.14, lon: 11.58,
-    talks: [{ event: 'ASE 2026', title: 'Feature-Focused Test Generation', url: 'https://doi.org/10.1145/3832783.3837479' }],
+    talks: [{ event: 'ASE 2026', title: 'Feature-Focused Test Generation', url: 'https://doi.org/10.1145/3832783.3837479', slides: '/slides/compas-feature-focused-test-generation/' }],
   },
 ];
 
