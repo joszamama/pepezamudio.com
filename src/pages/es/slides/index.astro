@@ -1,0 +1,77 @@
+---
+import Base from '../../../layouts/Base.astro';
+const decks = [
+  {
+    slug: 'compas-feature-focused-test-generation',
+    title: 'Compás: Feature-Focused Test Generation',
+    event: 'ASE 2026 · Múnich',
+    kind: 'Charla de congreso',
+    lang: 'Inglés',
+    slides: 41,
+    blurb: 'Generación de tests dirigida. Se extrae un modelo de características de la especificación de entrada, se configuran las que te interesan y se recorta la especificación para que cada entrada generada ejercite tu cambio, no una de cada cuatro.',
+    paper: { label: 'Leer el artículo', href: '/papers/feature-focused-test-generation.pdf' },
+  },
+  {
+    slug: 'hackea-tu-software',
+    title: 'Hackea tu software',
+    event: 'Taller · ETSII, Universidad de Sevilla',
+    kind: 'Taller práctico',
+    lang: 'Español',
+    slides: 50,
+    blurb: 'Un taller práctico de fuzzing. Del azar al fuzzing guiado por cobertura y por gramáticas, construyendo un fuzzer pequeño que encuentra bugs reales en un parser de juguete, uno a uno.',
+    paper: null,
+  },
+];
+---
+<Base locale="es" title="Diapositivas — Pepe Zamudio" description="Presentaciones interactivas de charlas y talleres de José Antonio “Pepe” Zamudio Amaya, para ver en el navegador.">
+  <div class="wrap page-intro"><div class="eyebrow">Diapositivas</div><h1>Charlas en<br />diapositivas.</h1><p>Las diapositivas de mis charlas y talleres, reconstruidas para verse aquí mismo en el navegador: sin descargas ni registro. Usa las flechas o desliza para avanzar por los pasos; pulsa <b>F</b> para pantalla completa.</p></div>
+  <div class="wrap rule"></div>
+  <section class="wrap deck-section" aria-label="Presentaciones">
+    <div class="deck-list">
+      {decks.map((deck, index) => (
+        <article class="deck">
+          <div class="deck-index">{String(index + 1).padStart(2, '0')} / {decks.length}</div>
+          <div class="deck-body">
+            <div class="deck-kicker">{deck.event}</div>
+            <h2>{deck.title}</h2>
+            <p class="deck-blurb">{deck.blurb}</p>
+            <ul class="deck-meta">
+              <li>{deck.kind}</li>
+              <li>{deck.lang}</li>
+              <li>{deck.slides} diapositivas</li>
+              <li>Interactiva</li>
+            </ul>
+            <div class="deck-links">
+              <a class="deck-open" href={`/slides/${deck.slug}/`} data-astro-reload>Abrir la presentación <span aria-hidden="true">↗</span></a>
+              {deck.paper && <a class="deck-paper" href={deck.paper.href} target="_blank" rel="noopener noreferrer">{deck.paper.label} <span aria-hidden="true">↗</span></a>}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="deck-note">Las presentaciones se reconstruyen a partir de mis diapositivas de Claude y se alojan aquí, en la web. Las notas del ponente no se incluyen.</p>
+  </section>
+</Base>
+<style>
+  .deck-section{padding:52px 0 10px}
+  .deck-list{border-top:1px solid #d7ded8}
+  .deck{display:grid;grid-template-columns:120px 1fr;gap:34px;padding:42px 0;border-bottom:1px solid #d7ded8}
+  .deck-index{font:500 11px 'DM Mono',monospace;color:#73847e;padding-top:8px}
+  .deck-kicker{color:#74984f;text-transform:uppercase;letter-spacing:.12em;font:500 11px 'DM Mono',monospace}
+  .deck-body h2{font:800 clamp(26px,3.3vw,40px)/1.15 'Manrope',sans-serif;letter-spacing:-.045em;margin:12px 0 0}
+  .deck-blurb{font-size:16px;line-height:1.7;color:#5d6d6d;max-width:680px;margin:16px 0 0}
+  .deck-meta{display:flex;flex-wrap:wrap;gap:9px;list-style:none;padding:0;margin:20px 0 0}
+  .deck-meta li{padding:7px 12px;border:1px solid #d3dcd6;border-radius:999px;color:#5b6c6e;font:500 10px/1.2 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
+  .deck-links{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:26px}
+  .deck-open{display:inline-flex;align-items:center;gap:11px;background:#1e3134;color:#fff;padding:14px 22px;border-radius:999px;font:800 13px 'Manrope',sans-serif;transition:transform .2s,background .2s}
+  .deck-open:hover{transform:translateY(-3px);background:#365a5d}
+  .deck-open span{font-size:16px;line-height:1}
+  .deck-paper{font:700 13px 'Manrope',sans-serif;color:#315b45;border-bottom:1px solid #a4d552;padding-bottom:6px;transition:gap .2s}
+  .deck-paper:hover{border-bottom-color:#8faf52}
+  .deck-note{margin:30px 0 0;color:#73847e;font-size:12px;line-height:1.6}
+  @media(max-width:700px){
+    .deck-section{padding-top:38px}
+    .deck{grid-template-columns:1fr;gap:12px;padding:32px 0}
+    .deck-open{padding:13px 20px}
+  }
+</style>

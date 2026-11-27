@@ -1,0 +1,77 @@
+---
+import Base from '../../layouts/Base.astro';
+const decks = [
+  {
+    slug: 'compas-feature-focused-test-generation',
+    title: 'Compás: Feature-Focused Test Generation',
+    event: 'ASE 2026 · Munich',
+    kind: 'Conference talk',
+    lang: 'English',
+    slides: 41,
+    blurb: 'Targeted test generation. Extract a feature model from an input specification, configure the features you care about, and slice the spec so every generated input exercises your change — not one in four.',
+    paper: { label: 'Read the paper', href: '/papers/feature-focused-test-generation.pdf' },
+  },
+  {
+    slug: 'hackea-tu-software',
+    title: 'Hackea tu software',
+    event: 'Workshop · ETSII, Universidad de Sevilla',
+    kind: 'Hands-on workshop',
+    lang: 'Spanish',
+    slides: 50,
+    blurb: 'A hands-on fuzzing workshop. From random inputs to coverage-guided and grammar-based testing, building a small fuzzer that finds real bugs in a toy parser — one bug at a time.',
+    paper: null,
+  },
+];
+---
+<Base title="Slides — Pepe Zamudio" description="Interactive slide decks from talks and workshops by José Antonio “Pepe” Zamudio Amaya — playable in the browser.">
+  <div class="wrap page-intro"><div class="eyebrow">Slides</div><h1>Talk<br />decks.</h1><p>The slides behind my talks and workshops, rebuilt to play right here in the browser — no download, no sign-in. Use the arrow keys or swipe to move through the builds; press <b>F</b> for fullscreen.</p></div>
+  <div class="wrap rule"></div>
+  <section class="wrap deck-section" aria-label="Slide decks">
+    <div class="deck-list">
+      {decks.map((deck, index) => (
+        <article class="deck">
+          <div class="deck-index">{String(index + 1).padStart(2, '0')} / {decks.length}</div>
+          <div class="deck-body">
+            <div class="deck-kicker">{deck.event}</div>
+            <h2>{deck.title}</h2>
+            <p class="deck-blurb">{deck.blurb}</p>
+            <ul class="deck-meta">
+              <li>{deck.kind}</li>
+              <li>{deck.lang}</li>
+              <li>{deck.slides} slides</li>
+              <li>Interactive</li>
+            </ul>
+            <div class="deck-links">
+              <a class="deck-open" href={`/slides/${deck.slug}/`} data-astro-reload>Open the deck <span aria-hidden="true">↗</span></a>
+              {deck.paper && <a class="deck-paper" href={deck.paper.href} target="_blank" rel="noopener noreferrer">{deck.paper.label} <span aria-hidden="true">↗</span></a>}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="deck-note">Decks are rebuilt from my Claude slide decks and hosted here on the site. Speaker notes are left out.</p>
+  </section>
+</Base>
+<style>
+  .deck-section{padding:52px 0 10px}
+  .deck-list{border-top:1px solid #d7ded8}
+  .deck{display:grid;grid-template-columns:120px 1fr;gap:34px;padding:42px 0;border-bottom:1px solid #d7ded8}
+  .deck-index{font:500 11px 'DM Mono',monospace;color:#73847e;padding-top:8px}
+  .deck-kicker{color:#74984f;text-transform:uppercase;letter-spacing:.12em;font:500 11px 'DM Mono',monospace}
+  .deck-body h2{font:800 clamp(26px,3.3vw,40px)/1.15 'Manrope',sans-serif;letter-spacing:-.045em;margin:12px 0 0}
+  .deck-blurb{font-size:16px;line-height:1.7;color:#5d6d6d;max-width:680px;margin:16px 0 0}
+  .deck-meta{display:flex;flex-wrap:wrap;gap:9px;list-style:none;padding:0;margin:20px 0 0}
+  .deck-meta li{padding:7px 12px;border:1px solid #d3dcd6;border-radius:999px;color:#5b6c6e;font:500 10px/1.2 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
+  .deck-links{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:26px}
+  .deck-open{display:inline-flex;align-items:center;gap:11px;background:#1e3134;color:#fff;padding:14px 22px;border-radius:999px;font:800 13px 'Manrope',sans-serif;transition:transform .2s,background .2s}
+  .deck-open:hover{transform:translateY(-3px);background:#365a5d}
+  .deck-open span{font-size:16px;line-height:1}
+  .deck-paper{font:700 13px 'Manrope',sans-serif;color:#315b45;border-bottom:1px solid #a4d552;padding-bottom:6px;transition:gap .2s}
+  .deck-paper:hover{border-bottom-color:#8faf52}
+  .deck-note{margin:30px 0 0;color:#73847e;font-size:12px;line-height:1.6}
+  @media(max-width:700px){
+    .deck-section{padding-top:38px}
+    .deck{grid-template-columns:1fr;gap:12px;padding:32px 0}
+    .deck-open{padding:13px 20px}
+  }
+</style>

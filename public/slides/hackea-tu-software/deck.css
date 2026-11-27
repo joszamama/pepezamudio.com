@@ -1,0 +1,322 @@
+:root {
+  --bg: #F4F5F7;
+  --card: #FFFFFF;
+  --ink: #2B2B2B;
+  --soft: #555B64;
+  --mute: #6B7079;
+  --line: #C5CCD3;
+  --navy: #002864;
+  --navy-deep: #0B1A36;
+  --cyan: #018DCA;
+  --cyan-soft: #99D7E7;
+  --cyan-pale: #D5ECF6;
+  --orange: #EB3300;
+  --orange-pale: #FFE5D4;
+  --orange-ink: #B32700;
+  --yellow: #FFC600;
+  --yellow-pale: #FFF1BF;
+  --green: #00804A;
+  --green-pale: #CFE8DA;
+  --mono: 'Roboto Mono', 'Courier New', monospace;
+}
+
+body { font-family: Montserrat, Arial, sans-serif; color: var(--ink); }
+
+section {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Montserrat, Arial, sans-serif;
+  padding: 128px;
+  counter-increment: page;
+}
+
+/* ---------- page number ---------- */
+section::after {
+  content: counter(page);
+  position: absolute;
+  left: 30px;
+  top: 1004px;
+  width: 100px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--mute);
+}
+section.cover::after { content: ""; }
+/* the waiting slide before the cover has no page number either */
+section.wait::after { content: ""; }
+
+/* ---------- content slide chrome ---------- */
+.mark { position: absolute; top: 32px; left: 69px; width: 68px; height: 78px; object-fit: contain; }
+.t {
+  position: absolute; top: 28px; left: 160px; width: 1300px;
+  font-size: 56px; font-weight: 800; line-height: 1.5; color: var(--ink);
+}
+.sec {
+  position: absolute; top: 56px; left: 1460px; width: 300px;
+  font-size: 24px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  text-align: right; color: var(--mute);
+}
+.row { display: flex; flex-direction: row; gap: 40px; }
+.col { display: flex; flex-direction: column; gap: 24px; }
+.grow { flex: 1; }
+
+/* ---------- text ---------- */
+.eyebrow { font-size: 24px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--soft); }
+.lead { font-size: 40px; font-weight: 600; line-height: 1.35; color: var(--ink); }
+.txt { font-size: 30px; line-height: 1.45; color: #3D4249; }
+.small { font-size: 24px; line-height: 1.4; color: var(--soft); }
+.hl { color: var(--cyan); }
+.hot { color: var(--orange-ink); }
+.big { font-size: 96px; font-weight: 800; line-height: 1.1; color: var(--navy); }
+.num { font-size: 64px; font-weight: 800; line-height: 1.1; color: var(--navy); }
+
+/* the one line to remember, always at the foot of the slide */
+.take {
+  position: absolute; left: 160px; bottom: 172px; width: 1600px;
+  font-size: 40px; font-weight: 700; line-height: 1.3; color: var(--ink);
+}
+
+/* ---------- cards ---------- */
+.card {
+  box-sizing: border-box;
+  background: var(--card); border: 2px solid var(--line); border-radius: 18px;
+  padding: 32px 40px; box-shadow: 0 8px 32px rgba(43,43,43,0.06);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.card h3 { font-size: 36px; font-weight: 800; line-height: 1.2; color: var(--ink); }
+.card-hot { border-color: var(--orange); background: #FFF8F4; }
+.card-cool { border-color: var(--cyan); background: #F3FAFD; }
+.card-ok { border-color: var(--green); background: #F2FAF5; }
+.card-warm { border-color: #D9A800; background: #FFFBEA; }
+
+.pill {
+  font-size: 24px; font-weight: 800; padding: 6px 18px; border-radius: 10px;
+  color: #FFFFFF; background: var(--orange); align-self: flex-start;
+}
+.pill-navy { background: var(--navy); }
+.pill-cyan { background: var(--cyan); }
+.pill-green { background: var(--green); }
+
+/* ---------- code ---------- */
+.codebox {
+  box-sizing: border-box;
+  background: var(--card); border: 2px solid var(--line); border-radius: 18px;
+  padding: 28px 24px; box-shadow: 0 8px 32px rgba(43,43,43,0.06);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.code { font-family: var(--mono); font-size: 30px; line-height: 1.45; white-space: nowrap; color: var(--ink); }
+.code-s { font-family: var(--mono); font-size: 26px; line-height: 1.45; white-space: nowrap; color: var(--ink); }
+.codebox .code, .codebox .code-s { padding: 0 12px; border-radius: 8px; }
+.nt { color: #0A5C99; }
+.str { color: #00502A; }
+.kw { color: var(--orange-ink); }
+.cm { color: #6B7079; }
+
+/* a row of byte tiles: one box per character to guess */
+.bytes { display: flex; flex-direction: row; gap: 10px; }
+.byte {
+  box-sizing: border-box; width: 64px; height: 72px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--card); border: 2px solid var(--line); border-radius: 10px;
+}
+.byte p { font-family: var(--mono); font-size: 36px; font-weight: 700; line-height: 1; color: #8A9199; }
+.byte-ok { background: var(--green-pale); border-color: var(--green); }
+.byte-ok p { color: #00502A; }
+.byte-hot { background: var(--orange-pale); border-color: var(--orange); }
+.byte-hot p { color: var(--orange-ink); }
+.byte-key { border-color: var(--navy); }
+.byte-key p { color: var(--navy); }
+
+/* ---------- question slide ---------- */
+section.q { background: #2B2B2B; color: #F4F5F7; }
+section.q::after { color: #BFC4CA; }
+.q-kick {
+  position: absolute; top: 300px; left: 160px; width: 1200px;
+  font-size: 28px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--yellow);
+}
+.q-text {
+  position: absolute; top: 360px; left: 160px; width: 1500px;
+  font-size: 96px; font-weight: 800; line-height: 1.15; color: #FFFFFF;
+}
+.q-text .hl { color: var(--cyan-soft); }
+.q-foot {
+  position: absolute; top: 800px; left: 160px; width: 1400px;
+  font-size: 32px; font-style: italic; color: #BFC4CA;
+}
+
+/* ---------- lab (practice) slide ---------- */
+section.lab { background: var(--navy); color: #F4F5F7; }
+section.lab::after { color: #9FB3D1; }
+.lab-badge {
+  position: absolute; top: 56px; left: 160px;
+  font-size: 26px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+  padding: 8px 20px; border-radius: 10px; background: var(--yellow); color: #2B2B2B;
+}
+.lab-time {
+  position: absolute; top: 64px; left: 1160px; width: 600px; text-align: right;
+  font-size: 26px; font-weight: 700; color: var(--cyan-soft);
+}
+.lab-title {
+  position: absolute; top: 128px; left: 160px; width: 1600px;
+  font-size: 72px; font-weight: 800; line-height: 1.2; color: #FFFFFF;
+}
+.lab-body {
+  position: absolute; top: 262px; left: 160px; width: 1600px; height: 598px;
+  display: flex; flex-direction: row; gap: 40px;
+}
+.panel {
+  box-sizing: border-box; width: 780px; flex-shrink: 0;
+  background: #0A2F6E; border: 2px solid #23407A; border-radius: 18px;
+  padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; gap: 34px;
+}
+.lab-side { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+.step { display: flex; flex-direction: row; gap: 20px; align-items: flex-start; }
+.step-n {
+  width: 52px; height: 52px; border-radius: 26px; background: var(--cyan);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.step-n p { font-size: 26px; font-weight: 800; color: #FFFFFF; }
+.step-t { flex: 1; font-size: 30px; line-height: 1.4; color: #E6ECF5; padding-top: 5px; }
+.step-t b { color: #FFFFFF; }
+.term {
+  box-sizing: border-box; flex: 1;
+  background: var(--navy-deep); border: 2px solid #23407A; border-radius: 18px;
+  padding: 22px 32px 28px; display: flex; flex-direction: column; gap: 6px;
+}
+.term-bar { display: flex; flex-direction: row; gap: 8px; padding-bottom: 12px; }
+.dot { width: 14px; height: 14px; border-radius: 7px; background: #23407A; }
+.dot-r { background: var(--orange); }
+.dot-y { background: var(--yellow); }
+.dot-g { background: var(--green); }
+.term-l { font-family: var(--mono); font-size: 26px; line-height: 1.5; white-space: nowrap; color: var(--cyan-soft); }
+.term-c { font-family: var(--mono); font-size: 26px; line-height: 1.5; white-space: nowrap; color: #8FA3C4; }
+.star {
+  box-sizing: border-box;
+  border: 2px solid var(--yellow); border-radius: 18px; padding: 24px 32px;
+  display: flex; flex-direction: column; gap: 10px; background: #0A2F6E;
+}
+.star-h { font-size: 24px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--yellow); }
+.star-t { font-size: 26px; line-height: 1.4; color: #E6ECF5; }
+.star-t b { color: #FFFFFF; }
+.lab-foot {
+  position: absolute; top: 892px; left: 160px; width: 1600px;
+  font-size: 26px; font-style: italic; color: var(--cyan-soft);
+}
+
+/* ---------- statement slide ---------- */
+section.st { background: var(--orange); color: #FFFFFF; }
+section.st::after { color: #FFE0D2; }
+section.st-ok { background: var(--green); }
+section.st-ok::after { color: #D7F0E2; }
+.st-kick {
+  position: absolute; top: 236px; left: 160px; width: 1200px;
+  font-size: 28px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #FFFFFF;
+}
+.st-big {
+  position: absolute; top: 300px; left: 160px; width: 1600px;
+  font-size: 120px; font-weight: 800; line-height: 1.1; color: #FFFFFF;
+}
+.st-sub {
+  position: absolute; top: 620px; left: 160px; width: 1500px;
+  font-size: 48px; font-weight: 600; line-height: 1.3; color: #FFFFFF;
+}
+
+/* ---------- motion ---------- */
+.rise { animation: rise 0.55s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i, 0) * 120ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+/* a step: hidden until its click */
+.fragment { opacity: 0; transform: translateY(18px); transition: opacity 0.45s ease, transform 0.45s ease; }
+.fragment.visible { opacity: 1; transform: translateY(0); }
+
+/* slow disclosure: a step steps back once the next one arrives */
+.fragment.dim.visible { opacity: 0.4; }
+.fragment.dim.visible.current-fragment { opacity: 1; }
+
+/* on screen from the start, steps back at its click */
+.fragment.pre { opacity: 1; transform: translateY(0); }
+.fragment.pre.visible { opacity: 0.4; }
+
+/* a line of code that lights up at its click, and stays lit */
+.fragment.lit { opacity: 1; transform: translateY(0); background-color: transparent; transition: background-color 0.35s ease; }
+.fragment.lit-run.visible { background-color: #CFE8DA; }
+.fragment.lit-new.visible { background-color: #FFE89A; }
+
+/* a line of code that is lit only while its step is the current one */
+.fragment.spot { opacity: 1; transform: translateY(0); background-color: transparent; transition: background-color 0.35s ease; }
+.fragment.spot-cool.visible.current-fragment { background-color: #D5ECF6; }
+.fragment.spot-warm.visible.current-fragment { background-color: #FFE89A; }
+.fragment.spot-hot.visible.current-fragment { background-color: #FFE5D4; }
+
+/* a box that bursts into pieces at its click: each piece flies out from where the box was */
+.fragment.shard { opacity: 0; transition: opacity 0.25s ease-out, transform 0.7s cubic-bezier(.15,.8,.25,1); }
+.fragment.shard.visible { opacity: 1; }
+.fragment.sh-a { transform: translate(10px, 18px) rotate(0deg); }
+.fragment.sh-a.visible { transform: translate(0px, 0px) rotate(-8deg); }
+.fragment.sh-b { transform: translate(-10px, 22px) rotate(0deg); }
+.fragment.sh-b.visible { transform: translate(0px, 0px) rotate(11deg); }
+.fragment.sh-c { transform: translate(-10px, 4px) rotate(0deg); }
+.fragment.sh-c.visible { transform: translate(0px, 0px) rotate(-6deg); }
+.fragment.sh-d { transform: translate(12px, -2px) rotate(0deg); }
+.fragment.sh-d.visible { transform: translate(0px, 0px) rotate(5deg); }
+.fragment.sh-g { transform: translate(-12px, -8px) rotate(0deg); }
+.fragment.sh-g.visible { transform: translate(0px, 0px) rotate(16deg); }
+.fragment.sh-e { transform: translate(6px, -22px) rotate(0deg); }
+.fragment.sh-e.visible { transform: translate(0px, 0px) rotate(-12deg); }
+.fragment.sh-f { transform: translate(-8px, -26px) rotate(0deg); }
+.fragment.sh-f.visible { transform: translate(0px, 0px) rotate(9deg); }
+.fragment.boom { opacity: 0; transform: scale(0.3); transition: opacity 0.2s ease-out, transform 0.45s cubic-bezier(.2,.8,.3,1); }
+.fragment.boom.visible { opacity: 1; transform: scale(1); }
+
+/* links on a light slide */
+.links a { color: #0A5C99; }
+
+/* ---------- solution slide: code to copy on top, the run below ---------- */
+.badge-sol { background: #7FD6A8; color: #0B1A36; }
+.sol-title {
+  position: absolute; top: 118px; left: 160px; width: 1600px;
+  font-size: 52px; font-weight: 800; line-height: 1.2; color: #FFFFFF;
+}
+.codepanel {
+  position: absolute; top: 204px; left: 160px; width: 1600px; box-sizing: border-box;
+  background: #0A2F6E; border: 2px solid #23407A; border-radius: 18px;
+  padding: 20px 28px; display: flex; flex-direction: column; justify-content: center; gap: 0px;
+}
+.cp-head { display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 0 12px 10px; }
+.cp-file { font-family: var(--mono); font-size: 24px; line-height: 1.4; color: var(--cyan-soft); }
+.cp-hint { font-size: 24px; line-height: 1.4; color: #7FD6A8; }
+.cp-note { font-size: 24px; line-height: 1.4; color: #B9C7DD; padding: 2px 12px 10px; }
+.cl { font-family: var(--mono); font-size: 28px; line-height: 1.5; white-space: nowrap; color: #E6ECF5; padding: 0 12px; border-radius: 8px; }
+.cl-old { color: #8FA3C4; }
+.cl-new { background: #0E5A46; color: #FFFFFF; }
+.cl-key { background: #12408A; color: #FFFFFF; }
+.k2 { color: #FFD84D; }
+.s2 { color: #9BE0B8; }
+.n2 { color: #99D7E7; }
+
+/* hides what is under it until its click */
+.fragment.veil { opacity: 1; transform: translateY(0); }
+.fragment.veil.visible { opacity: 0; }
+
+/* a still terminal that waits on top of the live one until its click */
+.term-wait {
+  box-sizing: border-box; background: var(--navy-deep); border: 2px solid #23407A; border-radius: 18px;
+  padding: 18px 28px 22px; display: flex; flex-direction: column; gap: 0px;
+}
+.tw-l { font-family: var(--mono); font-size: 24px; line-height: 1.45; white-space: nowrap; color: #FFFFFF; }
+.tw-c { font-family: var(--mono); font-size: 24px; line-height: 1.45; white-space: nowrap; color: #8FA3C4; }
+
+/* ---------- notebook slide: the four ideas of the workshop, written by hand ---------- */
+section.nb { background: #0B1A36; }
+section.nb::after { color: #9FB3D1; }
+.nb-h { font-family: Caveat, 'Bradley Hand', cursive; font-size: 84px; font-weight: 700; line-height: 1.05; color: var(--navy); }
+.nb-s { font-family: Caveat, 'Bradley Hand', cursive; font-size: 46px; font-weight: 700; line-height: 1.05; text-align: center; color: #5A4500; }
+.nb-n { font-family: Caveat, 'Bradley Hand', cursive; font-size: 76px; font-weight: 700; line-height: 80px; text-align: center; color: var(--orange); }
+.nb-l { font-family: Caveat, 'Bradley Hand', cursive; font-size: 60px; font-weight: 600; line-height: 80px; color: #1F2A44; }
+.nb-k { color: var(--orange-ink); }
+/* the new idea is written in at its click: the ink slides in, then the marker swipes behind its number */
+.fragment.nb-i { opacity: 0; transform: translate(-28px, 0px); transition: opacity 0.5s ease-out, transform 0.6s ease-out; }
+.fragment.nb-i.visible { opacity: 1; transform: translate(0px, 0px); }
+.fragment.nb-m { opacity: 0; transform: rotate(-7deg) scale(0.2); transition: opacity 0.3s ease-out 0.4s, transform 0.45s ease-out 0.4s; }
+.fragment.nb-m.visible { opacity: 0.6; transform: rotate(-7deg) scale(1); }
