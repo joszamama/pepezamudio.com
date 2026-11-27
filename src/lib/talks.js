@@ -26,10 +26,10 @@ export const talkStops = [
     ],
   },
   {
-    id: 'seville', city: 'Seville', country: 'Spain', year: '2025', lat: 37.39, lon: -5.99,
+    id: 'seville', city: 'Seville', country: 'Spain', year: '2026', lat: 37.39, lon: -5.99,
     talks: [
+      { event: 'Taller ETSII 2026', title: 'Hackea tu software', slides: '/slides/hackea-tu-software/' },
       { event: 'INNOSOFT 2025', title: 'Research abroad and Ph.D. life' },
-      { event: 'Taller ETSII', title: 'Hackea tu software', slides: '/slides/hackea-tu-software/' },
     ],
   },
   {
